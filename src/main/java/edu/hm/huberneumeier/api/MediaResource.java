@@ -1,5 +1,6 @@
-package edu.hm;
+package edu.hm.huberneumeier.api;
 
+import edu.hm.huberneumeier.fachklassen.medien.Book;
 import org.eclipse.jetty.server.Response;
 
 /**
@@ -7,7 +8,6 @@ import org.eclipse.jetty.server.Response;
  *
  * @author Andreas Neumeier
  * @version 2017-04-12
- * @created by Andreas Neumeier on 12.04.2017
  */
 public class MediaResource {
     public MediaResource() {

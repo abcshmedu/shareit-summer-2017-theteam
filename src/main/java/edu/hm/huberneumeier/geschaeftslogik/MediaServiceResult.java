@@ -1,11 +1,10 @@
-package edu.hm;
+package edu.hm.huberneumeier.geschaeftslogik;
 
 /**
  * Description.
  *
  * @author Andreas Neumeier
  * @version 2017-04-12
- * @created by Andreas Neumeier on 12.04.2017
  */
 public enum MediaServiceResult {
     keineAhnung;

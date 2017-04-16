@@ -1,4 +1,4 @@
-package edu.hm;
+package edu.hm.huberneumeier.fachklassen.medien;
 
 /**
  * Description...

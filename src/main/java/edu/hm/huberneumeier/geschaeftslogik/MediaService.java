@@ -1,11 +1,14 @@
-package edu.hm;
+package edu.hm.huberneumeier.geschaeftslogik;
+
+import edu.hm.huberneumeier.fachklassen.medien.Book;
+import edu.hm.huberneumeier.fachklassen.medien.Disc;
+import edu.hm.huberneumeier.fachklassen.medien.Medium;
 
 /**
  * Description.
  *
  * @author Andreas Neumeier
  * @version 2017-04-12
- * @created by Andreas Neumeier on 12.04.2017
  */
 public interface MediaService {
 
