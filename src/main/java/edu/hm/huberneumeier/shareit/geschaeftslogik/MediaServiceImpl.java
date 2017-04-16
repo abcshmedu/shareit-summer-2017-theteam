@@ -1,8 +1,8 @@
-package edu.hm.huberneumeier.geschaeftslogik;
+package edu.hm.huberneumeier.shareit.geschaeftslogik;
 
-import edu.hm.huberneumeier.fachklassen.medien.Book;
-import edu.hm.huberneumeier.fachklassen.medien.Disc;
-import edu.hm.huberneumeier.fachklassen.medien.Medium;
+import edu.hm.huberneumeier.shareit.fachklassen.medien.Book;
+import edu.hm.huberneumeier.shareit.fachklassen.medien.Disc;
+import edu.hm.huberneumeier.shareit.fachklassen.medien.Medium;
 
 /**
  * Description.

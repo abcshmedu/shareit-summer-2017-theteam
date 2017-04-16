@@ -1,4 +1,4 @@
-package edu.hm.huberneumeier.datenzugriff;
+package edu.hm.huberneumeier.shareit.datenzugriff;
 
 /**
  * Description.

@@ -1,4 +1,4 @@
-package edu.hm.huberneumeier.geschaeftslogik;
+package edu.hm.huberneumeier.shareit.geschaeftslogik;
 
 /**
  * Description.
