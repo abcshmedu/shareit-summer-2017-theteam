@@ -10,7 +10,7 @@ public class Book extends Medium {
     private String author;
     private String isbn;
 
-    private Book() {
+    public Book() {
     }
 
     public Book(String title, String author, String isbn) {

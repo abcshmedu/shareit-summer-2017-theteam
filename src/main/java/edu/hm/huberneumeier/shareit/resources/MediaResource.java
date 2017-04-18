@@ -1,6 +1,9 @@
 package edu.hm.huberneumeier.shareit.resources;
 
 import edu.hm.huberneumeier.shareit.fachklassen.medien.Book;
+import edu.hm.huberneumeier.shareit.geschaeftslogik.MediaService;
+import edu.hm.huberneumeier.shareit.geschaeftslogik.MediaServiceImpl;
+import edu.hm.huberneumeier.shareit.geschaeftslogik.MediaServiceResult;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -14,6 +17,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 /**
  * Description.
  *
@@ -23,27 +31,45 @@ import javax.ws.rs.core.Response;
 
 @Path("media")
 public class MediaResource {
+    private final MediaService mediaService;
+
     public MediaResource() {
+        mediaService = new MediaServiceImpl();
     }
 
     @POST
     @Path("books")
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createBook(Book book) {
-        return null;
+        MediaServiceResult result = mediaService.addBook(book);
+
+        return Response.status(result.getStatus()).build();
     }
 
     @GET
     @Path("books")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getBooks() {
-        return Response.status(200).entity("hello").build();
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        Book book = new Book("Kochen mit Alfred Sauerkraut", "Alfred Sauerkraut", "123124123213");
+
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(book);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        return Response.status(200).entity(jsonString).build();
     }
 
     @PUT
     @Path("books")
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateBook(Book book) {
-        return null;
+        return Response.status(200).build();
     }
 }
