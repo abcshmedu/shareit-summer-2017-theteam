@@ -40,7 +40,6 @@ public class MediaResource {
     @POST
     @Path("books")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public Response createBook(Book book) {
         MediaServiceResult result = mediaService.addBook(book);
 
@@ -54,11 +53,9 @@ public class MediaResource {
 
         ObjectMapper mapper = new ObjectMapper();
 
-        Book book = new Book("Kochen mit Alfred Sauerkraut", "Alfred Sauerkraut", "123124123213");
-
         String jsonString = null;
         try {
-            jsonString = mapper.writeValueAsString(book);
+            jsonString = mapper.writeValueAsString(mediaService.getBooks());
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }

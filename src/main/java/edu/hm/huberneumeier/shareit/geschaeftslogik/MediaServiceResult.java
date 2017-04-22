@@ -9,8 +9,8 @@ import javax.ws.rs.core.Response;
  * @version 2017-04-12
  */
 public enum MediaServiceResult {
-    OK(200, Response.Status.ACCEPTED),
-    ERROR(400, Response.Status.BAD_REQUEST);
+    ACCEPTED(200, Response.Status.ACCEPTED),
+    BAD_REQUEST(400, Response.Status.BAD_REQUEST);
 
     private final int code;
     private final Response.Status status;
