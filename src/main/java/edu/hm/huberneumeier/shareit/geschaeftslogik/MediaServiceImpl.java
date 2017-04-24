@@ -3,10 +3,10 @@ package edu.hm.huberneumeier.shareit.geschaeftslogik;
 import edu.hm.huberneumeier.shareit.fachklassen.medien.Book;
 import edu.hm.huberneumeier.shareit.fachklassen.medien.Disc;
 import edu.hm.huberneumeier.shareit.fachklassen.medien.Medium;
-import edu.hm.huberneumeier.shareit.geschaeftslogik.helpers.MediaSetUtils;
+import edu.hm.huberneumeier.shareit.geschaeftslogik.helpers.MediumListUtils;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Description.
@@ -16,34 +16,42 @@ import java.util.Set;
  */
 public class MediaServiceImpl implements MediaService {
     //hash set cos we need to be duplicate save
-    Set<Medium> mediaSet = new HashSet<>();
+    private final static List<Medium> MEDIUM_LIST = new ArrayList<>();
 
     public MediaServiceImpl() {
-        mediaSet.add(new Book("Test book", "test", "1234"));
-        mediaSet.add(new Disc("8-5567-3", "test", 0,"test disc"));
+        MEDIUM_LIST.add(new Book("Test book", "test", "1234"));
+        MEDIUM_LIST.add(new Disc("8-5567-3", "test", 0, "test disc"));
     }
 
     @Override
     public MediaServiceResult addBook(Book book) {
-        mediaSet.add(book);
+        for (Medium medium : MediumListUtils.getMediaOfType(MEDIUM_LIST, Book.class)) {
+            if (((Book) medium).getIsbn().equals(book.getIsbn()))
+                return MediaServiceResult.BAD_REQUEST;
+        }
+        MEDIUM_LIST.add(book);
         return MediaServiceResult.ACCEPTED;
     }
 
     @Override
     public MediaServiceResult addDisc(Disc disc) {
-        mediaSet.add(disc);
+        for (Medium medium : MediumListUtils.getMediaOfType(MEDIUM_LIST, Disc.class)) {
+            if (((Disc) medium).getBarcode().equals(disc.getBarcode()))
+                return MediaServiceResult.BAD_REQUEST;
+        }
+        MEDIUM_LIST.add(disc);
         return MediaServiceResult.ACCEPTED;
     }
 
     @Override
     public Medium[] getBooks() {
-        Medium[] mediaArray = MediaSetUtils.getMediaOfType(mediaSet, Book.class);
+        Medium[] mediaArray = MediumListUtils.getMediaOfType(MEDIUM_LIST, Book.class);
         return mediaArray;
     }
 
     @Override
     public Medium[] getDiscs() {
-        Medium[] mediaArray = MediaSetUtils.getMediaOfType(mediaSet, Disc.class);
+        Medium[] mediaArray = MediumListUtils.getMediaOfType(MEDIUM_LIST, Disc.class);
         return mediaArray;
     }
 

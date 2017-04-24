@@ -5,7 +5,6 @@ import edu.hm.huberneumeier.shareit.fachklassen.medien.Medium;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * Get all elements of a media collection which are of type T
@@ -13,9 +12,9 @@ import java.util.Set;
  * @author Andreas Neumeier
  * @version 2017-04-22
  */
-public class MediaSetUtils {
+public class MediumListUtils {
 
-    public static Medium[] getMediaOfType(Set<Medium> mediaSet, Class typeParameterClass) {
+    public static Medium[] getMediaOfType(List<Medium> mediaSet, Class typeParameterClass) {
        final List<Medium> mediaTypeList = new ArrayList<>();
 
         mediaSet.stream().filter(Objects::nonNull).forEach(elem -> {
