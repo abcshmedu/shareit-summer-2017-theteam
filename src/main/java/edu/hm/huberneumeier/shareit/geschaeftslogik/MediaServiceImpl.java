@@ -5,10 +5,7 @@ import edu.hm.huberneumeier.shareit.fachklassen.medien.Disc;
 import edu.hm.huberneumeier.shareit.fachklassen.medien.Medium;
 import edu.hm.huberneumeier.shareit.geschaeftslogik.helpers.MediaSetUtils;
 
-import javax.ws.rs.core.Response;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -22,35 +19,32 @@ public class MediaServiceImpl implements MediaService {
     Set<Medium> mediaSet = new HashSet<>();
 
     public MediaServiceImpl() {
-        mediaSet.add(new Book("Test", "test", "1234"));
+        mediaSet.add(new Book("Test book", "test", "1234"));
+        mediaSet.add(new Disc("8-5567-3", "test", 0,"test disc"));
     }
 
     @Override
     public MediaServiceResult addBook(Book book) {
-        System.out.println(book);
         mediaSet.add(book);
-
         return MediaServiceResult.ACCEPTED;
     }
 
     @Override
     public MediaServiceResult addDisc(Disc disc) {
         mediaSet.add(disc);
-
-        return null;
+        return MediaServiceResult.ACCEPTED;
     }
 
     @Override
     public Medium[] getBooks() {
-        System.out.println(mediaSet.toString());
         Medium[] mediaArray = MediaSetUtils.getMediaOfType(mediaSet, Book.class);
-        return mediaSet.toArray(mediaArray);
+        return mediaArray;
     }
 
     @Override
     public Medium[] getDiscs() {
         Medium[] mediaArray = MediaSetUtils.getMediaOfType(mediaSet, Disc.class);
-        return mediaSet.toArray(mediaArray);
+        return mediaArray;
     }
 
     @Override
