@@ -1,4 +1,4 @@
-	      <h2>ShareIt - Discs</h2>
+	      <h2>Add disc</h2>
 		   <table border="0"><tbody>
 			   <tr><td><label for="barcode">Barcode:</label></td> <td><input type="text" name="barcode"></td></tr>
 			   <tr><td><label for="director">Director:</label></td> <td><input type="text" name="director"></td></tr>
