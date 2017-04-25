@@ -26,16 +26,17 @@ import javax.ws.rs.core.Response;
 
 @Path("media")
 public class MediaResource {
-    private static final MediaService MEDIA_SERVICE = new MediaServiceImpl();
+    private MediaService mediaService = new MediaServiceImpl();
 
-    public MediaResource() {
+    public void clearMediaService() {
+        mediaService = new MediaServiceImpl();
     }
 
     @POST
     @Path("books")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createBook(Book book) {
-        MediaServiceResult result = MEDIA_SERVICE.addBook(book);
+        MediaServiceResult result = mediaService.addBook(book);
 
         return Response.status(result.getStatus()).build();
     }
@@ -49,7 +50,7 @@ public class MediaResource {
 
         String jsonString = null;
         try {
-            jsonString = mapper.writeValueAsString(MEDIA_SERVICE.getBooks());
+            jsonString = mapper.writeValueAsString(mediaService.getBooks());
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -71,7 +72,7 @@ public class MediaResource {
     @Path("discs")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createDisc(Disc disc) {
-        MediaServiceResult result = MEDIA_SERVICE.addDisc(disc);
+        MediaServiceResult result = mediaService.addDisc(disc);
 
         return Response.status(result.getStatus()).build();
     }
@@ -85,7 +86,7 @@ public class MediaResource {
 
         String jsonString = null;
         try {
-            jsonString = mapper.writeValueAsString(MEDIA_SERVICE.getDiscs());
+            jsonString = mapper.writeValueAsString(mediaService.getDiscs());
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }

@@ -16,10 +16,11 @@ import java.util.List;
  * @version 2017-04-12
  */
 public class MediaServiceImpl implements MediaService {
-    //hash set cos we need to be duplicate save
-    private final static List<Medium> MEDIUM_LIST = new ArrayList<>();
+    private final List<Medium> MEDIUM_LIST = new ArrayList<>();
 
     public MediaServiceImpl() {
+        //MEDIUM_LIST.add(new Book("Test book", "test", "1234"));
+        //MEDIUM_LIST.add(new Disc("8-5567-3", "test", 0, "test disc"));
     }
 
     @Override
