@@ -19,6 +19,7 @@ import javax.ws.rs.core.Response;
  */
 public class MediaResourceTest {
     private final MediaResource mediaResource = new MediaResource();
+    private static final String EXAMPLE_ISBN = "9781566199094";
 
     @Test
     public void getBooksEmptyLibrary() throws Exception {
@@ -46,10 +47,10 @@ public class MediaResourceTest {
     @Test
     public void createBooksSingle() throws Exception {
         mediaResource.clearMediaService();
-        mediaResource.createBook(new Book("Test book", "test", "0"));
+        mediaResource.createBook(new Book("Test book", "test", EXAMPLE_ISBN));
         Response response = mediaResource.getBooks();
 
-        Response correctResponse = Response.status(200).entity("[{\"title\":\"Test book\",\"author\":\"test\",\"isbn\":\"0\"}]").build();
+        Response correctResponse = Response.status(200).entity("[{\"title\":\"Test book\",\"author\":\"test\",\"isbn\":\"" + EXAMPLE_ISBN + "\"}]").build();
 
         Assert.assertEquals(response.toString(), correctResponse.toString());
         Assert.assertEquals(response.getEntity().toString(), correctResponse.getEntity().toString());
@@ -58,11 +59,11 @@ public class MediaResourceTest {
     @Test
     public void createBooksSameISBNTwice() throws Exception {
         mediaResource.clearMediaService();
-        mediaResource.createBook(new Book("Test book", "test", "0"));
-        mediaResource.createBook(new Book("Test book", "test", "0"));
+        mediaResource.createBook(new Book("Test book", "test", EXAMPLE_ISBN));
+        mediaResource.createBook(new Book("Test book", "test", EXAMPLE_ISBN));
         Response response = mediaResource.getBooks();
 
-        Response correctResponse = Response.status(200).entity("[{\"title\":\"Test book\",\"author\":\"test\",\"isbn\":\"0\"}]").build();
+        Response correctResponse = Response.status(200).entity("[{\"title\":\"Test book\",\"author\":\"test\",\"isbn\":\"" + EXAMPLE_ISBN + "\"}]").build();
 
         Assert.assertEquals(response.toString(), correctResponse.toString());
         Assert.assertEquals(response.getEntity().toString(), correctResponse.getEntity().toString());
