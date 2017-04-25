@@ -29,7 +29,6 @@ public class MediaResource {
     private static final MediaService MEDIA_SERVICE = new MediaServiceImpl();
 
     public MediaResource() {
-        //MEDIA_SERVICE = new MediaServiceImpl();
     }
 
     @POST
