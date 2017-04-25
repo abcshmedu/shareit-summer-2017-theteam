@@ -61,7 +61,9 @@ public class MediaResource {
     @Path("books")
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateBook(Book book) {
-        return Response.status(200).build();
+        MediaServiceResult result = MEDIA_SERVICE.updateBook(book);
+
+        return Response.status(result.getStatus()).build();
     }
 
 
@@ -95,6 +97,8 @@ public class MediaResource {
     @Path("discs")
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateDisc(Disc disc) {
-        return Response.status(200).build();
+        MediaServiceResult result = MEDIA_SERVICE.updateDisc(disc);
+
+        return Response.status(result.getStatus()).build();
     }
 }

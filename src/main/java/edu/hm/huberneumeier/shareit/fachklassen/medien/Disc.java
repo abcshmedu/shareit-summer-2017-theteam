@@ -64,4 +64,8 @@ public class Disc extends Medium {
         result = 31 * result + fsk;
         return result;
     }
+
+    public void clearBarcode(){
+        this.barcode = getBarcode().replace("-", "").replace(" ", "");
+    }
 }

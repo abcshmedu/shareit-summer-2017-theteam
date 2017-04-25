@@ -54,4 +54,8 @@ public class Book extends Medium {
         result = 31 * result + (isbn != null ? isbn.hashCode() : 0);
         return result;
     }
+
+    public void clearISBN(){
+        this.isbn = getIsbn().replace("-","").replace(" ","");
+    }
 }
