@@ -36,7 +36,7 @@ public class MediaServiceImpl implements MediaService {
 
 
         MEDIUM_LIST.add(book);
-        return MediaServiceResult.ACCEPTED;
+        return MediaServiceResult.CREATED;
     }
 
     @Override
@@ -53,7 +53,7 @@ public class MediaServiceImpl implements MediaService {
         }
 
         MEDIUM_LIST.add(disc);
-        return MediaServiceResult.ACCEPTED;
+        return MediaServiceResult.CREATED;
     }
 
     @Override
