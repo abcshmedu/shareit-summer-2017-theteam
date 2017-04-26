@@ -69,7 +69,10 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
-    public MediaServiceResult updateBook(Book book) {
+    public MediaServiceResult updateBook(String isbn, Book book) {
+        if (!isbn.equals(book.getIsbn()))
+            return MediaServiceResult.BAD_REQUEST;
+
         if (book.getTitle().isEmpty() || book.getAuthor().isEmpty())
             return MediaServiceResult.BAD_REQUEST;
 
@@ -84,21 +87,28 @@ public class MediaServiceImpl implements MediaService {
         }
 
         if (result == null)
-            return MediaServiceResult.BAD_REQUEST;
+            return MediaServiceResult.NOT_FOUND;
 
         int id = 0;
         for (Medium medium : MEDIUM_LIST) {
-            if (!medium.equals(book))
+            if (medium.equals(book))
                 break;
             id++;
         }
+
+        Book medium = (Book) MEDIUM_LIST.get(id);
+        if (medium.getTitle().equals(book.getTitle()) && medium.getAuthor().equals(book.getAuthor()))
+            return MediaServiceResult.NOT_MODIFIED;
 
         MEDIUM_LIST.set(id, book);
         return MediaServiceResult.ACCEPTED;
     }
 
     @Override
-    public MediaServiceResult updateDisc(Disc disc) {
+    public MediaServiceResult updateDisc(String barcode, Disc disc) {
+        if (!barcode.equals(disc.getBarcode()))
+            return MediaServiceResult.BAD_REQUEST;
+
         if (disc.getTitle().isEmpty() || disc.getDirector().isEmpty())
             return MediaServiceResult.BAD_REQUEST;
 
@@ -113,7 +123,7 @@ public class MediaServiceImpl implements MediaService {
         }
 
         if (result == null)
-            return MediaServiceResult.BAD_REQUEST;
+            return MediaServiceResult.NOT_FOUND;
 
         int id = 0;
         for (Medium medium : MEDIUM_LIST) {

@@ -20,9 +20,9 @@ public interface MediaService {
 
     public Medium[] getDiscs();
 
-    public MediaServiceResult updateBook(Book book);
+    public MediaServiceResult updateBook(String isbn, Book book);
 
-    public MediaServiceResult updateDisc(Disc disc);
+    public MediaServiceResult updateDisc(String barcode, Disc disc);
 
     public Book getBook(String isbn);
 

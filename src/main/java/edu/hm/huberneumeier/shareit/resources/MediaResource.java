@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.hm.huberneumeier.shareit.fachklassen.medien.Book;
 import edu.hm.huberneumeier.shareit.fachklassen.medien.Disc;
-import edu.hm.huberneumeier.shareit.fachklassen.medien.Medium;
 import edu.hm.huberneumeier.shareit.geschaeftslogik.MediaService;
 import edu.hm.huberneumeier.shareit.geschaeftslogik.MediaServiceImpl;
 import edu.hm.huberneumeier.shareit.geschaeftslogik.MediaServiceResult;
@@ -56,8 +55,8 @@ public class MediaResource {
     @PUT
     @Path("books/{isbn}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateBook(Book book) {
-        MediaServiceResult result = mediaService.updateBook(book);
+    public Response updateBook(@PathParam("isbn") String isbn, Book book) {
+        MediaServiceResult result = mediaService.updateBook(isbn, book);
 
         return Response.status(result.getStatus()).build();
     }
@@ -65,8 +64,8 @@ public class MediaResource {
     @PUT
     @Path("discs/{barcode}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateDisc(Disc disc) {
-        MediaServiceResult result = mediaService.updateDisc(disc);
+    public Response updateDisc(@PathParam("barcode") String barcode, Disc disc) {
+        MediaServiceResult result = mediaService.updateDisc(barcode, disc);
 
         return Response.status(result.getStatus()).build();
     }
@@ -89,39 +88,31 @@ public class MediaResource {
 
         return Response.status(200).entity(jsonString).build();
     }
-    
+
     @GET
     @Path("books/{isbn}")
     @Produces({MediaType.APPLICATION_JSON})
     public Response getBookByISBN(@PathParam("isbn") String isbn) {
+        Object result = mediaService.getBook(isbn);
+        if (result == null)
+            result = MediaServiceResult.NOT_FOUND;
 
-        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = jsonMapper(result);
 
-        String jsonString = null;
-        try {
-            jsonString = mapper.writeValueAsString(mediaService.getBook(isbn));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-
-        return Response.status(200).entity(jsonString).build();
+        return Response.status(Response.Status.OK).entity(jsonString).build();
     }
 
     @GET
     @Path("discs/{barcode}")
     @Produces({MediaType.APPLICATION_JSON})
     public Response getDiscByBarcode(@PathParam("barcode") String barcode) {
+        Object result = mediaService.getBook(barcode);
+        if (result == null)
+            result = MediaServiceResult.NOT_FOUND;
 
-        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = jsonMapper(result);
 
-        String jsonString = null;
-        try {
-            jsonString = mapper.writeValueAsString(mediaService.getDisc(barcode));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-
-        return Response.status(200).entity(jsonString).build();
+        return Response.status(Response.Status.OK).entity(jsonString).build();
     }
 
     private String jsonMapper(Object object) {

@@ -12,8 +12,12 @@ import javax.ws.rs.core.Response;
  */
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum MediaServiceResult {
-    ACCEPTED(200, Response.Status.ACCEPTED, "valid"),
-    BAD_REQUEST(400, Response.Status.BAD_REQUEST, "bad request");
+    OK(200, Response.Status.OK, "ok"),
+    CREATED(201, Response.Status.CREATED, "resource created"),
+    ACCEPTED(202, Response.Status.ACCEPTED, "accepted"),
+    NOT_MODIFIED(304,Response.Status.NOT_MODIFIED, "resource not modified"),
+    BAD_REQUEST(400, Response.Status.BAD_REQUEST, "unknown error"),
+    NOT_FOUND(404, Response.Status.NOT_FOUND, "resource not found");
 
     private final int code;
     private final Response.Status status;
@@ -25,7 +29,7 @@ public enum MediaServiceResult {
         this.message = message;
     }
 
-    public int getCode(){
+    public int getCode() {
         return code;
     }
 
