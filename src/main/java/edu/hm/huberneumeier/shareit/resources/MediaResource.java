@@ -19,20 +19,32 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
- * Description.
+ * Media Service is used to communicate directly with the frontend.
  *
- * @author Andreas Neumeier
- * @version 2017-04-12
+ * @author Tobias Huber, Andreas Neumeier
+ * @version 2017-04-26
  */
 
 @Path("media")
 public class MediaResource {
+    /**
+     * Instance of the Media Service Implementation.
+     */
     private MediaService mediaService = new MediaServiceImpl();
 
+    /**
+     * Method to create a fresh media service.
+     */
     public void clearMediaService() {
         mediaService = new MediaServiceImpl();
     }
 
+    /**
+     * Create a new book and return the response.
+     *
+     * @param book Book to add to the media list.
+     * @return The response got from media service.
+     */
     @POST
     @Path("books")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -42,53 +54,12 @@ public class MediaResource {
         return Response.status(result.getStatus()).entity(jsonMapper(result)).build();
     }
 
-    @GET
-    @Path("books")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getBooks() {
-
-        String jsonString = jsonMapper(mediaService.getBooks());
-
-        return Response.status(200).entity(jsonString).build();
-    }
-
-    @PUT
-    @Path("books/{isbn}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response updateBook(@PathParam("isbn") String isbn, Book book) {
-        MediaServiceResult result = mediaService.updateBook(isbn, book);
-
-        return Response.status(result.getStatus()).build();
-    }
-
-    @PUT
-    @Path("discs/{barcode}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response updateDisc(@PathParam("barcode") String barcode, Disc disc) {
-        MediaServiceResult result = mediaService.updateDisc(barcode, disc);
-
-        return Response.status(result.getStatus()).build();
-    }
-
-    @POST
-    @Path("discs")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response createDisc(Disc disc) {
-        MediaServiceResult result = mediaService.addDisc(disc);
-
-        return Response.status(result.getStatus()).build();
-    }
-
-    @GET
-    @Path("discs")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getDiscs() {
-
-        String jsonString = jsonMapper(mediaService.getDiscs());
-
-        return Response.status(200).entity(jsonString).build();
-    }
-
+    /**
+     * Get the book with the given isbn.
+     *
+     * @param isbn ISBN of book.
+     * @return The response got from media service.
+     */
     @GET
     @Path("books/{isbn}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -102,17 +73,99 @@ public class MediaResource {
         return Response.status(Response.Status.OK).entity(jsonString).build();
     }
 
+    /**
+     * Get all books.
+     *
+     * @return The response got from media service.
+     */
+    @GET
+    @Path("books")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getBooks() {
+        String jsonString = jsonMapper(mediaService.getBooks());
+
+        return Response.status(200).entity(jsonString).build();
+    }
+
+    /**
+     * Update a special book.
+     *
+     * @param isbn ISBN of the book which should be updated.
+     * @param book New book-data.
+     * @return The response got from media service.
+     */
+    @PUT
+    @Path("books/{isbn}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateBook(@PathParam("isbn") String isbn, Book book) {
+        MediaServiceResult result = mediaService.updateBook(isbn, book);
+
+        return Response.status(result.getStatus()).build();
+    }
+
+    /**
+     * Create a new disc and return the response.
+     *
+     * @param disc Disc to add to the media list.
+     * @return The response got from media service.
+     */
+    @POST
+    @Path("discs")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response createDisc(Disc disc) {
+        MediaServiceResult result = mediaService.addDisc(disc);
+
+        return Response.status(result.getStatus()).build();
+    }
+
+    /**
+     * Get the disc with the given barcode.
+     *
+     * @param barcode Barcode of disc.
+     * @return The response got from media service.
+     */
     @GET
     @Path("discs/{barcode}")
     @Produces({MediaType.APPLICATION_JSON})
     public Response getDiscByBarcode(@PathParam("barcode") String barcode) {
-        Object result = mediaService.getBook(barcode);
+        Object result = mediaService.getDisc(barcode);
         if (result == null)
             result = MediaServiceResult.NOT_FOUND;
 
         String jsonString = jsonMapper(result);
 
         return Response.status(Response.Status.OK).entity(jsonString).build();
+    }
+
+    /**
+     * Get all discs.
+     *
+     * @return The response got from media service.
+     */
+    @GET
+    @Path("discs")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getDiscs() {
+
+        String jsonString = jsonMapper(mediaService.getDiscs());
+
+        return Response.status(200).entity(jsonString).build();
+    }
+
+    /**
+     * Update a special disc.
+     *
+     * @param barcode Barcode of the disc which should be updated.
+     * @param disc New disc-data.
+     * @return The response got from media service.
+     */
+    @PUT
+    @Path("discs/{barcode}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateDisc(@PathParam("barcode") String barcode, Disc disc) {
+        MediaServiceResult result = mediaService.updateDisc(barcode, disc);
+
+        return Response.status(result.getStatus()).build();
     }
 
     private String jsonMapper(Object object) {

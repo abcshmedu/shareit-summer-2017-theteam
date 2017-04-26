@@ -10,14 +10,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Description.
+ * Implementation of a media service.
+ * Methods to create, read and update different media types.
  *
- * @author Andreas Neumeier
- * @version 2017-04-12
+ * @author Tobias Huber, Andreas Neumeier
+ * @version 2017-04-26
  */
 public class MediaServiceImpl implements MediaService {
+    /**
+     * List of all media items.
+     */
     private static final List<Medium> MEDIUM_LIST = new ArrayList<>();
 
+    /**
+     * Default constructor.
+     */
     public MediaServiceImpl() {
     }
 
@@ -40,32 +47,20 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
-    public MediaServiceResult addDisc(Disc disc) {
-        //clear barcode
-        disc.clearBarcode();
+    public Book getBook(String isbn) {
+        Medium[] mediaArray = Utils.getMediaOfType(MEDIUM_LIST, Book.class);
 
-        if (!Utils.validateBarcode(disc.getBarcode()) || disc.getDirector().isEmpty() || disc.getTitle().isEmpty())
-            return MediaServiceResult.BAD_REQUEST;
-
-        for (Medium medium : Utils.getMediaOfType(MEDIUM_LIST, Disc.class)) {
-            if (((Disc) medium).getBarcode().equals(disc.getBarcode()))
-                return MediaServiceResult.BAD_REQUEST;
+        for (Medium book : mediaArray) {
+            Book current = (Book) book;
+            if (current.getIsbn().equals(isbn))
+                return current;
         }
-
-        MEDIUM_LIST.add(disc);
-        return MediaServiceResult.CREATED;
+        return null;
     }
 
     @Override
     public Medium[] getBooks() {
-        Medium[] mediaArray = Utils.getMediaOfType(MEDIUM_LIST, Book.class);
-        return mediaArray;
-    }
-
-    @Override
-    public Medium[] getDiscs() {
-        Medium[] mediaArray = Utils.getMediaOfType(MEDIUM_LIST, Disc.class);
-        return mediaArray;
+        return Utils.getMediaOfType(MEDIUM_LIST, Book.class);
     }
 
     @Override
@@ -105,6 +100,40 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
+    public MediaServiceResult addDisc(Disc disc) {
+        //clear barcode
+        disc.clearBarcode();
+
+        if (!Utils.validateBarcode(disc.getBarcode()) || disc.getDirector().isEmpty() || disc.getTitle().isEmpty())
+            return MediaServiceResult.BAD_REQUEST;
+
+        for (Medium medium : Utils.getMediaOfType(MEDIUM_LIST, Disc.class)) {
+            if (((Disc) medium).getBarcode().equals(disc.getBarcode()))
+                return MediaServiceResult.BAD_REQUEST;
+        }
+
+        MEDIUM_LIST.add(disc);
+        return MediaServiceResult.CREATED;
+    }
+
+    @Override
+    public Disc getDisc(String barcode) {
+        Medium[] mediaArray = Utils.getMediaOfType(MEDIUM_LIST, Disc.class);
+
+        for (Medium disc : mediaArray) {
+            Disc current = (Disc) disc;
+            if (current.getBarcode().equals(barcode))
+                return current;
+        }
+        return null;
+    }
+
+    @Override
+    public Medium[] getDiscs() {
+        return Utils.getMediaOfType(MEDIUM_LIST, Disc.class);
+    }
+
+    @Override
     public MediaServiceResult updateDisc(String barcode, Disc disc) {
         if (!barcode.equals(disc.getBarcode()))
             return MediaServiceResult.BAD_REQUEST;
@@ -132,31 +161,11 @@ public class MediaServiceImpl implements MediaService {
             id++;
         }
 
+        Disc medium = (Disc) MEDIUM_LIST.get(id);
+        if (medium.getTitle().equals(disc.getTitle()) && medium.getDirector().equals(disc.getDirector()) && medium.getFsk() == disc.getFsk())
+            return MediaServiceResult.NOT_MODIFIED;
+
         MEDIUM_LIST.set(id, disc);
         return MediaServiceResult.ACCEPTED;
-    }
-
-    @Override
-    public Book getBook(String isbn) {
-        Medium[] mediaArray = Utils.getMediaOfType(MEDIUM_LIST, Book.class);
-
-        for (Medium book : mediaArray) {
-            Book current = (Book) book;
-            if (current.getIsbn().equals(isbn))
-                return current;
-        }
-        return null;
-    }
-
-    @Override
-    public Disc getDisc(String barcode) {
-        Medium[] mediaArray = Utils.getMediaOfType(MEDIUM_LIST, Disc.class);
-
-        for (Medium disc : mediaArray) {
-            Disc current = (Disc) disc;
-            if (current.getBarcode().equals(barcode))
-                return current;
-        }
-        return null;
     }
 }

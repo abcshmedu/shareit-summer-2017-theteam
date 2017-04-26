@@ -1,28 +1,48 @@
 package edu.hm.huberneumeier.shareit.fachklassen.medien;
 
 /**
- * Description...
+ * The book definition.
  *
  * @author Tobias Huber
- * @version 2017-04-12
+ * @version 2017 -04-12
  */
 public class Book extends Medium {
     private String author;
     private String isbn;
 
+    /**
+     * Default constructor.
+     */
     public Book() {
     }
 
+    /**
+     * Constructor.
+     *
+     * @param title  the title
+     * @param author the author
+     * @param isbn   the isbn
+     */
     public Book(String title, String author, String isbn) {
         super(title);
         this.author = author;
         this.isbn = isbn;
     }
 
+    /**
+     * Gets author.
+     *
+     * @return the author
+     */
     public String getAuthor() {
         return author;
     }
 
+    /**
+     * Gets isbn.
+     *
+     * @return the isbn
+     */
     public String getIsbn() {
         return isbn;
     }
@@ -55,6 +75,9 @@ public class Book extends Medium {
         return result;
     }
 
+    /**
+     * Clear isbn (remove '-' and ' ').
+     */
     public void clearISBN(){
         this.isbn = getIsbn().replace("-","").replace(" ","");
     }

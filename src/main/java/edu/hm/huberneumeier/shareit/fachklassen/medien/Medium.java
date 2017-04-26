@@ -1,22 +1,34 @@
 package edu.hm.huberneumeier.shareit.fachklassen.medien;
 
 /**
- * Description...
+ * The Medium definition.
  *
- * @author Tobias Huber
+ * @author Tobias Huber, Andreas Neumeier
  * @version 2017-04-12
  */
 public class Medium {
     private String title;
 
-    public Medium(){
-
+    /**
+     * Default constructor.
+     */
+    public Medium() {
     }
 
+    /**
+     * Constructor.
+     *
+     * @param title the title of the medium.
+     */
     public Medium(String title) {
         this.title = title;
     }
 
+    /**
+     * Getter of the title.
+     *
+     * @return the title
+     */
     public String getTitle() {
         return title;
     }

@@ -1,10 +1,10 @@
 package edu.hm.huberneumeier.shareit.fachklassen.medien;
 
 /**
- * Description...
+ * The disc definition.
  *
- * @author Tobias Huber
- * @version 2017-04-12
+ * @author Tobias Huber, Andreas Neumeier
+ * @version 2017 -04-12
  */
 public class Disc extends Medium {
 
@@ -12,9 +12,20 @@ public class Disc extends Medium {
     private String director;
     private int fsk;
 
+    /**
+     * Default constructor.
+     */
     private Disc() {
     }
 
+    /**
+     * Constructor.
+     *
+     * @param barcode  the barcode of a disc.
+     * @param director the director of a disc.
+     * @param fsk      the fsk of a disc.
+     * @param title    the title of a disc.
+     */
     public Disc(String barcode, String director, int fsk, String title) {
         super(title);
         this.barcode = barcode;
@@ -22,14 +33,29 @@ public class Disc extends Medium {
         this.fsk = fsk;
     }
 
+    /**
+     * Gets barcode.
+     *
+     * @return the barcode
+     */
     public String getBarcode() {
         return barcode;
     }
 
+    /**
+     * Gets director.
+     *
+     * @return the director
+     */
     public String getDirector() {
         return director;
     }
 
+    /**
+     * Gets fsk.
+     *
+     * @return the fsk
+     */
     public int getFsk() {
         return fsk;
     }
@@ -65,6 +91,9 @@ public class Disc extends Medium {
         return result;
     }
 
+    /**
+     * Clear barcode (remove '-' and ' ').
+     */
     public void clearBarcode(){
         this.barcode = getBarcode().replace("-", "").replace(" ", "");
     }
