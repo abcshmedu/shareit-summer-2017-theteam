@@ -12,16 +12,17 @@ import javax.ws.rs.core.Response;
  */
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum MediaServiceResult {
-    ACCEPTED(200, Response.Status.ACCEPTED),
-    BAD_REQUEST(400, Response.Status.BAD_REQUEST);
+    ACCEPTED(200, Response.Status.ACCEPTED, "valid"),
+    BAD_REQUEST(400, Response.Status.BAD_REQUEST, "bad request");
 
     private final int code;
     private final Response.Status status;
+    private final String message;
 
-
-    MediaServiceResult(int code, Response.Status status) {
+    MediaServiceResult(int code, Response.Status status, String message) {
         this.code = code;
         this.status = status;
+        this.message = message;
     }
 
     public int getCode(){
