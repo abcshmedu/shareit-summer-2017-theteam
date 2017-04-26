@@ -40,7 +40,7 @@ public class MediaResource {
     public Response createBook(Book book) {
         MediaServiceResult result = mediaService.addBook(book);
 
-        return Response.status(result.getStatus()).entity("something").build();
+        return Response.status(result.getStatus()).entity(jsonMapper(result)).build();
     }
 
     @GET
@@ -124,11 +124,11 @@ public class MediaResource {
         return Response.status(200).entity(jsonString).build();
     }
 
-    private String jsonMapper(Medium[] media) {
+    private String jsonMapper(Object object) {
         ObjectMapper mapper = new ObjectMapper();
         String jsonString = null;
         try {
-            jsonString = mapper.writeValueAsString(media);
+            jsonString = mapper.writeValueAsString(object);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
