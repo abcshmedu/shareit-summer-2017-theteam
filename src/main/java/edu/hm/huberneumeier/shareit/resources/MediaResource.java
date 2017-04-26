@@ -13,6 +13,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -59,14 +60,22 @@ public class MediaResource {
     }
 
     @PUT
-    @Path("books")
+    @Path("books/{isbn}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateBook(Book book) {
-        MediaServiceResult result = MEDIA_SERVICE.updateBook(book);
+        MediaServiceResult result = mediaService.updateBook(book);
 
         return Response.status(result.getStatus()).build();
     }
 
+    @PUT
+    @Path("discs/{barcode}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateDisc(Disc disc) {
+        MediaServiceResult result = mediaService.updateDisc(disc);
+
+        return Response.status(result.getStatus()).build();
+    }
 
     @POST
     @Path("discs")
@@ -94,12 +103,37 @@ public class MediaResource {
         return Response.status(200).entity(jsonString).build();
     }
 
-    @PUT
-    @Path("discs")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response updateDisc(Disc disc) {
-        MediaServiceResult result = MEDIA_SERVICE.updateDisc(disc);
+    @GET
+    @Path("books/{isbn}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response getBookByISBN(@PathParam("isbn") String isbn) {
 
-        return Response.status(result.getStatus()).build();
+        ObjectMapper mapper = new ObjectMapper();
+
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(mediaService.getBook(isbn));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        return Response.status(200).entity(jsonString).build();
+    }
+
+    @GET
+    @Path("discs/{barcode}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response getDiscByBarcode(@PathParam("barcode") String barcode) {
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(mediaService.getDisc(barcode));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        return Response.status(200).entity(jsonString).build();
     }
 }

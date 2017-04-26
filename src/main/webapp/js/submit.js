@@ -25,7 +25,7 @@ var submitNewBook = function() {
 			$("input[name=title]").val("");
 			$("input[name=author]").val("");
 			$("input[name=isbn]").val("");
-        	
+
         	errorText.removeClass("visible");
         	errorText.addClass("hidden");
         })
@@ -35,6 +35,65 @@ var submitNewBook = function() {
         	errorText.removeClass("hidden");
         });
 
+}
+
+var updateBook = function(isbn) {
+    var json = JSON.stringify({
+        title: $("input[name=title]").val(),
+        author: $("input[name=author]").val(),
+        isbn: $("input[name=isbn]").val()
+    });
+    var errorText = $("#errormessage");
+    $.ajax({
+        url: '/shareit/media/books/' + isbn,
+        type:'PUT',
+        contentType: 'application/json; charset=UTF-8',
+        data: json
+    })
+        .done(() => {
+        $("input[name=title]").val("");
+    $("input[name=author]").val("");
+    $("input[name=isbn]").val("");
+
+    errorText.removeClass("visible");
+    errorText.addClass("hidden");
+})
+    .fail((error) => {
+        errorText.addClass("visible");
+    errorText.text(error.responseJSON.detail);
+    errorText.removeClass("hidden");
+});
+}
+
+
+var updateDisc = function(barcode) {
+    var json = JSON.stringify({
+        barcode: $("input[name=barcode]").val(),
+        director: $("input[name=director]").val(),
+        fsk: $("input[name=fsk]").val(),
+        title: $("input[name=title]").val()
+    });
+    var errorText = $("#errormessage");
+    $.ajax({
+        url: '/shareit/media/discs/' + barcode,
+        type:'PUT',
+        contentType: 'application/json; charset=UTF-8',
+        data: json
+    })
+        .done(() => {
+        $("input[name=barcode]").val("");
+    $("input[name=director]").val("");
+    $("input[name=fsk]").val("");
+    $("input[name=title]").val("");
+
+    errorText.removeClass("visible");
+    errorText.addClass("hidden");
+})
+    .fail((error) => {
+        errorText.addClass("visible");
+    errorText.text(error.responseJSON.detail);
+    errorText.removeClass("hidden");
+});
 }
 
 /**
@@ -81,10 +140,10 @@ var listBooks = function() {
 	.done((data) => {
 		var template = "<h2>Books</h2><table class='u-full-width'>" +
             "<thead><tr><th>Title</th><th>Author</th><th>ISBN</th></tr></thead>" +
-            "<tbody>{{#data}}<tr><td>{{title}}</td><td>{{author}}</td><td>{{isbn}}</td></tr>{{/data}}</tbody></table>";
+            "<tbody>{{#data}}<tr><td>{{title}}</td><td>{{author}}</td><td><a onclick='listBook({{isbn}})'>{{isbn}}</a></td></tr>{{/data}}</tbody></table>";
 		Mustache.parse(template);
 		var output = Mustache.render(template, {data: data});
-		$("#content").html("<h2>Books</h2>").html(output);
+		$("#content").html(output);
 	});// no error handling
 }
 /**
@@ -98,7 +157,7 @@ var listDiscs = function() {
 	.done((data) => {
 		var template = "<h2>Discs</h2><table class='u-full-width'>" +
             "<thead><tr><th>Title</th><th>Barcode</th><th>Director</th><th>FSK</th></tr></thead>" +
-			"<tbody>{{#data}}<tr><td>{{title}}</td><td>{{barcode}}</td><td>{{director}}</td><td>{{fsk}}</td></tr>{{/data}}</tbody></table>";
+			"<tbody>{{#data}}<tr><td>{{title}}</td><td><a onclick='listDisc({{barcode}})' >{{barcode}}</a></td><td>{{director}}</td><td>{{fsk}}</td></tr>{{/data}}</tbody></table>";
 		Mustache.parse(template);
 		var output = Mustache.render(template, {data: data});
 		$("#content").html(output);
@@ -116,4 +175,46 @@ var changeContent = function(content) {
 	.done((data) => {
 		$("#content").html(data);
 	});// no error handling
+}
+
+var listDisc = function (barcode) {
+    $.ajax({
+        url: '/shareit/media/discs/' + barcode,
+        type: 'GET'
+    })
+        .done((data) => {
+        var template = "<h2>Update disc</h2>" +
+            "<table border='0'><tbody>{{#data}}" +
+            "<tr><td><label for='barcode'>Barcode:</label></td> <td><input type='text' name='barcode' value='{{barcode}}'></td></tr>" +
+            "<tr><td><label for='director'>Director:</label></td> <td><input type='text' name='director' value='{{director}}'></td></tr>" +
+            "<tr><td><label for='fsk'>FSK:</label></td> <td><input type='number' name='fsk' value='{{fsk}}'></td></tr>" +
+            "<tr><td><label for='title'>Title:</label></td> <td><input type='text' name='title' value='{{title}}'></td></tr>" +
+            "{{/data}}</tbody></table>" +
+            "<div><span id='errormessage' class='hidden error'>ERROR</span></div>" +
+            "<input type='button' class='button-primary' id='registerButton' onclick='updateDisc(" + barcode + ")' value='Update'/>";
+    Mustache.parse(template);
+    var output = Mustache.render(template, {data: data});
+    $("#content").html(output);
+})
+    ;// no error handling
+}
+var listBook = function (isbn) {
+    $.ajax({
+        url: '/shareit/media/books/' + isbn,
+        type: 'GET'
+    })
+        .done((data) => {
+        var template = "<h2>Update book</h2>" +
+            "<table border='0'><tbody>{{#data}}" +
+            "<tr><td><label for='title'>Titel:</label></td> <td><input type='text' name='title' value='{{title}}'></td></tr>" +
+            "<tr><td><label for='author'>Autor:</label></td> <td><input type='text' name='author' value='{{author}}'></td></tr>" +
+            "<tr><td><label for='isbn'>ISBN:</label></td> <td><input type='text' name='isbn' value='{{isbn}}'></td></tr>" +
+            "{{/data}}</tbody></table>" +
+            "<div><span id='errormessage' class='hidden error'>ERROR</span></div>" +
+            "<input type='button' class='button-primary' id='registerButton' onclick='updateBook(" + isbn + ")' value='Update'/>";
+    Mustache.parse(template);
+    var output = Mustache.render(template, {data: data});
+    $("#content").html(output);
+})
+    ;// no error handling
 }

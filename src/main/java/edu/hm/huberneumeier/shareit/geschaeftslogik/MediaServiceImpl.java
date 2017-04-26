@@ -16,11 +16,9 @@ import java.util.List;
  * @version 2017-04-12
  */
 public class MediaServiceImpl implements MediaService {
-    private final List<Medium> MEDIUM_LIST = new ArrayList<>();
+    private static final List<Medium> MEDIUM_LIST = new ArrayList<>();
 
     public MediaServiceImpl() {
-        //MEDIUM_LIST.add(new Book("Test book", "test", "1234"));
-        //MEDIUM_LIST.add(new Disc("8-5567-3", "test", 0, "test disc"));
     }
 
     @Override
@@ -28,7 +26,7 @@ public class MediaServiceImpl implements MediaService {
         //clear isbn
         book.clearISBN();
 
-        if (!ISBNValidator.validateISBN13(book.getIsbn()))
+        if (!ISBNValidator.validateISBN13(book.getIsbn()) || book.getAuthor().isEmpty() || book.getTitle().isEmpty())
             return MediaServiceResult.BAD_REQUEST;
 
         for (Medium medium : Utils.getMediaOfType(MEDIUM_LIST, Book.class)) {
@@ -45,8 +43,8 @@ public class MediaServiceImpl implements MediaService {
     public MediaServiceResult addDisc(Disc disc) {
         //clear barcode
         disc.clearBarcode();
-        
-        if (!Utils.validateBarcode(disc.getBarcode()))
+
+        if (!Utils.validateBarcode(disc.getBarcode()) || disc.getDirector().isEmpty() || disc.getTitle().isEmpty())
             return MediaServiceResult.BAD_REQUEST;
 
         for (Medium medium : Utils.getMediaOfType(MEDIUM_LIST, Disc.class)) {
@@ -72,6 +70,9 @@ public class MediaServiceImpl implements MediaService {
 
     @Override
     public MediaServiceResult updateBook(Book book) {
+        if (book.getTitle().isEmpty() || book.getAuthor().isEmpty())
+            return MediaServiceResult.BAD_REQUEST;
+
         Medium[] mediaArray = Utils.getMediaOfType(MEDIUM_LIST, Book.class);
         Book result = null;
         for (Medium medium : mediaArray) {
@@ -98,6 +99,9 @@ public class MediaServiceImpl implements MediaService {
 
     @Override
     public MediaServiceResult updateDisc(Disc disc) {
+        if (disc.getTitle().isEmpty() || disc.getDirector().isEmpty())
+            return MediaServiceResult.BAD_REQUEST;
+
         Medium[] mediaArray = Utils.getMediaOfType(MEDIUM_LIST, Disc.class);
         Disc result = null;
         for (Medium medium : mediaArray) {
@@ -120,5 +124,29 @@ public class MediaServiceImpl implements MediaService {
 
         MEDIUM_LIST.set(id, disc);
         return MediaServiceResult.ACCEPTED;
+    }
+
+    @Override
+    public Book getBook(String isbn) {
+        Medium[] mediaArray = Utils.getMediaOfType(MEDIUM_LIST, Book.class);
+
+        for (Medium book : mediaArray) {
+            Book current = (Book) book;
+            if (current.getIsbn().equals(isbn))
+                return current;
+        }
+        return null;
+    }
+
+    @Override
+    public Disc getDisc(String barcode) {
+        Medium[] mediaArray = Utils.getMediaOfType(MEDIUM_LIST, Disc.class);
+
+        for (Medium disc : mediaArray) {
+            Disc current = (Disc) disc;
+            if (current.getBarcode().equals(barcode))
+                return current;
+        }
+        return null;
     }
 }
