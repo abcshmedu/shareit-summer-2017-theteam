@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.hm.huberneumeier.shareit.fachklassen.medien.Book;
 import edu.hm.huberneumeier.shareit.fachklassen.medien.Disc;
+import edu.hm.huberneumeier.shareit.fachklassen.medien.Medium;
 import edu.hm.huberneumeier.shareit.geschaeftslogik.MediaService;
 import edu.hm.huberneumeier.shareit.geschaeftslogik.MediaServiceImpl;
 import edu.hm.huberneumeier.shareit.geschaeftslogik.MediaServiceResult;
@@ -47,14 +48,7 @@ public class MediaResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getBooks() {
 
-        ObjectMapper mapper = new ObjectMapper();
-
-        String jsonString = null;
-        try {
-            jsonString = mapper.writeValueAsString(mediaService.getBooks());
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+        String jsonString = jsonMapper(mediaService.getBooks());
 
         return Response.status(200).entity(jsonString).build();
     }
@@ -91,18 +85,11 @@ public class MediaResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getDiscs() {
 
-        ObjectMapper mapper = new ObjectMapper();
-
-        String jsonString = null;
-        try {
-            jsonString = mapper.writeValueAsString(mediaService.getDiscs());
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+        String jsonString = jsonMapper(mediaService.getDiscs());
 
         return Response.status(200).entity(jsonString).build();
     }
-
+    
     @GET
     @Path("books/{isbn}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -136,4 +123,16 @@ public class MediaResource {
 
         return Response.status(200).entity(jsonString).build();
     }
+
+    private String jsonMapper(Medium[] media) {
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(media);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return jsonString;
+    }
+
 }

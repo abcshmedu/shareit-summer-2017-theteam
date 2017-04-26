@@ -20,7 +20,9 @@ import javax.ws.rs.core.Response;
 public class MediaResourceTest {
     private final MediaResource mediaResource = new MediaResource();
     private static final String EXAMPLE_ISBN = "9781566199094";
+    private static final String EXAMPLE_INCORRECT_ISBN = "0000000000004";
 
+    //Todo: Muss noch in den richtigen Ordner.
     @Test
     public void getBooksEmptyLibrary() throws Exception {
         mediaResource.clearMediaService();
@@ -57,8 +59,9 @@ public class MediaResourceTest {
     }
 
     @Test
-    public void createBooksSameISBNTwice() throws Exception {
+    public void createBooksSameISBN() throws Exception {
         mediaResource.clearMediaService();
+        mediaResource.createBook(new Book("Test book", "test", EXAMPLE_ISBN));
         mediaResource.createBook(new Book("Test book", "test", EXAMPLE_ISBN));
         mediaResource.createBook(new Book("Test book", "test", EXAMPLE_ISBN));
         Response response = mediaResource.getBooks();
@@ -72,7 +75,13 @@ public class MediaResourceTest {
     @Test
     public void createBooksIncorrectISBN() throws Exception {
         mediaResource.clearMediaService();
+        mediaResource.createBook(new Book("Test book", "test", EXAMPLE_INCORRECT_ISBN));
+        Response response = mediaResource.getBooks();
 
+        Response correctResponse = Response.status(200).entity("[]").build();
+
+        Assert.assertEquals(response.toString(), correctResponse.toString());
+        Assert.assertEquals(response.getEntity().toString(), correctResponse.getEntity().toString());
     }
 
     @Test
