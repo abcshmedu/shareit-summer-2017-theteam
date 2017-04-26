@@ -40,7 +40,7 @@ public class MediaResource {
     public Response createBook(Book book) {
         MediaServiceResult result = mediaService.addBook(book);
 
-        return Response.status(result.getStatus()).build();
+        return Response.status(result.getStatus()).entity("something").build();
     }
 
     @GET

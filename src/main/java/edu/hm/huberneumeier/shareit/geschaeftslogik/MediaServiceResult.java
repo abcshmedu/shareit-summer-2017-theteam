@@ -1,5 +1,7 @@
 package edu.hm.huberneumeier.shareit.geschaeftslogik;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.ws.rs.core.Response;
 
 /**
@@ -8,12 +10,14 @@ import javax.ws.rs.core.Response;
  * @author Andreas Neumeier
  * @version 2017-04-12
  */
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum MediaServiceResult {
     ACCEPTED(200, Response.Status.ACCEPTED),
     BAD_REQUEST(400, Response.Status.BAD_REQUEST);
 
     private final int code;
     private final Response.Status status;
+
 
     MediaServiceResult(int code, Response.Status status) {
         this.code = code;
