@@ -115,7 +115,7 @@ public class MediaResource {
     public Response createDisc(Disc disc) {
         MediaServiceResult result = mediaService.addDisc(disc);
 
-        return Response.status(result.getStatus()).build();
+        return Response.status(result.getStatus()).entity(jsonMapper(result)).build();
     }
 
     /**

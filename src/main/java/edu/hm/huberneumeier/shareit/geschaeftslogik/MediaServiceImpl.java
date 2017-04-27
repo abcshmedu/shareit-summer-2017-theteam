@@ -120,7 +120,7 @@ public class MediaServiceImpl implements MediaService {
         //clear barcode
         disc.clearBarcode();
 
-        if (!Utils.validateBarcode(disc.getBarcode()) || disc.getDirector().isEmpty() || disc.getTitle().isEmpty())
+        if (!Utils.validateBarcode(disc.getBarcode()) || disc.getDirector() == null || disc.getTitle() == null)
             return MediaServiceResult.BAD_REQUEST;
 
         for (Medium medium : Utils.getMediaOfType(arrayList, Disc.class)) {
@@ -167,8 +167,21 @@ public class MediaServiceImpl implements MediaService {
             }
         }
 
+        //if no book with isbn found end otherwise create the new book we will store
         if (result == null)
             return MediaServiceResult.NOT_FOUND;
+
+        //not all information needed for updating so we need to set the missing values with the old once
+        Disc newDisc = disc;
+        if (disc.getTitle() == null)
+            newDisc = new Disc(result.getTitle(), newDisc.getDirector(), newDisc.getFsk(), newDisc.getBarcode());
+        //Todo: ist int kann nicht als null übergeben werden was kommt dann wenn kein wert im json übertragen wird
+        //if (disc.getFsk() == null)
+        //    newDisc = new Disc(newDisc.getTitle(), newDisc.getDirector(), newDisc.getFsk(), newDisc.getBarcode());
+        if (disc.getDirector() == null)
+            newDisc = new Disc(newDisc.getTitle(), result.getDirector(), newDisc.getFsk(), newDisc.getBarcode());
+        if (disc.getBarcode() == null)
+            newDisc = new Disc(newDisc.getTitle(), newDisc.getDirector(), newDisc.getFsk(), result.getBarcode());
 
         int id = 0;
         for (Medium medium : arrayList) {
