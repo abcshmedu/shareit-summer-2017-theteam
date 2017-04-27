@@ -30,7 +30,7 @@ public class MediaResource {
     /**
      * Instance of the Media Service Implementation.
      */
-    private MediaService mediaService = new MediaServiceImpl();
+    private static MediaService mediaService = new MediaServiceImpl();
 
     /**
      * Method to create a fresh media service.
@@ -100,7 +100,7 @@ public class MediaResource {
     public Response updateBook(@PathParam("isbn") String isbn, Book book) {
         MediaServiceResult result = mediaService.updateBook(isbn, book);
 
-        return Response.status(result.getStatus()).build();
+        return Response.status(result.getStatus()).entity(jsonMapper(result)).build();
     }
 
     /**

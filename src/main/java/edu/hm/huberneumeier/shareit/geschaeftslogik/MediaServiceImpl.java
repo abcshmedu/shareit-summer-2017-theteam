@@ -20,7 +20,7 @@ public class MediaServiceImpl implements MediaService {
     /**
      * List of all media items.
      */
-    private static final List<Medium> MEDIUM_LIST = new ArrayList<>();
+    private final List<Medium> arrayList = new ArrayList<>();
 
     /**
      * Default constructor.
@@ -30,25 +30,27 @@ public class MediaServiceImpl implements MediaService {
 
     @Override
     public MediaServiceResult addBook(Book book) {
-        //clear isbn
+        //clear isbn from unnecessary characters like - or spaces
         book.clearISBN();
 
+        //check if all parameters necessary are set
         if (!ISBNValidator.validateISBN13(book.getIsbn()) || book.getAuthor().isEmpty() || book.getTitle().isEmpty())
             return MediaServiceResult.BAD_REQUEST;
 
-        for (Medium medium : Utils.getMediaOfType(MEDIUM_LIST, Book.class)) {
+        //check if book exists
+        for (Medium medium : Utils.getMediaOfType(arrayList, Book.class)) {
             if (((Book) medium).getIsbn().equals(book.getIsbn()))
                 return MediaServiceResult.BAD_REQUEST;
         }
 
-
-        MEDIUM_LIST.add(book);
+        //add book if there wasn't an error
+        arrayList.add(book);
         return MediaServiceResult.CREATED;
     }
 
     @Override
     public Book getBook(String isbn) {
-        Medium[] mediaArray = Utils.getMediaOfType(MEDIUM_LIST, Book.class);
+        Medium[] mediaArray = Utils.getMediaOfType(arrayList, Book.class);
 
         for (Medium book : mediaArray) {
             Book current = (Book) book;
@@ -60,18 +62,21 @@ public class MediaServiceImpl implements MediaService {
 
     @Override
     public Medium[] getBooks() {
-        return Utils.getMediaOfType(MEDIUM_LIST, Book.class);
+        return Utils.getMediaOfType(arrayList, Book.class);
     }
 
     @Override
     public MediaServiceResult updateBook(String isbn, Book book) {
+        //isbn cant be changed
         if (!isbn.equals(book.getIsbn()))
             return MediaServiceResult.BAD_REQUEST;
 
-        if (book.getTitle().isEmpty() || book.getAuthor().isEmpty())
+        //min one value must be set
+        if (book.getTitle() == null && book.getAuthor() == null)
             return MediaServiceResult.BAD_REQUEST;
 
-        Medium[] mediaArray = Utils.getMediaOfType(MEDIUM_LIST, Book.class);
+        //search for book with the given isbn -> result
+        Medium[] mediaArray = Utils.getMediaOfType(arrayList, Book.class);
         Book result = null;
         for (Medium medium : mediaArray) {
             Book actual = (Book) medium;
@@ -81,21 +86,32 @@ public class MediaServiceImpl implements MediaService {
             }
         }
 
+        //if no book with isbn found end otherwise create the new book we will store
+        Book newBook;
         if (result == null)
             return MediaServiceResult.NOT_FOUND;
+        else if (book.getTitle() == null)
+            //not all information needed for updating so we need to set the missing values with the old once
+            newBook = new Book(result.getTitle(), book.getAuthor(), book.getIsbn());
+        else if (book.getAuthor() == null)
+            //not all information needed for updating so we need to set the missing values with the old once
+            newBook = new Book(book.getTitle(), result.getAuthor(), book.getIsbn());
+        else
+            newBook = book;
 
+        //find out the id of the book to replace
         int id = 0;
-        for (Medium medium : MEDIUM_LIST) {
-            if (medium.equals(book))
+        for (Medium medium : arrayList) {
+            if (medium instanceof Book && ((Book) medium).getIsbn().equals(isbn))
                 break;
             id++;
         }
 
-        Book medium = (Book) MEDIUM_LIST.get(id);
-        if (medium.getTitle().equals(book.getTitle()) && medium.getAuthor().equals(book.getAuthor()))
+        Book medium = (Book) arrayList.get(id);
+        if (medium.getTitle().equals(newBook.getTitle()) && medium.getAuthor().equals(newBook.getAuthor()))
             return MediaServiceResult.NOT_MODIFIED;
 
-        MEDIUM_LIST.set(id, book);
+        arrayList.set(id, newBook);
         return MediaServiceResult.ACCEPTED;
     }
 
@@ -107,18 +123,18 @@ public class MediaServiceImpl implements MediaService {
         if (!Utils.validateBarcode(disc.getBarcode()) || disc.getDirector().isEmpty() || disc.getTitle().isEmpty())
             return MediaServiceResult.BAD_REQUEST;
 
-        for (Medium medium : Utils.getMediaOfType(MEDIUM_LIST, Disc.class)) {
+        for (Medium medium : Utils.getMediaOfType(arrayList, Disc.class)) {
             if (((Disc) medium).getBarcode().equals(disc.getBarcode()))
                 return MediaServiceResult.BAD_REQUEST;
         }
 
-        MEDIUM_LIST.add(disc);
+        arrayList.add(disc);
         return MediaServiceResult.CREATED;
     }
 
     @Override
     public Disc getDisc(String barcode) {
-        Medium[] mediaArray = Utils.getMediaOfType(MEDIUM_LIST, Disc.class);
+        Medium[] mediaArray = Utils.getMediaOfType(arrayList, Disc.class);
 
         for (Medium disc : mediaArray) {
             Disc current = (Disc) disc;
@@ -130,7 +146,7 @@ public class MediaServiceImpl implements MediaService {
 
     @Override
     public Medium[] getDiscs() {
-        return Utils.getMediaOfType(MEDIUM_LIST, Disc.class);
+        return Utils.getMediaOfType(arrayList, Disc.class);
     }
 
     @Override
@@ -141,7 +157,7 @@ public class MediaServiceImpl implements MediaService {
         if (disc.getTitle().isEmpty() || disc.getDirector().isEmpty())
             return MediaServiceResult.BAD_REQUEST;
 
-        Medium[] mediaArray = Utils.getMediaOfType(MEDIUM_LIST, Disc.class);
+        Medium[] mediaArray = Utils.getMediaOfType(arrayList, Disc.class);
         Disc result = null;
         for (Medium medium : mediaArray) {
             Disc actual = (Disc) medium;
@@ -155,17 +171,17 @@ public class MediaServiceImpl implements MediaService {
             return MediaServiceResult.NOT_FOUND;
 
         int id = 0;
-        for (Medium medium : MEDIUM_LIST) {
+        for (Medium medium : arrayList) {
             if (!medium.equals(disc))
                 break;
             id++;
         }
 
-        Disc medium = (Disc) MEDIUM_LIST.get(id);
+        Disc medium = (Disc) arrayList.get(id);
         if (medium.getTitle().equals(disc.getTitle()) && medium.getDirector().equals(disc.getDirector()) && medium.getFsk() == disc.getFsk())
             return MediaServiceResult.NOT_MODIFIED;
 
-        MEDIUM_LIST.set(id, disc);
+        arrayList.set(id, disc);
         return MediaServiceResult.ACCEPTED;
     }
 }
