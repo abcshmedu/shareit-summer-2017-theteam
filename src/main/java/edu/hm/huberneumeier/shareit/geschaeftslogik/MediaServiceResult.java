@@ -20,7 +20,7 @@ public enum MediaServiceResult {
     CREATED(201, Response.Status.CREATED, "resource created"),
     ACCEPTED(202, Response.Status.ACCEPTED, "accepted"),
     NOT_MODIFIED(304, Response.Status.NOT_MODIFIED, "resource not modified"),
-    BAD_REQUEST(400, Response.Status.BAD_REQUEST, "unknown error"),
+    BAD_REQUEST(400, Response.Status.BAD_REQUEST, "not a valid request"),
     NOT_FOUND(404, Response.Status.NOT_FOUND, "resource not found");
 
     private final int code;
