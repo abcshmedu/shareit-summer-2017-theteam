@@ -13,7 +13,8 @@ import java.util.List;
  * Implementation of a media service.
  * Methods to create, read and update different media types.
  *
- * @author Tobias Huber, Andreas Neumeier
+ * @author Tobias Huber
+ * @author Andreas Neumeier
  * @version 2017-04-26
  */
 public class MediaServiceImpl implements MediaService {
@@ -154,7 +155,7 @@ public class MediaServiceImpl implements MediaService {
         if (!barcode.equals(disc.getBarcode()))
             return MediaServiceResult.BAD_REQUEST;
 
-        if (disc.getTitle().isEmpty() || disc.getDirector().isEmpty())
+        if (disc.getTitle() == null && disc.getDirector() == null && disc.getFsk() == null)
             return MediaServiceResult.BAD_REQUEST;
 
         Medium[] mediaArray = Utils.getMediaOfType(arrayList, Disc.class);
@@ -167,34 +168,31 @@ public class MediaServiceImpl implements MediaService {
             }
         }
 
-        //if no book with isbn found end otherwise create the new book we will store
+        //if no disc with barcode found end otherwise create the new disc we will store
         if (result == null)
             return MediaServiceResult.NOT_FOUND;
 
         //not all information needed for updating so we need to set the missing values with the old once
         Disc newDisc = disc;
-        if (disc.getTitle() == null)
-            newDisc = new Disc(result.getTitle(), newDisc.getDirector(), newDisc.getFsk(), newDisc.getBarcode());
-        //Todo: ist int kann nicht als null übergeben werden was kommt dann wenn kein wert im json übertragen wird
-        //if (disc.getFsk() == null)
-        //    newDisc = new Disc(newDisc.getTitle(), newDisc.getDirector(), newDisc.getFsk(), newDisc.getBarcode());
         if (disc.getDirector() == null)
-            newDisc = new Disc(newDisc.getTitle(), result.getDirector(), newDisc.getFsk(), newDisc.getBarcode());
-        if (disc.getBarcode() == null)
-            newDisc = new Disc(newDisc.getTitle(), newDisc.getDirector(), newDisc.getFsk(), result.getBarcode());
+            newDisc = new Disc(disc.getBarcode(), result.getDirector(), newDisc.getFsk(), newDisc.getTitle());
+        if (disc.getFsk() == null)
+            newDisc = new Disc(disc.getBarcode(), newDisc.getDirector(), result.getFsk(), newDisc.getTitle());
+        if (disc.getTitle() == null)
+            newDisc = new Disc(disc.getBarcode(), newDisc.getDirector(), newDisc.getFsk(), result.getTitle());
 
         int id = 0;
         for (Medium medium : arrayList) {
-            if (!medium.equals(disc))
+            if (medium instanceof Disc && ((Disc) medium).getBarcode().equals(barcode))
                 break;
             id++;
         }
 
         Disc medium = (Disc) arrayList.get(id);
-        if (medium.getTitle().equals(disc.getTitle()) && medium.getDirector().equals(disc.getDirector()) && medium.getFsk() == disc.getFsk())
+        if (medium.getTitle().equals(newDisc.getTitle()) && medium.getDirector().equals(newDisc.getDirector()) && medium.getFsk() == newDisc.getFsk())
             return MediaServiceResult.NOT_MODIFIED;
 
-        arrayList.set(id, disc);
+        arrayList.set(id, newDisc);
         return MediaServiceResult.ACCEPTED;
     }
 }

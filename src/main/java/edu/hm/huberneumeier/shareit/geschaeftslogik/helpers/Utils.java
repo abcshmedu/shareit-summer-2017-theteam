@@ -10,7 +10,8 @@ import java.util.Objects;
 /**
  * Collection of helpful static methods.
  *
- * @author Tobias Huber, Andreas Neumeier
+ * @author Tobias Huber
+ * @author Andreas Neumeier
  * @version 2017-04-25
  */
 public class Utils {
@@ -42,6 +43,9 @@ public class Utils {
      * @return
      */
     public static boolean validateBarcode(String barcode) {
+        if (barcode == null)
+            return false;
+
         //replace '-' and ' ' to get a number only string
         barcode = barcode.replace("-", "").replace(" ", "");
 
@@ -54,8 +58,12 @@ public class Utils {
 
         //create a int array out of the values
         int[] codes = new int[barcode.length() - 1];
-        for (int i = 0; i < barcode.length() - 1; i++) {
-            codes[i] = Integer.parseInt(barcode.substring(i, i + 1));
+        try {
+            for (int i = 0; i < barcode.length() - 1; i++) {
+                codes[i] = Integer.parseInt(barcode.substring(i, i + 1));
+            }
+        } catch (NumberFormatException ex) {
+            return false;
         }
 
         //calculate the checksum

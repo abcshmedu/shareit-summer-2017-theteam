@@ -4,6 +4,7 @@ package edu.hm.huberneumeier.shareit.fachklassen.medien;
  * The copy definition.
  *
  * @author Tobias Huber
+ * @author Andreas Neumeier
  * @version 2017 -04-12
  */
 public class Copy {
@@ -37,5 +38,16 @@ public class Copy {
      */
     public Medium getMedium() {
         return medium;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Copy copy = (Copy) o;
+
+        if (getMedium() != null ? !getMedium().equals(copy.getMedium()) : copy.getMedium() != null) return false;
+        return getOwner() != null ? getOwner().equals(copy.getOwner()) : copy.getOwner() == null;
     }
 }

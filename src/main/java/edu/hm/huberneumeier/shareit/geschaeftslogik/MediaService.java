@@ -7,7 +7,8 @@ import edu.hm.huberneumeier.shareit.fachklassen.medien.Medium;
 /**
  * The media service interface defines all methods of a media service.
  *
- * @author Tobias Huber, Andreas Neumeier
+ * @author Tobias Huber
+ * @author Andreas Neumeier
  * @version 2017-04-26
  */
 public interface MediaService {

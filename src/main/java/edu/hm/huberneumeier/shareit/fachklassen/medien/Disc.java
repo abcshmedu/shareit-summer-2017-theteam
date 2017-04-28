@@ -3,14 +3,15 @@ package edu.hm.huberneumeier.shareit.fachklassen.medien;
 /**
  * The disc definition.
  *
- * @author Tobias Huber, Andreas Neumeier
+ * @author Tobias Huber
+ * @author Andreas Neumeier
  * @version 2017 -04-12
  */
 public class Disc extends Medium {
 
     private String barcode;
     private String director;
-    private int fsk;
+    private Integer fsk;
 
     /**
      * Default constructor.
@@ -26,7 +27,7 @@ public class Disc extends Medium {
      * @param fsk      the fsk of a disc.
      * @param title    the title of a disc.
      */
-    public Disc(String barcode, String director, int fsk, String title) {
+    public Disc(String barcode, String director, Integer fsk, String title) {
         super(title);
         this.barcode = barcode;
         this.director = director;
@@ -56,17 +57,8 @@ public class Disc extends Medium {
      *
      * @return the fsk
      */
-    public int getFsk() {
+    public Integer getFsk() {
         return fsk;
-    }
-
-    @Override
-    public String toString() {
-        return "Disc{" +
-                "barcode='" + barcode + '\'' +
-                ", director='" + director + '\'' +
-                ", fsk=" + fsk +
-                '}';
     }
 
     @Override
@@ -82,19 +74,10 @@ public class Disc extends Medium {
         return director != null ? director.equals(disc.director) : disc.director == null;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (barcode != null ? barcode.hashCode() : 0);
-        result = 31 * result + (director != null ? director.hashCode() : 0);
-        result = 31 * result + fsk;
-        return result;
-    }
-
     /**
      * Clear barcode (remove '-' and ' ').
      */
-    public void clearBarcode(){
+    public void clearBarcode() {
         this.barcode = getBarcode().replace("-", "").replace(" ", "");
     }
 }

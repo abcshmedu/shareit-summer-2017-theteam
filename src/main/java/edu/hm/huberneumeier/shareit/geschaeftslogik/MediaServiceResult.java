@@ -7,7 +7,8 @@ import javax.ws.rs.core.Response;
 /**
  * All used media service results (status codes).
  *
- * @author Tobias Huber, Andreas Neumeier
+ * @author Tobias Huber
+ * @author Andreas Neumeier
  * @version 2017-04-26
  */
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)

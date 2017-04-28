@@ -3,7 +3,8 @@ package edu.hm.huberneumeier.shareit.fachklassen.medien;
 /**
  * The Medium definition.
  *
- * @author Tobias Huber, Andreas Neumeier
+ * @author Tobias Huber
+ * @author Andreas Neumeier
  * @version 2017-04-12
  */
 public class Medium {
@@ -41,17 +42,5 @@ public class Medium {
         Medium medium = (Medium) o;
 
         return title != null ? title.equals(medium.title) : medium.title == null;
-    }
-
-    @Override
-    public int hashCode() {
-        return title != null ? title.hashCode() : 0;
-    }
-
-    @Override
-    public String toString() {
-        return "Medium{" +
-                "title='" + title + '\'' +
-                '}';
     }
 }

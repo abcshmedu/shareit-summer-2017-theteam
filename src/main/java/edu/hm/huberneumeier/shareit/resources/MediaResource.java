@@ -21,7 +21,8 @@ import javax.ws.rs.core.Response;
 /**
  * Media Service is used to communicate directly with the frontend.
  *
- * @author Tobias Huber, Andreas Neumeier
+ * @author Tobias Huber
+ * @author Andreas Neumeier
  * @version 2017-04-26
  */
 
@@ -65,12 +66,15 @@ public class MediaResource {
     @Produces({MediaType.APPLICATION_JSON})
     public Response getBookByISBN(@PathParam("isbn") String isbn) {
         Object result = mediaService.getBook(isbn);
-        if (result == null)
+        Response.Status response = Response.Status.OK;
+        if (result == null) {
             result = MediaServiceResult.NOT_FOUND;
+            response = Response.Status.NOT_FOUND;
+        }
 
         String jsonString = jsonMapper(result);
 
-        return Response.status(Response.Status.OK).entity(jsonString).build();
+        return Response.status(response).entity(jsonString).build();
     }
 
     /**
@@ -129,12 +133,15 @@ public class MediaResource {
     @Produces({MediaType.APPLICATION_JSON})
     public Response getDiscByBarcode(@PathParam("barcode") String barcode) {
         Object result = mediaService.getDisc(barcode);
-        if (result == null)
+        Response.Status response = Response.Status.OK;
+        if (result == null) {
             result = MediaServiceResult.NOT_FOUND;
+            response = Response.Status.NOT_FOUND;
+        }
 
         String jsonString = jsonMapper(result);
 
-        return Response.status(Response.Status.OK).entity(jsonString).build();
+        return Response.status(response).entity(jsonString).build();
     }
 
     /**
@@ -165,7 +172,7 @@ public class MediaResource {
     public Response updateDisc(@PathParam("barcode") String barcode, Disc disc) {
         MediaServiceResult result = mediaService.updateDisc(barcode, disc);
 
-        return Response.status(result.getStatus()).build();
+        return Response.status(result.getStatus()).entity(jsonMapper(result)).build();
     }
 
     private String jsonMapper(Object object) {
