@@ -83,7 +83,7 @@ Beim Anlegen eines neuen Mediums werden die Usereingaben vor dem eigentlichen An
 - Fehlende Eingabe (Titel, Autor bzw Director, FSK)
 
 ### **GET**-Methode
-Ruft ein oder mehrere Medien ab.
+Ruft ein oder mehrere Medien ab.  
 _(Anhand vom Beispiel 'Buch', 'CD' funktioniert identisch.)_
 #### Alle Bücher abrufen: Aufruf von [http://host/shareit/media/books](https://huberneumeier0shareit.herokuapp.com/shareit/media/books)
 ##### Antwort _(Bücher vorhanden)_
@@ -124,7 +124,7 @@ _(Anhand vom Beispiel 'Buch', 'CD' funktioniert identisch.)_
 }
 ```
 ### **PUT**-Methode
-Ändert ein Medium, bzw ersetzt die gespeicherten Daten durch die per JSON übertragenen.
+Ändert ein Medium, bzw ersetzt die gespeicherten Daten durch die per JSON übertragenen.  
 _(Anhand vom Beispiel 'Buch', 'CD' funktioniert identisch.)_
 #### Anfrage an _([http://host/shareit/media/books/9781566199094](https://huberneumeier0shareit.herokuapp.com/shareit/media/books/9781566199094))_
 Um Änderungen am gespeicherten Medium vorzunehmen muss das übergebene JSON nur die zu ändernden Attribute enthalten. Die Angabe der ISBN ist hierbei immer optional, sie darf sich allerdings niemals von der in der URL angegebenen ISBN unterscheiden.
