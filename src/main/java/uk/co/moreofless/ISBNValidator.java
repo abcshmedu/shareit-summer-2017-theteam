@@ -8,34 +8,50 @@ package uk.co.moreofless;
  * @author Steve Claridge (moreofless.co.uk)
  * @version 2014-03-24
  */
-public class ISBNValidator {
+public final class ISBNValidator {
+    private static final int DEFAULT_MULTIPLIER = 3;
+    private static final int ISBN_LENGTH = 13;
+    private static final int CHECKSUM10 = 10;
+
+    /**
+     * Private default constructor, it should not be possible to create a instance.
+     */
+    private ISBNValidator() {
+    }
+
+    /**
+     * Validate a isbn13 number.
+     *
+     * @param isbn the isbn to validate.
+     * @return the result, if a isbn is valid
+     */
     public static boolean validateISBN13(String isbn) {
         if (isbn == null) {
             return false;
         }
 
         //remove any hyphens and whitespace
-        isbn = isbn.replaceAll("-", "").replace(" ","");
+        isbn = isbn.replaceAll("-", "").replace(" ", "");
 
         //must be a 13 digit ISBN
-        if (isbn.length() != 13) {
+        if (isbn.length() != ISBN_LENGTH) {
             return false;
         }
 
         try {
             int tot = 0;
-            for (int i = 0; i < 12; i++) {
+            for (int i = 0; i < ISBN_LENGTH - 1; i++) {
                 int digit = Integer.parseInt(isbn.substring(i, i + 1));
-                tot += (i % 2 == 0) ? digit * 1 : digit * 3;
+                tot += (i % 2 == 0) ? digit * 1 : digit * DEFAULT_MULTIPLIER;
             }
 
             //checksum must be 0-9. If calculated as 10 then = 0
-            int checksum = 10 - (tot % 10);
-            if (checksum == 10) {
+            int checksum = CHECKSUM10 - (tot % CHECKSUM10);
+            if (checksum == CHECKSUM10) {
                 checksum = 0;
             }
 
-            return checksum == Integer.parseInt(isbn.substring(12));
+            return checksum == Integer.parseInt(isbn.substring(ISBN_LENGTH - 1));
         } catch (NumberFormatException nfe) {
             //to catch invalid ISBNs that have non-numeric characters in them
             return false;

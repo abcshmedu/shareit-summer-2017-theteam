@@ -28,6 +28,7 @@ import javax.ws.rs.core.Response;
 
 @Path("media")
 public class MediaResource {
+    private static final int RESPONSE_CODE_OK = 200;
     /**
      * Instance of the Media Service Implementation.
      */
@@ -88,7 +89,7 @@ public class MediaResource {
     public Response getBooks() {
         String jsonString = jsonMapper(mediaService.getBooks());
 
-        return Response.status(200).entity(jsonString).build();
+        return Response.status(RESPONSE_CODE_OK).entity(jsonString).build();
     }
 
     /**
@@ -156,14 +157,14 @@ public class MediaResource {
 
         String jsonString = jsonMapper(mediaService.getDiscs());
 
-        return Response.status(200).entity(jsonString).build();
+        return Response.status(RESPONSE_CODE_OK).entity(jsonString).build();
     }
 
     /**
      * Update a special disc.
      *
      * @param barcode Barcode of the disc which should be updated.
-     * @param disc New disc-data.
+     * @param disc    New disc-data.
      * @return The response got from media service.
      */
     @PUT
@@ -175,6 +176,12 @@ public class MediaResource {
         return Response.status(result.getStatus()).entity(jsonMapper(result)).build();
     }
 
+    /**
+     * Maps a object to a json string.
+     *
+     * @param object the object which should be mapped
+     * @return the json string createds
+     */
     private String jsonMapper(Object object) {
         ObjectMapper mapper = new ObjectMapper();
         String jsonString = null;

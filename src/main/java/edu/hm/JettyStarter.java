@@ -1,17 +1,24 @@
 package edu.hm;
 
-import org.eclipse.jetty.server.*;
-import org.eclipse.jetty.webapp.*;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.webapp.WebAppContext;
+
 /**
  * Start the application without an AppServer like tomcat.
  *
  * @author <a mailto:axel.boettcher@hm.edu>Axel B&ouml;ttcher</a>
  */
-public class JettyStarter {
+public final class JettyStarter {
 
     public static final String APP_URL = "/";
     public static final int PORT = 8082;
     public static final String WEBAPP_DIR = "./src/main/webapp/";
+
+    /**
+     * Private default constructor, it should not be possible to create a instance.
+     */
+    private JettyStarter() {
+    }
 
     /**
      * Deploy local directories using Jetty without needing a container-based deployment.

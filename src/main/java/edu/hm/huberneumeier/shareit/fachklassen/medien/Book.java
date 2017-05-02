@@ -48,21 +48,36 @@ public class Book extends Medium {
     }
 
     @Override
+    public int hashCode() {
+        int result = author != null ? author.hashCode() : 0;
+        result = 31 * result + (isbn != null ? isbn.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
 
         Book book = (Book) o;
 
-        if (author != null ? !author.equals(book.author) : book.author != null) return false;
+        if (author != null ? !author.equals(book.author) : book.author != null) {
+            return false;
+        }
         return isbn != null ? isbn.equals(book.isbn) : book.isbn == null;
     }
 
     /**
      * Clear isbn (remove '-' and ' ').
      */
-    public void clearISBN(){
-        this.isbn = getIsbn().replace("-","").replace(" ","");
+    public void clearISBN() {
+        this.isbn = getIsbn().replace("-", "").replace(" ", "");
     }
 }

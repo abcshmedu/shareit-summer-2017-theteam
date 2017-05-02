@@ -14,7 +14,15 @@ import java.util.Objects;
  * @author Andreas Neumeier
  * @version 2017-04-25
  */
-public class Utils {
+public final class Utils {
+
+    /**
+     * Private default constructor, it should not be possible to create a instance.
+     */
+    private Utils() {
+    }
+
+    private static final int BARCODE_LENGTH = 13;
 
     /**
      * Get all media of a given type.
@@ -40,21 +48,21 @@ public class Utils {
      * Method to validate a barcode.
      *
      * @param barcode string of barcode numbers
-     * @return
+     * @return if barcode is valid or not
      */
     public static boolean validateBarcode(String barcode) {
-        if (barcode == null)
+        if (barcode == null) {
             return false;
-
+        }
         //replace '-' and ' ' to get a number only string
         barcode = barcode.replace("-", "").replace(" ", "");
 
         //length have to be 13
-        if (barcode.length() != 13)
+        if (barcode.length() != BARCODE_LENGTH) {
             return false;
-
+        }
         //last int is checksum
-        int checksum = Integer.parseInt(barcode.substring(12));
+        int checksum = Integer.parseInt(barcode.substring(BARCODE_LENGTH - 1));
 
         //create a int array out of the values
         int[] codes = new int[barcode.length() - 1];

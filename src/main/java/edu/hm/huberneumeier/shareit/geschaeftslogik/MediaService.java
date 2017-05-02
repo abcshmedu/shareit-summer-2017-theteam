@@ -19,7 +19,7 @@ public interface MediaService {
      * @param book the book which should be added.
      * @return the media service result.
      */
-    public MediaServiceResult addBook(Book book);
+    MediaServiceResult addBook(Book book);
 
     /**
      * Method to get a book from the media list.
@@ -27,14 +27,14 @@ public interface MediaService {
      * @param isbn ISBN of the book which is requested.
      * @return the requested book.
      */
-    public Book getBook(String isbn);
+    Book getBook(String isbn);
 
     /**
      * Method to get all books from the media list.
      *
      * @return array of all books.
      */
-    public Medium[] getBooks();
+    Medium[] getBooks();
 
     /**
      * Method to update a book.
@@ -43,7 +43,7 @@ public interface MediaService {
      * @param book the book-data with which the book should be updated.
      * @return the media service result.
      */
-    public MediaServiceResult updateBook(String isbn, Book book);
+    MediaServiceResult updateBook(String isbn, Book book);
 
     /**
      * Method to add a disc to the media list.
@@ -51,7 +51,7 @@ public interface MediaService {
      * @param disc the disc which should be added.
      * @return the media service result.
      */
-    public MediaServiceResult addDisc(Disc disc);
+    MediaServiceResult addDisc(Disc disc);
 
     /**
      * Method to get a disc from the media list.
@@ -59,14 +59,14 @@ public interface MediaService {
      * @param barcode Barcode of the disc which is requested.
      * @return the requested disc.
      */
-    public Disc getDisc(String barcode);
+    Disc getDisc(String barcode);
 
     /**
      * Method to get all discs from the media list.
      *
      * @return array of all discs.
      */
-    public Medium[] getDiscs();
+    Medium[] getDiscs();
 
     /**
      * Method to update a disc.
@@ -75,5 +75,5 @@ public interface MediaService {
      * @param disc    the disc-data with which the disc should be updated.
      * @return the media service result.
      */
-    public MediaServiceResult updateDisc(String barcode, Disc disc);
+    MediaServiceResult updateDisc(String barcode, Disc disc);
 }

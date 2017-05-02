@@ -35,13 +35,15 @@ public class MediaServiceImpl implements MediaService {
         book.clearISBN();
 
         //check if all parameters necessary are set
-        if (!ISBNValidator.validateISBN13(book.getIsbn()) || book.getAuthor().isEmpty() || book.getTitle().isEmpty())
+        if (!ISBNValidator.validateISBN13(book.getIsbn()) || book.getAuthor().isEmpty() || book.getTitle().isEmpty()) {
             return MediaServiceResult.BAD_REQUEST;
+        }
 
         //check if book exists
         for (Medium medium : Utils.getMediaOfType(arrayList, Book.class)) {
-            if (((Book) medium).getIsbn().equals(book.getIsbn()))
+            if (((Book) medium).getIsbn().equals(book.getIsbn())) {
                 return MediaServiceResult.BAD_REQUEST;
+            }
         }
 
         //add book if there wasn't an error
@@ -55,8 +57,9 @@ public class MediaServiceImpl implements MediaService {
 
         for (Medium book : mediaArray) {
             Book current = (Book) book;
-            if (current.getIsbn().equals(isbn))
+            if (current.getIsbn().equals(isbn)) {
                 return current;
+            }
         }
         return null;
     }
@@ -69,48 +72,37 @@ public class MediaServiceImpl implements MediaService {
     @Override
     public MediaServiceResult updateBook(String isbn, Book book) {
         //isbn cant be changed
-        if (!isbn.equals(book.getIsbn()))
+        if (!isbn.equals(book.getIsbn())) {
             return MediaServiceResult.BAD_REQUEST;
+        }
 
         //min one value must be set
-        if (book.getTitle() == null && book.getAuthor() == null)
+        if (book.getTitle() == null && book.getAuthor() == null) {
             return MediaServiceResult.BAD_REQUEST;
-
-        //search for book with the given isbn -> result
-        Medium[] mediaArray = Utils.getMediaOfType(arrayList, Book.class);
-        Book result = null;
-        for (Medium medium : mediaArray) {
-            Book actual = (Book) medium;
-            if (actual.getIsbn().equals(book.getIsbn())) {
-                result = actual;
-                break;
-            }
         }
+
+        Book result = getBookByIsbn(book.getIsbn());
 
         //if no book with isbn found end otherwise create the new book we will store
         Book newBook;
-        if (result == null)
+        if (result == null) {
             return MediaServiceResult.NOT_FOUND;
-        else if (book.getTitle() == null)
+        } else if (book.getTitle() == null) {
             //not all information needed for updating so we need to set the missing values with the old once
             newBook = new Book(result.getTitle(), book.getAuthor(), book.getIsbn());
-        else if (book.getAuthor() == null)
+        } else if (book.getAuthor() == null) {
             //not all information needed for updating so we need to set the missing values with the old once
             newBook = new Book(book.getTitle(), result.getAuthor(), book.getIsbn());
-        else
+        } else {
             newBook = book;
-
-        //find out the id of the book to replace
-        int id = 0;
-        for (Medium medium : arrayList) {
-            if (medium instanceof Book && ((Book) medium).getIsbn().equals(isbn))
-                break;
-            id++;
         }
 
+        int id = getIdOfMedium(newBook.getIsbn());
+
         Book medium = (Book) arrayList.get(id);
-        if (medium.getTitle().equals(newBook.getTitle()) && medium.getAuthor().equals(newBook.getAuthor()))
+        if (medium.getTitle().equals(newBook.getTitle()) && medium.getAuthor().equals(newBook.getAuthor())) {
             return MediaServiceResult.NOT_MODIFIED;
+        }
 
         arrayList.set(id, newBook);
         return MediaServiceResult.ACCEPTED;
@@ -121,12 +113,14 @@ public class MediaServiceImpl implements MediaService {
         //clear barcode
         disc.clearBarcode();
 
-        if (!Utils.validateBarcode(disc.getBarcode()) || disc.getDirector() == null || disc.getTitle() == null)
+        if (!Utils.validateBarcode(disc.getBarcode()) || disc.getDirector() == null || disc.getTitle() == null) {
             return MediaServiceResult.BAD_REQUEST;
+        }
 
         for (Medium medium : Utils.getMediaOfType(arrayList, Disc.class)) {
-            if (((Disc) medium).getBarcode().equals(disc.getBarcode()))
+            if (((Disc) medium).getBarcode().equals(disc.getBarcode())) {
                 return MediaServiceResult.BAD_REQUEST;
+            }
         }
 
         arrayList.add(disc);
@@ -139,8 +133,9 @@ public class MediaServiceImpl implements MediaService {
 
         for (Medium disc : mediaArray) {
             Disc current = (Disc) disc;
-            if (current.getBarcode().equals(barcode))
+            if (current.getBarcode().equals(barcode)) {
                 return current;
+            }
         }
         return null;
     }
@@ -152,47 +147,100 @@ public class MediaServiceImpl implements MediaService {
 
     @Override
     public MediaServiceResult updateDisc(String barcode, Disc disc) {
-        if (!barcode.equals(disc.getBarcode()))
+        if (!barcode.equals(disc.getBarcode())) {
             return MediaServiceResult.BAD_REQUEST;
+        }
 
-        if (disc.getTitle() == null && disc.getDirector() == null && disc.getFsk() == null)
+        if (disc.getTitle() == null && disc.getDirector() == null && disc.getFsk() == null) {
             return MediaServiceResult.BAD_REQUEST;
+        }
 
-        Medium[] mediaArray = Utils.getMediaOfType(arrayList, Disc.class);
-        Disc result = null;
+        Disc result = getDiscByBarcode(disc.getBarcode());
+
+        //if no disc with barcode found end otherwise create the new disc we will store
+        if (result == null) {
+            return MediaServiceResult.NOT_FOUND;
+        }
+
+        //not all information needed for updating so we need to set the missing values with the old once
+        Disc newDisc = disc;
+        if (disc.getDirector() == null) {
+            newDisc = new Disc(disc.getBarcode(), result.getDirector(), newDisc.getFsk(), newDisc.getTitle());
+        }
+        if (disc.getFsk() == null) {
+            newDisc = new Disc(disc.getBarcode(), newDisc.getDirector(), result.getFsk(), newDisc.getTitle());
+        }
+        if (disc.getTitle() == null) {
+            newDisc = new Disc(disc.getBarcode(), newDisc.getDirector(), newDisc.getFsk(), result.getTitle());
+        }
+
+        int id = getIdOfMedium(newDisc.getBarcode());
+
+        Disc medium = (Disc) arrayList.get(id);
+        if (medium.getTitle().equals(newDisc.getTitle()) && medium.getDirector().equals(newDisc.getDirector()) && medium.getFsk() == newDisc.getFsk()) {
+            return MediaServiceResult.NOT_MODIFIED;
+        }
+
+        arrayList.set(id, newDisc);
+        return MediaServiceResult.ACCEPTED;
+    }
+
+    /**
+     * Search for a special book by isbn.
+     *
+     * @param isbn the isbn of the book to find
+     * @return the book
+     */
+    private Book getBookByIsbn(String isbn) {
+        //search for book with the given isbn -> result
+        Medium[] mediaArray = Utils.getMediaOfType(arrayList, Book.class);
+        Book result = null;
         for (Medium medium : mediaArray) {
-            Disc actual = (Disc) medium;
-            if (actual.getBarcode().equals(disc.getBarcode())) {
+            Book actual = (Book) medium;
+            if (actual.getIsbn().equals(isbn)) {
                 result = actual;
                 break;
             }
         }
+        return result;
+    }
 
-        //if no disc with barcode found end otherwise create the new disc we will store
-        if (result == null)
-            return MediaServiceResult.NOT_FOUND;
+    /**
+     * Search for a special disc by barcode.
+     *
+     * @param barcode the barcode of the disc to find
+     * @return the barcode
+     */
+    private Disc getDiscByBarcode(String barcode) {
+        Medium[] mediaArray = Utils.getMediaOfType(arrayList, Disc.class);
+        Disc result = null;
+        for (Medium medium : mediaArray) {
+            Disc actual = (Disc) medium;
+            if (actual.getBarcode().equals(barcode)) {
+                result = actual;
+                break;
+            }
+        }
+        return result;
+    }
 
-        //not all information needed for updating so we need to set the missing values with the old once
-        Disc newDisc = disc;
-        if (disc.getDirector() == null)
-            newDisc = new Disc(disc.getBarcode(), result.getDirector(), newDisc.getFsk(), newDisc.getTitle());
-        if (disc.getFsk() == null)
-            newDisc = new Disc(disc.getBarcode(), newDisc.getDirector(), result.getFsk(), newDisc.getTitle());
-        if (disc.getTitle() == null)
-            newDisc = new Disc(disc.getBarcode(), newDisc.getDirector(), newDisc.getFsk(), result.getTitle());
-
+    /**
+     * Get the id of a medium in arrayList.
+     *
+     * @param identifier the identifier of the medium
+     * @return the id of the medium
+     */
+    private int getIdOfMedium(String identifier) {
+        //find out the id of the book to replace
         int id = 0;
         for (Medium medium : arrayList) {
-            if (medium instanceof Disc && ((Disc) medium).getBarcode().equals(barcode))
+            if (medium instanceof Book && ((Book) medium).getIsbn().equals(identifier)) {
                 break;
+            } else if (medium instanceof Disc && ((Disc) medium).getBarcode().equals(identifier)) {
+                break;
+            }
             id++;
         }
-
-        Disc medium = (Disc) arrayList.get(id);
-        if (medium.getTitle().equals(newDisc.getTitle()) && medium.getDirector().equals(newDisc.getDirector()) && medium.getFsk() == newDisc.getFsk())
-            return MediaServiceResult.NOT_MODIFIED;
-
-        arrayList.set(id, newDisc);
-        return MediaServiceResult.ACCEPTED;
+        return id;
     }
 }

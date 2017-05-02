@@ -41,13 +41,26 @@ public class Copy {
     }
 
     @Override
+    public int hashCode() {
+        int result = medium != null ? medium.hashCode() : 0;
+        result = 31 * result + (owner != null ? owner.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Copy copy = (Copy) o;
 
-        if (getMedium() != null ? !getMedium().equals(copy.getMedium()) : copy.getMedium() != null) return false;
+        if (getMedium() != null ? !getMedium().equals(copy.getMedium()) : copy.getMedium() != null) {
+            return false;
+        }
         return getOwner() != null ? getOwner().equals(copy.getOwner()) : copy.getOwner() == null;
     }
 }
