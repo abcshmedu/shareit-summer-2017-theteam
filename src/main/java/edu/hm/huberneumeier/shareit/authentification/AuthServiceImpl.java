@@ -11,16 +11,8 @@ import java.util.Map;
  * @version 2017 -05-17
  */
 public class AuthServiceImpl implements AuthServiceExternal, AuthServiceInternal {
-    private Map<String, User> userList = new HashMap<>();
+    private static Map<String, User> userList = User.getUserList();
     private static Map<Token, User> tokenUserMap = new HashMap<>();
-
-
-    /**
-     * Instantiates a new Auth server.
-     */
-    public AuthServiceImpl() {
-        userList = User.getUserList();
-    }
 
     @Override
     public ValidationResult authUser(String username, String password) {

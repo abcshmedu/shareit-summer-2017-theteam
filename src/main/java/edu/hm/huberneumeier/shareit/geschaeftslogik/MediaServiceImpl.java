@@ -1,5 +1,9 @@
 package edu.hm.huberneumeier.shareit.geschaeftslogik;
 
+import edu.hm.huberneumeier.shareit.authentification.AuthServiceImpl;
+import edu.hm.huberneumeier.shareit.authentification.Authorisation;
+import edu.hm.huberneumeier.shareit.authentification.Token;
+import edu.hm.huberneumeier.shareit.authentification.ValidationResult;
 import edu.hm.huberneumeier.shareit.fachklassen.medien.Book;
 import edu.hm.huberneumeier.shareit.fachklassen.medien.Disc;
 import edu.hm.huberneumeier.shareit.fachklassen.medien.Medium;
@@ -31,6 +35,15 @@ public class MediaServiceImpl implements MediaService {
 
     @Override
     public MediaServiceResult addBook(Book book) {
+        //TODO get the token from the user, this is just a "mock"
+        Token tokenFromUser = new Token();
+        final MediaServiceResult serviceResult = validateRequest(tokenFromUser, Authorisation.BOOK_CREATE);
+
+        //if result is not ok, there was a error, return and exit method
+        if (!serviceResult.equals(MediaServiceResult.OK))
+            return serviceResult;
+
+
         //clear isbn from unnecessary characters like - or spaces
         book.clearISBN();
 
@@ -71,6 +84,15 @@ public class MediaServiceImpl implements MediaService {
 
     @Override
     public MediaServiceResult updateBook(String isbn, Book book) {
+        //TODO get the token from the user, this is just a "mock"
+        Token tokenFromUser = new Token();
+        final MediaServiceResult serviceResult = validateRequest(tokenFromUser, Authorisation.BOOK_UPDATE);
+
+        //if result is not ok, there was a error, return and exit method
+        if (!serviceResult.equals(MediaServiceResult.OK))
+            return serviceResult;
+
+
         //isbn cant be changed
         if (!isbn.equals(book.getIsbn())) {
             return MediaServiceResult.BAD_REQUEST;
@@ -110,6 +132,15 @@ public class MediaServiceImpl implements MediaService {
 
     @Override
     public MediaServiceResult addDisc(Disc disc) {
+        //TODO get the token from the user, this is just a "mock"
+        Token tokenFromUser = new Token();
+        final MediaServiceResult serviceResult = validateRequest(tokenFromUser, Authorisation.DISC_CREATE);
+
+        //if result is not ok, there was a error, return and exit method
+        if (!serviceResult.equals(MediaServiceResult.OK))
+            return serviceResult;
+
+
         //clear barcode
         disc.clearBarcode();
 
@@ -147,6 +178,14 @@ public class MediaServiceImpl implements MediaService {
 
     @Override
     public MediaServiceResult updateDisc(String barcode, Disc disc) {
+        //TODO get the token from the user, this is just a "mock"
+        Token tokenFromUser = new Token();
+        final MediaServiceResult serviceResult = validateRequest(tokenFromUser, Authorisation.DISC_UPDATE);
+
+        //if result is not ok, there was a error, return and exit method
+        if (!serviceResult.equals(MediaServiceResult.OK))
+            return serviceResult;
+
         if (!barcode.equals(disc.getBarcode())) {
             return MediaServiceResult.BAD_REQUEST;
         }
@@ -242,5 +281,13 @@ public class MediaServiceImpl implements MediaService {
             id++;
         }
         return id;
+    }
+
+    private MediaServiceResult validateRequest(Token token, Authorisation authorisation) {
+        //TODO not a good solution :-(
+        AuthServiceImpl authService = new AuthServiceImpl();
+        //TODO maybe it is better to replace validationResult by MediaServiceResult or build a over all solution
+        final ValidationResult tmp = authService.validate(token, authorisation);
+        return null;
     }
 }
