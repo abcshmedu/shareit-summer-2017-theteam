@@ -10,7 +10,7 @@ import java.util.Map;
  * @author Tobias Huber
  * @version 2017 -05-17
  */
-public class AuthServerImpl implements AuthServerExternal, AuthServerInternal {
+public class AuthServiceImpl implements AuthServiceExternal, AuthServiceInternal {
     private Map<String, User> userList = new HashMap<>();
     private static Map<Token, User> tokenUserMap = new HashMap<>();
 
@@ -18,7 +18,7 @@ public class AuthServerImpl implements AuthServerExternal, AuthServerInternal {
     /**
      * Instantiates a new Auth server.
      */
-    public AuthServerImpl() {
+    public AuthServiceImpl() {
         userList = User.getUserList();
     }
 
