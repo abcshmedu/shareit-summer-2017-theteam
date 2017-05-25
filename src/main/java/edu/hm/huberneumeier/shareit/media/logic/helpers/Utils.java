@@ -1,6 +1,6 @@
-package edu.hm.huberneumeier.shareit.geschaeftslogik.helpers;
+package edu.hm.huberneumeier.shareit.media.logic.helpers;
 
-import edu.hm.huberneumeier.shareit.fachklassen.medien.Medium;
+import edu.hm.huberneumeier.shareit.media.media.Medium;
 import org.wikipedia.de.BarcodeValidator;
 
 import java.util.ArrayList;

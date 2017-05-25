@@ -1,8 +1,8 @@
-package edu.hm.huberneumeier.shareit.geschaeftslogik;
+package edu.hm.huberneumeier.shareit.media.logic;
 
-import edu.hm.huberneumeier.shareit.fachklassen.medien.Book;
-import edu.hm.huberneumeier.shareit.fachklassen.medien.Disc;
-import edu.hm.huberneumeier.shareit.fachklassen.medien.Medium;
+import edu.hm.huberneumeier.shareit.media.media.Book;
+import edu.hm.huberneumeier.shareit.media.media.Disc;
+import edu.hm.huberneumeier.shareit.media.media.Medium;
 
 /**
  * The media service interface defines all methods of a media service.

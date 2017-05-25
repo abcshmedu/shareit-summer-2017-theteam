@@ -1,4 +1,4 @@
-package edu.hm.huberneumeier.shareit.fachklassen.medien;
+package edu.hm.huberneumeier.shareit.media.media;
 
 /**
  * The Medium definition.

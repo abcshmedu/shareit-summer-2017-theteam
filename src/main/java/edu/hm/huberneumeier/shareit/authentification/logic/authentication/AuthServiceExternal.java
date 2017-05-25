@@ -1,4 +1,6 @@
-package edu.hm.huberneumeier.shareit.authentification;
+package edu.hm.huberneumeier.shareit.authentification.logic.authentication;
+
+import edu.hm.huberneumeier.shareit.authentification.logic.authorisation.ValidationResult;
 
 /**
  * Description...

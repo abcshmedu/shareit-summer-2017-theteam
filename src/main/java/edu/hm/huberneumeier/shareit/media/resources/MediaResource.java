@@ -1,12 +1,12 @@
-package edu.hm.huberneumeier.shareit.resources;
+package edu.hm.huberneumeier.shareit.media.resources;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.hm.huberneumeier.shareit.fachklassen.medien.Book;
-import edu.hm.huberneumeier.shareit.fachklassen.medien.Disc;
-import edu.hm.huberneumeier.shareit.geschaeftslogik.MediaService;
-import edu.hm.huberneumeier.shareit.geschaeftslogik.MediaServiceImpl;
-import edu.hm.huberneumeier.shareit.geschaeftslogik.MediaServiceResult;
+import edu.hm.huberneumeier.shareit.media.media.Book;
+import edu.hm.huberneumeier.shareit.media.media.Disc;
+import edu.hm.huberneumeier.shareit.media.logic.MediaService;
+import edu.hm.huberneumeier.shareit.media.logic.MediaServiceImpl;
+import edu.hm.huberneumeier.shareit.media.logic.MediaServiceResult;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;

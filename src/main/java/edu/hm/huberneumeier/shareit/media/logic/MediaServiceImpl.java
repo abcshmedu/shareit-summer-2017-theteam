@@ -1,13 +1,12 @@
-package edu.hm.huberneumeier.shareit.geschaeftslogik;
+package edu.hm.huberneumeier.shareit.media.logic;
 
-import edu.hm.huberneumeier.shareit.authentification.AuthServiceImpl;
-import edu.hm.huberneumeier.shareit.authentification.Authorisation;
-import edu.hm.huberneumeier.shareit.authentification.Token;
-import edu.hm.huberneumeier.shareit.authentification.ValidationResult;
-import edu.hm.huberneumeier.shareit.fachklassen.medien.Book;
-import edu.hm.huberneumeier.shareit.fachklassen.medien.Disc;
-import edu.hm.huberneumeier.shareit.fachklassen.medien.Medium;
-import edu.hm.huberneumeier.shareit.geschaeftslogik.helpers.Utils;
+import edu.hm.huberneumeier.shareit.authentification.logic.authorisation.Authorisation;
+import edu.hm.huberneumeier.shareit.authentification.media.Token;
+import edu.hm.huberneumeier.shareit.authentification.logic.authorisation.ValidationResult;
+import edu.hm.huberneumeier.shareit.media.media.Book;
+import edu.hm.huberneumeier.shareit.media.media.Disc;
+import edu.hm.huberneumeier.shareit.media.media.Medium;
+import edu.hm.huberneumeier.shareit.media.logic.helpers.Utils;
 import uk.co.moreofless.ISBNValidator;
 
 import java.util.ArrayList;

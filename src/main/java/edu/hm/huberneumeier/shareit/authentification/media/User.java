@@ -1,5 +1,8 @@
-package edu.hm.huberneumeier.shareit.authentification;
+package edu.hm.huberneumeier.shareit.authentification.media;
 
+import edu.hm.huberneumeier.shareit.authentification.logic.authorisation.AuthorisationGroup;
+
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,6 +15,7 @@ import java.util.Map;
 public class User {
     private String username;
     private String password;
+    private Date tokenExpires;
     private Token token;
     private AuthorisationGroup authorisationGroup;
 
@@ -57,5 +61,20 @@ public class User {
         users.put("admin", new User("admin", "123456", AuthorisationGroup.ADMINS));
         users.put("user", new User("user", "123456"));
         return users;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        return username.equals(user.username);
+    }
+
+    @Override
+    public int hashCode() {
+        return username.hashCode();
     }
 }

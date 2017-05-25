@@ -1,4 +1,4 @@
-package edu.hm.huberneumeier.shareit.authentification;
+package edu.hm.huberneumeier.shareit.authentification.media;
 
 import org.apache.commons.lang3.RandomStringUtils;
 

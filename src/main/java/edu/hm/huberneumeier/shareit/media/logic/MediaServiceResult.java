@@ -1,4 +1,4 @@
-package edu.hm.huberneumeier.shareit.geschaeftslogik;
+package edu.hm.huberneumeier.shareit.media.logic;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 

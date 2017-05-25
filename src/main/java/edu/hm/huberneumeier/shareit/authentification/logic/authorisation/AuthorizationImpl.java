@@ -1,0 +1,51 @@
+package edu.hm.huberneumeier.shareit.authentification.logic.authorisation;
+
+import edu.hm.huberneumeier.shareit.authentification.logic.data.UserData;
+import edu.hm.huberneumeier.shareit.authentification.media.Token;
+import edu.hm.huberneumeier.shareit.authentification.media.User;
+
+import java.util.List;
+
+/**
+ * Description.
+ *
+ * @author andreas
+ * @version 25.05.2017
+ */
+public class AuthorizationImpl implements AuthServiceInternal {
+
+    @Override
+    public ValidationResult validate(Token token, Authorisation authorisation) {
+        ValidationResult result = validateToken(token);
+        if (result.getValidationState().equals(ValidationState.SUCCESS)) {
+            result = validateAuthorisation(UserData.getUser(token), authorisation);
+        }
+        return result;
+    }
+
+    private ValidationResult validateToken(Token token) {
+        ValidationResult result;
+        if (UserData.userExists(token)) {
+            if (token.getValidUntil() > System.currentTimeMillis()) {
+                result = new ValidationResult(ValidationState.SUCCESS, "");
+            } else {
+                result = new ValidationResult(ValidationState.TOKEN_EXPIRED, "Your token is expired.");
+                UserData.removeUserToken(token);
+            }
+        } else {
+            result = new ValidationResult(ValidationState.TOKEN_INVALID, "Your token is invalid.");
+        }
+        return result;
+    }
+
+    private ValidationResult validateAuthorisation(User user, Authorisation authorisation) {
+        ValidationResult result;
+        List<Authorisation> auths = user.getAuthorisationGroup().getAuthorisations();
+        if (auths.contains(authorisation)) {
+            result = new ValidationResult(ValidationState.SUCCESS, "");
+        } else {
+            result = new ValidationResult(ValidationState.NO_PERMISSON, "You are not allowed to do this.");
+        }
+        return result;
+    }
+}
