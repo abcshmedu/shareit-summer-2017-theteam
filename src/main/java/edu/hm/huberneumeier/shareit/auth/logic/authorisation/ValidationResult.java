@@ -1,4 +1,4 @@
-package edu.hm.huberneumeier.shareit.authentification.logic.authorisation;
+package edu.hm.huberneumeier.shareit.auth.logic.authorisation;
 
 /**
  * Description...

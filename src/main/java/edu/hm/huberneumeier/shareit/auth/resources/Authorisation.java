@@ -1,4 +1,4 @@
-package edu.hm.huberneumeier.shareit.authentification.resources;
+package edu.hm.huberneumeier.shareit.auth.resources;
 
 /**
  * Description.

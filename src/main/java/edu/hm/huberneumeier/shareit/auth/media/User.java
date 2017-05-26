@@ -1,6 +1,6 @@
-package edu.hm.huberneumeier.shareit.authentification.media;
+package edu.hm.huberneumeier.shareit.auth.media;
 
-import edu.hm.huberneumeier.shareit.authentification.logic.authorisation.AuthorisationGroup;
+import edu.hm.huberneumeier.shareit.auth.logic.authorisation.AuthorisationGroup;
 
 import java.util.Date;
 import java.util.HashMap;

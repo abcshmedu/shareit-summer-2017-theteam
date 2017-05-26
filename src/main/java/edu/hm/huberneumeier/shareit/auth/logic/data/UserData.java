@@ -1,7 +1,7 @@
-package edu.hm.huberneumeier.shareit.authentification.logic.data;
+package edu.hm.huberneumeier.shareit.auth.logic.data;
 
-import edu.hm.huberneumeier.shareit.authentification.media.Token;
-import edu.hm.huberneumeier.shareit.authentification.media.User;
+import edu.hm.huberneumeier.shareit.auth.media.Token;
+import edu.hm.huberneumeier.shareit.auth.media.User;
 
 import java.util.HashMap;
 import java.util.Map;

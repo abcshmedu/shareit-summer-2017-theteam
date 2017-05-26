@@ -2,10 +2,10 @@ package edu.hm.huberneumeier.shareit.media.resources;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.hm.huberneumeier.shareit.authentification.logic.authorisation.Authorisation;
-import edu.hm.huberneumeier.shareit.authentification.logic.authorisation.AuthorisationImpl;
-import edu.hm.huberneumeier.shareit.authentification.logic.authorisation.ValidationResult;
-import edu.hm.huberneumeier.shareit.authentification.logic.authorisation.ValidationState;
+import edu.hm.huberneumeier.shareit.auth.logic.authorisation.Authorisation;
+import edu.hm.huberneumeier.shareit.auth.logic.authorisation.AuthorisationImpl;
+import edu.hm.huberneumeier.shareit.auth.logic.authorisation.ValidationResult;
+import edu.hm.huberneumeier.shareit.auth.logic.authorisation.ValidationState;
 import edu.hm.huberneumeier.shareit.media.logic.MediaService;
 import edu.hm.huberneumeier.shareit.media.logic.MediaServiceImpl;
 import edu.hm.huberneumeier.shareit.media.logic.MediaServiceResult;
@@ -30,7 +30,7 @@ import javax.ws.rs.core.Response;
  * @author Andreas Neumeier
  * @version 2017 -04-26
  */
-@Path("media")
+@Path("/")
 public class MediaResource {
     private static final int RESPONSE_CODE_OK = 200;
     /**
