@@ -1,7 +1,5 @@
 package edu.hm.huberneumeier.shareit.authentification.logic.authorisation;
 
-import edu.hm.huberneumeier.shareit.authentification.media.Token;
-
 /**
  * Description...
  *
@@ -11,16 +9,10 @@ import edu.hm.huberneumeier.shareit.authentification.media.Token;
 public class ValidationResult {
     private ValidationState validationState;
     private String message;
-    private Token token;
 
     public ValidationResult(ValidationState validationState, String message) {
         this.message = message;
         this.validationState = validationState;
-    }
-
-    public ValidationResult(ValidationState validationState, Token token) {
-        this.validationState = validationState;
-        this.token = token;
     }
 
     public ValidationState getValidationState() {

@@ -5,39 +5,67 @@
  *  @author Axel Böttcher <axel.boettcher@hm.edu>
  */
 
+var submitAuthenticateUser = function () {
+    var json = JSON.stringify({
+        username: $("input[name=username]").val(),
+        password: $("input[name=password]").val()
+    });
+    var errorText = $("errormessage");
+    $.ajax({
+        url: '/shareit/auth/',
+        type: 'POST',
+        contentType: 'application/json; charset=UTF-8',
+        data: json
+    }).done(() => {
+        $("input[name=username]").val("");
+    $("input[name=password]").val("");
+    errorText.removeClass("visible");
+    errorText.addClass("hidden");
+}).fail((error) => {
+        errorText.addClass("visible");
+    //errorText.text(error.responseJSON.detail);
+    errorText.removeClass("hidden");
+});
+}
+
+
 /**
  * This function is used for transfer of new book info.
  */
-var submitNewBook = function() {
-	var json = JSON.stringify({
-			title: $("input[name=title]").val(),
-			author: $("input[name=author]").val(),
-			isbn: $("input[name=isbn]").val()
-	});
-	var errorText = $("#errormessage");
+var submitNewBook = function () {
+    var json = JSON.stringify({
+        title: $("input[name=title]").val(),
+        author: $("input[name=author]").val(),
+        isbn: $("input[name=isbn]").val()
+    });
+    var errorText = $("#errormessage");
     $.ajax({
         url: '/shareit/media/books/',
-        type:'POST',
+        type: 'POST',
         contentType: 'application/json; charset=UTF-8',
         data: json
-        })
+    })
         .done(() => {
-			$("input[name=title]").val("");
-			$("input[name=author]").val("");
-			$("input[name=isbn]").val("");
+        $("input[name=title]"
+    ).
+    val("");
+    $("input[name=author]").val("");
+    $("input[name=isbn]").val("");
 
-        	errorText.removeClass("visible");
-        	errorText.addClass("hidden");
-        })
-        .fail((error) => {
-        	errorText.addClass("visible");
-        	errorText.text(error.responseJSON.detail);
-        	errorText.removeClass("hidden");
-        });
+    errorText.removeClass("visible");
+    errorText.addClass("hidden");
+})
+    .
+    fail((error) => {
+        errorText.addClass("visible");
+    //errorText.text(error.responseJSON.detail);
+    errorText.removeClass("hidden");
+})
+    ;
 
 }
 
-var updateBook = function(isbn) {
+var updateBook = function (isbn) {
     var json = JSON.stringify({
         title: $("input[name=title]").val(),
         author: $("input[name=author]").val(),
@@ -46,27 +74,31 @@ var updateBook = function(isbn) {
     var errorText = $("#errormessage");
     $.ajax({
         url: '/shareit/media/books/' + isbn,
-        type:'PUT',
+        type: 'PUT',
         contentType: 'application/json; charset=UTF-8',
         data: json
     })
         .done(() => {
-        $("input[name=title]").val("");
+        $("input[name=title]"
+    ).
+    val("");
     $("input[name=author]").val("");
     $("input[name=isbn]").val("");
 
     errorText.removeClass("visible");
     errorText.addClass("hidden");
 })
-    .fail((error) => {
+    .
+    fail((error) => {
         errorText.addClass("visible");
-    errorText.text(error.responseJSON.detail);
+    //errorText.text(error.responseJSON.detail);
     errorText.removeClass("hidden");
-});
+})
+    ;
 }
 
 
-var updateDisc = function(barcode) {
+var updateDisc = function (barcode) {
     var json = JSON.stringify({
         barcode: $("input[name=barcode]").val(),
         director: $("input[name=director]").val(),
@@ -76,12 +108,14 @@ var updateDisc = function(barcode) {
     var errorText = $("#errormessage");
     $.ajax({
         url: '/shareit/media/discs/' + barcode,
-        type:'PUT',
+        type: 'PUT',
         contentType: 'application/json; charset=UTF-8',
         data: json
     })
         .done(() => {
-        $("input[name=barcode]").val("");
+        $("input[name=barcode]"
+    ).
+    val("");
     $("input[name=director]").val("");
     $("input[name=fsk]").val("");
     $("input[name=title]").val("");
@@ -89,92 +123,103 @@ var updateDisc = function(barcode) {
     errorText.removeClass("visible");
     errorText.addClass("hidden");
 })
-    .fail((error) => {
+    .
+    fail((error) => {
         errorText.addClass("visible");
-    errorText.text(error.responseJSON.detail);
+    //errorText.text(error.responseJSON.detail);
     errorText.removeClass("hidden");
-});
+})
+    ;
 }
 
 /**
  * This function is used for transfer of new disc info.
  */
-var submitNewDisc = function() {
-	var json = JSON.stringify({
-			barcode: $("input[name=barcode]").val(),
-			director: $("input[name=director]").val(),
-			fsk: $("input[name=fsk]").val(),
-			title: $("input[name=title]").val()
-	});
-	var errorText = $("#errormessage");
+var submitNewDisc = function () {
+    var json = JSON.stringify({
+        barcode: $("input[name=barcode]").val(),
+        director: $("input[name=director]").val(),
+        fsk: $("input[name=fsk]").val(),
+        title: $("input[name=title]").val()
+    });
+    var errorText = $("#errormessage");
     $.ajax({
         url: '/shareit/media/discs/',
-        type:'POST',
+        type: 'POST',
         contentType: 'application/json; charset=UTF-8',
         data: json
-        })
+    })
         .done(() => {
-			$("input[name=barcode]").val("");
-			$("input[name=director]").val("");
-			$("input[name=fsk]").val("");
-			$("input[name=title]").val("");
+        $("input[name=barcode]"
+    ).
+    val("");
+    $("input[name=director]").val("");
+    $("input[name=fsk]").val("");
+    $("input[name=title]").val("");
 
-        	errorText.removeClass("visible");
-        	errorText.addClass("hidden");
-        })
-        .fail((error) => {
-        	errorText.addClass("visible");
-        	errorText.text(error.responseJSON.detail);
-        	errorText.removeClass("hidden");
-        });
+    errorText.removeClass("visible");
+    errorText.addClass("hidden");
+})
+    .
+    fail((error) => {
+        errorText.addClass("visible");
+    //errorText.text(error.responseJSON.detail);
+    errorText.removeClass("hidden");
+})
+    ;
 }
 
 /**
  * Creates a list of all books using a Mustache-template.
  */
-var listBooks = function() {
-	$.ajax({
+var listBooks = function () {
+    $.ajax({
         url: '/shareit/media/books',
-        type:'GET'
-	})
-	.done((data) => {
-		var template = "<h2>Books</h2><table class='u-full-width'>" +
+        type: 'GET'
+    })
+        .done((data) => {
+        var template = "<h2>Books</h2><table class='u-full-width'>" +
             "<thead><tr><th>Title</th><th>Author</th><th>ISBN</th></tr></thead>" +
             "<tbody>{{#data}}<tr><td>{{title}}</td><td>{{author}}</td><td><a onclick='listBook({{isbn}})'>{{isbn}}</a></td></tr>{{/data}}</tbody></table>";
-		Mustache.parse(template);
-		var output = Mustache.render(template, {data: data});
-		$("#content").html(output);
-	});// no error handling
+    Mustache.parse(template);
+    var output = Mustache.render(template, {data: data});
+    $("#content").html(output);
+})
+    ;// no error handling
 }
 /**
  * Creates a list of all discs using a Mustache-template.
  */
-var listDiscs = function() {
-	$.ajax({
+var listDiscs = function () {
+    $.ajax({
         url: '/shareit/media/discs',
-        type:'GET'
-	})
-	.done((data) => {
-		var template = "<h2>Discs</h2><table class='u-full-width'>" +
+        type: 'GET'
+    })
+        .done((data) => {
+        var template = "<h2>Discs</h2><table class='u-full-width'>" +
             "<thead><tr><th>Title</th><th>Barcode</th><th>Director</th><th>FSK</th></tr></thead>" +
-			"<tbody>{{#data}}<tr><td>{{title}}</td><td><a onclick='listDisc({{barcode}})' >{{barcode}}</a></td><td>{{director}}</td><td>{{fsk}}</td></tr>{{/data}}</tbody></table>";
-		Mustache.parse(template);
-		var output = Mustache.render(template, {data: data});
-		$("#content").html(output);
-	});// no error handling
+            "<tbody>{{#data}}<tr><td>{{title}}</td><td><a onclick='listDisc({{barcode}})' >{{barcode}}</a></td><td>{{director}}</td><td>{{fsk}}</td></tr>{{/data}}</tbody></table>";
+    Mustache.parse(template);
+    var output = Mustache.render(template, {data: data});
+    $("#content").html(output);
+})
+    ;// no error handling
 }
 
 /**
  * Call backer for "navigational buttons" in left column. Used to set content in main part.
  */
-var changeContent = function(content) {
-	$.ajax({
+var changeContent = function (content) {
+    $.ajax({
         url: content,
-        type:'GET'
-	})
-	.done((data) => {
-		$("#content").html(data);
-	});// no error handling
+        type: 'GET'
+    })
+        .done((data) => {
+        $("#content"
+    ).
+    html(data);
+})
+    ;// no error handling
 }
 
 var listDisc = function (barcode) {

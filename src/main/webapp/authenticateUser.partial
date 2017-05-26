@@ -1,0 +1,7 @@
+	      <h2>Authenticate User</h2>
+		   <table border="0"><tbody>
+			   <tr><td><label for="username">Username:</label></td> <td><input type="text" name="username"></td></tr>
+			   <tr><td><label for="password">Password:</label></td> <td><input type="password" name="password"></td></tr>
+	       </tbody></table>
+		  <div><span id="errormessage" class="hidden error">ERROR</span></div>
+		  <input type="button" class="button-primary" id="registerButton" onclick="submitAuthenticateUser()" value="Einloggen"/>

@@ -1,7 +1,5 @@
 package edu.hm.huberneumeier.shareit.authentification.logic.authentication;
 
-import edu.hm.huberneumeier.shareit.authentification.logic.authorisation.ValidationResult;
-
 /**
  * Description...
  *
@@ -9,5 +7,5 @@ import edu.hm.huberneumeier.shareit.authentification.logic.authorisation.Validat
  * @version 2017-05-17
  */
 public interface AuthServiceExternal {
-    public ValidationResult authUser(String username, String password);
+    public AuthenticationResult authUser(String username, String password);
 }

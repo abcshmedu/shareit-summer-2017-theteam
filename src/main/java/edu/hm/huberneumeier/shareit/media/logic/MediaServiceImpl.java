@@ -1,9 +1,5 @@
 package edu.hm.huberneumeier.shareit.media.logic;
 
-import edu.hm.huberneumeier.shareit.authentification.logic.authorisation.Authorisation;
-import edu.hm.huberneumeier.shareit.authentification.logic.authorisation.AuthorizationImpl;
-import edu.hm.huberneumeier.shareit.authentification.logic.authorisation.ValidationResult;
-import edu.hm.huberneumeier.shareit.authentification.media.Token;
 import edu.hm.huberneumeier.shareit.media.logic.helpers.Utils;
 import edu.hm.huberneumeier.shareit.media.media.Book;
 import edu.hm.huberneumeier.shareit.media.media.Disc;

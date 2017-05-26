@@ -12,7 +12,7 @@ import java.util.List;
  * @author andreas
  * @version 25.05.2017
  */
-public class AuthorizationImpl implements AuthServiceInternal {
+public class AuthorisationImpl implements AuthServiceInternal {
 
     @Override
     public ValidationResult validate(String tokenKey, Authorisation authorisation) {

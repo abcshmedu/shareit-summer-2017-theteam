@@ -6,5 +6,5 @@ package edu.hm.huberneumeier.shareit.authentification.resources;
  * @author andreas
  * @version 25.05.2017
  */
-public class Authorization {
+public class Authorisation {
 }

@@ -3,7 +3,7 @@ package edu.hm.huberneumeier.shareit.media.resources;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.hm.huberneumeier.shareit.authentification.logic.authorisation.Authorisation;
-import edu.hm.huberneumeier.shareit.authentification.logic.authorisation.AuthorizationImpl;
+import edu.hm.huberneumeier.shareit.authentification.logic.authorisation.AuthorisationImpl;
 import edu.hm.huberneumeier.shareit.authentification.logic.authorisation.ValidationResult;
 import edu.hm.huberneumeier.shareit.authentification.logic.authorisation.ValidationState;
 import edu.hm.huberneumeier.shareit.media.logic.MediaService;
@@ -38,7 +38,7 @@ public class MediaResource {
      * Instance of the Media Service Implementation.
      */
     private static MediaService mediaService = new MediaServiceImpl();
-    private static AuthorizationImpl authService = new AuthorizationImpl();
+    private static AuthorisationImpl authService = new AuthorisationImpl();
 
     /**
      * Method to create a fresh media service.
