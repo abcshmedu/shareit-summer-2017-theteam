@@ -10,13 +10,14 @@ var submitAuthenticateUser = function () {
         username: $("input[name=username]").val(),
         password: $("input[name=password]").val()
     });
-    var errorText = $("errormessage");
+    var errorText = $("#errormessage");
     $.ajax({
         url: '/shareit/auth/',
         type: 'POST',
         contentType: 'application/json; charset=UTF-8',
         data: json
     }).done((data) => {
+        Cookies.set('token', '?token=' + data['key']);
         $("input[name=username]").val("");
     $("input[name=password]").val("");
     errorText.removeClass("visible");
@@ -27,10 +28,12 @@ var submitAuthenticateUser = function () {
     Mustache.parse(template);
     var output = Mustache.render(template, {data: data});
     $("#content").html(output);
-
-}).fail((error) => {
-        errorText.addClass("visible");
-    //errorText.text(error.responseJSON.detail);
+    alert(Cookies.get('token'));
+})
+    .
+    fail((error) => {
+    errorText.addClass("visible");
+    errorText.text(error.responseJSON.message);
     errorText.removeClass("hidden");
 });
 }
@@ -47,7 +50,7 @@ var submitNewBook = function () {
     });
     var errorText = $("#errormessage");
     $.ajax({
-        url: '/shareit/media/books/',
+        url: '/shareit/media/books/' + Cookies.get('token'),
         type: 'POST',
         contentType: 'application/json; charset=UTF-8',
         data: json
@@ -65,7 +68,7 @@ var submitNewBook = function () {
     .
     fail((error) => {
         errorText.addClass("visible");
-    //errorText.text(error.responseJSON.detail);
+    errorText.text(error.responseJSON.message);
     errorText.removeClass("hidden");
 })
     ;
@@ -80,7 +83,7 @@ var updateBook = function (isbn) {
     });
     var errorText = $("#errormessage");
     $.ajax({
-        url: '/shareit/media/books/' + isbn,
+        url: '/shareit/media/books/' + isbn + '/' + Cookies.get('token'),
         type: 'PUT',
         contentType: 'application/json; charset=UTF-8',
         data: json
@@ -98,7 +101,7 @@ var updateBook = function (isbn) {
     .
     fail((error) => {
         errorText.addClass("visible");
-    //errorText.text(error.responseJSON.detail);
+    errorText.text(error.responseJSON.message);
     errorText.removeClass("hidden");
 })
     ;
@@ -114,7 +117,7 @@ var updateDisc = function (barcode) {
     });
     var errorText = $("#errormessage");
     $.ajax({
-        url: '/shareit/media/discs/' + barcode,
+        url: '/shareit/media/discs/' + barcode + Cookies.get('token'),
         type: 'PUT',
         contentType: 'application/json; charset=UTF-8',
         data: json
@@ -133,7 +136,7 @@ var updateDisc = function (barcode) {
     .
     fail((error) => {
         errorText.addClass("visible");
-    //errorText.text(error.responseJSON.detail);
+    errorText.text(error.responseJSON.message);
     errorText.removeClass("hidden");
 })
     ;
@@ -151,7 +154,7 @@ var submitNewDisc = function () {
     });
     var errorText = $("#errormessage");
     $.ajax({
-        url: '/shareit/media/discs/',
+        url: '/shareit/media/discs' + Cookies.get('token'),
         type: 'POST',
         contentType: 'application/json; charset=UTF-8',
         data: json
@@ -170,7 +173,7 @@ var submitNewDisc = function () {
     .
     fail((error) => {
         errorText.addClass("visible");
-    //errorText.text(error.responseJSON.detail);
+    errorText.text(error.responseJSON.message);
     errorText.removeClass("hidden");
 })
     ;
@@ -181,7 +184,7 @@ var submitNewDisc = function () {
  */
 var listBooks = function () {
     $.ajax({
-        url: '/shareit/media/books',
+        url: '/shareit/media/books'+Cookies.get('token'),
         type: 'GET'
     })
         .done((data) => {
@@ -199,7 +202,7 @@ var listBooks = function () {
  */
 var listDiscs = function () {
     $.ajax({
-        url: '/shareit/media/discs',
+        url: '/shareit/media/discs'+Cookies.get('token'),
         type: 'GET'
     })
         .done((data) => {
@@ -231,7 +234,7 @@ var changeContent = function (content) {
 
 var listDisc = function (barcode) {
     $.ajax({
-        url: '/shareit/media/discs/' + barcode,
+        url: '/shareit/media/discs/' + barcode + Cookies.get('token'),
         type: 'GET'
     })
         .done((data) => {
@@ -252,7 +255,7 @@ var listDisc = function (barcode) {
 }
 var listBook = function (isbn) {
     $.ajax({
-        url: '/shareit/media/books/' + isbn,
+        url: '/shareit/media/books/' + isbn + Cookies.get('token'),
         type: 'GET'
     })
         .done((data) => {

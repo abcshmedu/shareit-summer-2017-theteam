@@ -27,16 +27,6 @@ public class Authentication {
      */
     private static final AuthenticationImpl AUTHENTICATION = new AuthenticationImpl();
 
-    //@POST
-    //@Consumes(MediaType.APPLICATION_JSON)
-    //public Response authenticateUser(User user) {
-    //    final AuthenticationResult result = AUTHENTICATION.authUser(user.getUsername(), user.getPassword());
-    //    if (result.getAuthenticationState().equals(ValidationState.SUCCESS)) {
-    //        return Response.status(Response.Status.OK).entity(jsonMapper(user.getToken())).build();
-    //    } else {
-    //        return Response.status(Response.Status.UNAUTHORIZED).entity(jsonMapper(result)).build();
-    //    }
-    //}
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)

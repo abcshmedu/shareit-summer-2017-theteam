@@ -22,11 +22,11 @@ public class AuthenticationImpl implements AuthServiceExternal {
                 result = new AuthenticationResult(AuthenticationState.SUCCESS, user.getToken());
             } else {
                 //password is incorrect -> but do not inform user, give no details about correct username
-                result = new AuthenticationResult(AuthenticationState.WRONG_INPUT, "Your input was not correct.");
+                result = new AuthenticationResult(AuthenticationState.WRONG_INPUT, "Unauthenticated - Your input was not correct.");
             }
         } else {
             //no user with the given username found -> but do not inform user
-            result = new AuthenticationResult(AuthenticationState.WRONG_INPUT, "Your input was not correct.");
+            result = new AuthenticationResult(AuthenticationState.WRONG_INPUT, "Unauthenticated - Your input was not correct.");
         }
         return result;
     }

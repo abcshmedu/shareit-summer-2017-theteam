@@ -61,7 +61,7 @@ public class MediaResourceTest {
     @Test
     public void getBooksOnlyDiscInLibrary() throws Exception {
         mediaResource.clearMediaService();
-        mediaResource.createDisc(new Disc("Test", "Test", 0, "Test"));
+        mediaResource.createDisc(new Disc("Test", "Test", 0, "Test"), VALID_TOKEN);
         //Check response of get afterwards
         Response response = mediaResource.getBooks(VALID_TOKEN);
         Response emptyResponse = Response.status(200).entity("[]").build();
@@ -73,7 +73,7 @@ public class MediaResourceTest {
     public void getBooksNotExisting() throws Exception {
         mediaResource.clearMediaService();
         //Check response of get afterwards
-        Response response = mediaResource.getBookByISBN(EXAMPLE_ISBN);
+        Response response = mediaResource.getBookByISBN(EXAMPLE_ISBN, VALID_TOKEN);
         Assert.assertEquals(RESPONSE_NOT_FOUND.toString(), response.toString());
         Assert.assertEquals(RESPONSE_NOT_FOUND.getEntity().toString(), response.getEntity().toString());
     }
@@ -82,7 +82,7 @@ public class MediaResourceTest {
     public void createBooksSingleGetAfterwards() throws Exception {
         mediaResource.clearMediaService();
         //Check response of create
-        Response createResponse = mediaResource.createBook(new Book("Test book", "test", EXAMPLE_ISBN));
+        Response createResponse = mediaResource.createBook(new Book("Test book", "test", EXAMPLE_ISBN), VALID_TOKEN);
         Assert.assertEquals(RESPONSE_CREATE.toString(), createResponse.toString());
         Assert.assertEquals(RESPONSE_CREATE.getEntity().toString(), createResponse.getEntity().toString());
         //Check response of get afterwards
@@ -96,11 +96,11 @@ public class MediaResourceTest {
     public void createBooksSingleGetAfterwardsByISBN() throws Exception {
         mediaResource.clearMediaService();
         //Check response of create
-        Response createResponse = mediaResource.createBook(new Book("Test book", "test", EXAMPLE_ISBN));
+        Response createResponse = mediaResource.createBook(new Book("Test book", "test", EXAMPLE_ISBN), VALID_TOKEN);
         Assert.assertEquals(RESPONSE_CREATE.toString(), createResponse.toString());
         Assert.assertEquals(RESPONSE_CREATE.getEntity().toString(), createResponse.getEntity().toString());
         //Check response of get afterwards
-        Response response = mediaResource.getBookByISBN(EXAMPLE_ISBN);
+        Response response = mediaResource.getBookByISBN(EXAMPLE_ISBN, VALID_TOKEN);
         Response correctGetResponse = Response.status(200).entity("{\"title\":\"Test book\",\"author\":\"test\",\"isbn\":\"" + EXAMPLE_ISBN + "\"}").build();
         Assert.assertEquals(correctGetResponse.toString(), response.toString());
         Assert.assertEquals(correctGetResponse.getEntity().toString(), response.getEntity().toString());
@@ -110,11 +110,11 @@ public class MediaResourceTest {
     public void createBooksSameISBNGetAfterwards() throws Exception {
         mediaResource.clearMediaService();
         //Check response of first create
-        Response createResponse = mediaResource.createBook(new Book("Test book", "test", EXAMPLE_ISBN));
+        Response createResponse = mediaResource.createBook(new Book("Test book", "test", EXAMPLE_ISBN), VALID_TOKEN);
         Assert.assertEquals(RESPONSE_CREATE.toString(), createResponse.toString());
         Assert.assertEquals(RESPONSE_CREATE.getEntity().toString(), createResponse.getEntity().toString());
         //Check response of second create
-        Response createResponseSecond = mediaResource.createBook(new Book("Test book", "test", EXAMPLE_ISBN));
+        Response createResponseSecond = mediaResource.createBook(new Book("Test book", "test", EXAMPLE_ISBN), VALID_TOKEN);
         Assert.assertEquals(RESPONSE_BAD_REQUEST.toString(), createResponseSecond.toString());
         Assert.assertEquals(RESPONSE_BAD_REQUEST.getEntity().toString(), createResponseSecond.getEntity().toString());
         //Check response of get afterwards if the book firstly put in is still there after a failed create
@@ -128,7 +128,7 @@ public class MediaResourceTest {
     public void createBookWithIncorrectIsbn() throws Exception {
         mediaResource.clearMediaService();
         //Check response of first create
-        Response createResponse = mediaResource.createBook(new Book("Test book", "test", EXAMPLE_INCORRECT_ISBN_2));
+        Response createResponse = mediaResource.createBook(new Book("Test book", "test", EXAMPLE_INCORRECT_ISBN_2), VALID_TOKEN);
         Assert.assertEquals(RESPONSE_BAD_REQUEST.toString(), createResponse.toString());
         Assert.assertEquals(RESPONSE_BAD_REQUEST.getEntity().toString(), createResponse.getEntity().toString());
     }
@@ -137,7 +137,7 @@ public class MediaResourceTest {
     public void createBooksIncorrectIsbnGetAfterwards() throws Exception {
         mediaResource.clearMediaService();
         //Check response of first create
-        Response createResponse = mediaResource.createBook(new Book("Test book", "test", EXAMPLE_INCORRECT_ISBN));
+        Response createResponse = mediaResource.createBook(new Book("Test book", "test", EXAMPLE_INCORRECT_ISBN), VALID_TOKEN);
         Assert.assertEquals(RESPONSE_BAD_REQUEST.toString(), createResponse.toString());
         Assert.assertEquals(RESPONSE_BAD_REQUEST.getEntity().toString(), createResponse.getEntity().toString());
         //Check response of get afterwards
@@ -151,9 +151,9 @@ public class MediaResourceTest {
     public void updateBooksChangeTitleAuthorSetGetAfterwards() throws Exception {
         mediaResource.clearMediaService();
         //Create book (checked earlier)
-        mediaResource.createBook(new Book("test", "test", EXAMPLE_ISBN));
+        mediaResource.createBook(new Book("test", "test", EXAMPLE_ISBN), VALID_TOKEN);
         //Check response of update
-        Response updateResponse = mediaResource.updateBook(EXAMPLE_ISBN, new Book("changed", "test", EXAMPLE_ISBN));
+        Response updateResponse = mediaResource.updateBook(EXAMPLE_ISBN, new Book("changed", "test", EXAMPLE_ISBN), VALID_TOKEN);
         Assert.assertEquals(RESPONSE_ACCEPTED.toString(), updateResponse.toString());
         Assert.assertEquals(RESPONSE_ACCEPTED.getEntity().toString(), updateResponse.getEntity().toString());
         //Check response of get afterwards
@@ -167,9 +167,9 @@ public class MediaResourceTest {
     public void updateBooksChangeAuthorTitleSetGetAfterwards() throws Exception {
         mediaResource.clearMediaService();
         //Create book (checked earlier)
-        mediaResource.createBook(new Book("test", "test", EXAMPLE_ISBN));
+        mediaResource.createBook(new Book("test", "test", EXAMPLE_ISBN), VALID_TOKEN);
         //Check response of update
-        Response updateResponse = mediaResource.updateBook(EXAMPLE_ISBN, new Book("test", "changed", EXAMPLE_ISBN));
+        Response updateResponse = mediaResource.updateBook(EXAMPLE_ISBN, new Book("test", "changed", EXAMPLE_ISBN), VALID_TOKEN);
         Assert.assertEquals(RESPONSE_ACCEPTED.toString(), updateResponse.toString());
         Assert.assertEquals(RESPONSE_ACCEPTED.getEntity().toString(), updateResponse.getEntity().toString());
         //Check response of get afterwards
@@ -183,9 +183,9 @@ public class MediaResourceTest {
     public void updateBooksChangeAuthorAndTitleGetAfterwards() throws Exception {
         mediaResource.clearMediaService();
         //Create book (checked earlier)
-        mediaResource.createBook(new Book("test", "test", EXAMPLE_ISBN));
+        mediaResource.createBook(new Book("test", "test", EXAMPLE_ISBN), VALID_TOKEN);
         //Check response of update
-        Response updateResponse = mediaResource.updateBook(EXAMPLE_ISBN, new Book("changed", "changed", EXAMPLE_ISBN));
+        Response updateResponse = mediaResource.updateBook(EXAMPLE_ISBN, new Book("changed", "changed", EXAMPLE_ISBN), VALID_TOKEN);
         Assert.assertEquals(RESPONSE_ACCEPTED.toString(), updateResponse.toString());
         Assert.assertEquals(RESPONSE_ACCEPTED.getEntity().toString(), updateResponse.getEntity().toString());
         //Check response of get afterwards
@@ -199,9 +199,9 @@ public class MediaResourceTest {
     public void updateBooksAuthorAndTitleNullGetAfterwards() throws Exception {
         mediaResource.clearMediaService();
         //Create book (checked earlier)
-        mediaResource.createBook(new Book("test", "test", EXAMPLE_ISBN));
+        mediaResource.createBook(new Book("test", "test", EXAMPLE_ISBN), VALID_TOKEN);
         //Check response of update
-        Response updateResponse = mediaResource.updateBook(EXAMPLE_ISBN, new Book(null, null, EXAMPLE_ISBN));
+        Response updateResponse = mediaResource.updateBook(EXAMPLE_ISBN, new Book(null, null, EXAMPLE_ISBN), VALID_TOKEN);
         Assert.assertEquals(RESPONSE_BAD_REQUEST.toString(), updateResponse.toString());
         Assert.assertEquals(RESPONSE_BAD_REQUEST.getEntity().toString(), updateResponse.getEntity().toString());
         //Check response of get afterwards
@@ -215,9 +215,9 @@ public class MediaResourceTest {
     public void updateBooksTitleNullGetAfterwards() throws Exception {
         mediaResource.clearMediaService();
         //Create book (checked earlier)
-        mediaResource.createBook(new Book("test", "test", EXAMPLE_ISBN));
+        mediaResource.createBook(new Book("test", "test", EXAMPLE_ISBN), VALID_TOKEN);
         //Check response of update
-        Response updateResponse = mediaResource.updateBook(EXAMPLE_ISBN, new Book(null, "changed", EXAMPLE_ISBN));
+        Response updateResponse = mediaResource.updateBook(EXAMPLE_ISBN, new Book(null, "changed", EXAMPLE_ISBN), VALID_TOKEN);
         Assert.assertEquals(RESPONSE_ACCEPTED.toString(), updateResponse.toString());
         Assert.assertEquals(RESPONSE_ACCEPTED.getEntity().toString(), updateResponse.getEntity().toString());
         //Check response of get afterwards
@@ -231,9 +231,9 @@ public class MediaResourceTest {
     public void updateBooksAuthorNullGetAfterwards() throws Exception {
         mediaResource.clearMediaService();
         //Create book (checked earlier)
-        mediaResource.createBook(new Book("test", "test", EXAMPLE_ISBN));
+        mediaResource.createBook(new Book("test", "test", EXAMPLE_ISBN), VALID_TOKEN);
         //Check response of update
-        Response updateResponse = mediaResource.updateBook(EXAMPLE_ISBN, new Book("changed", null, EXAMPLE_ISBN));
+        Response updateResponse = mediaResource.updateBook(EXAMPLE_ISBN, new Book("changed", null, EXAMPLE_ISBN), VALID_TOKEN);
         Assert.assertEquals(RESPONSE_ACCEPTED.toString(), updateResponse.toString());
         Assert.assertEquals(RESPONSE_ACCEPTED.getEntity().toString(), updateResponse.getEntity().toString());
         //Check response of get afterwards
@@ -247,7 +247,7 @@ public class MediaResourceTest {
     public void updateBooksNonExistingBook() throws Exception {
         mediaResource.clearMediaService();
         //Check response of update
-        Response updateResponse = mediaResource.updateBook(EXAMPLE_ISBN, new Book("changed", "something", EXAMPLE_ISBN));
+        Response updateResponse = mediaResource.updateBook(EXAMPLE_ISBN, new Book("changed", "something", EXAMPLE_ISBN), VALID_TOKEN);
         Assert.assertEquals(RESPONSE_NOT_FOUND.toString(), updateResponse.toString());
         Assert.assertEquals(RESPONSE_NOT_FOUND.getEntity().toString(), updateResponse.getEntity().toString());
         //Check response of get afterwards
@@ -261,13 +261,13 @@ public class MediaResourceTest {
     public void updateBooksMultipleMediaExisting() throws Exception {
         mediaResource.clearMediaService();
         //Create book (checked earlier)
-        mediaResource.createBook(new Book("test", "test", EXAMPLE_ISBN));
-        mediaResource.createBook(new Book("test", "test", EXAMPLE_ISBN_2));
-        mediaResource.createBook(new Book("test", "test", EXAMPLE_ISBN_3));
+        mediaResource.createBook(new Book("test", "test", EXAMPLE_ISBN), VALID_TOKEN);
+        mediaResource.createBook(new Book("test", "test", EXAMPLE_ISBN_2), VALID_TOKEN);
+        mediaResource.createBook(new Book("test", "test", EXAMPLE_ISBN_3), VALID_TOKEN);
         //Check response of update
-        mediaResource.updateBook(EXAMPLE_ISBN_3, new Book("changed", "changed", EXAMPLE_ISBN_3));
-        mediaResource.updateBook(EXAMPLE_ISBN_2, new Book("changed", "changed", EXAMPLE_ISBN_2));
-        mediaResource.updateBook(EXAMPLE_ISBN, new Book("changed", "changed", EXAMPLE_ISBN));
+        mediaResource.updateBook(EXAMPLE_ISBN_3, new Book("changed", "changed", EXAMPLE_ISBN_3), VALID_TOKEN);
+        mediaResource.updateBook(EXAMPLE_ISBN_2, new Book("changed", "changed", EXAMPLE_ISBN_2), VALID_TOKEN);
+        mediaResource.updateBook(EXAMPLE_ISBN, new Book("changed", "changed", EXAMPLE_ISBN), VALID_TOKEN);
         //Check response of get afterwards
         Response response = mediaResource.getBooks(VALID_TOKEN);
         Response correctGetResponse = Response.status(200).entity("[{\"title\":\"changed\",\"author\":\"changed\",\"isbn\":\"" + EXAMPLE_ISBN + "\"},{\"title\":\"changed\",\"author\":\"changed\",\"isbn\":\"" + EXAMPLE_ISBN_2 + "\"},{\"title\":\"changed\",\"author\":\"changed\",\"isbn\":\"" + EXAMPLE_ISBN_3 + "\"}]").build();
@@ -279,10 +279,10 @@ public class MediaResourceTest {
     public void updateBooksWrongIsbnGetAfterwards() throws Exception {
         mediaResource.clearMediaService();
         //Create book (checked earlier)
-        mediaResource.createBook(new Book("test", "test", EXAMPLE_ISBN));
-        mediaResource.createBook(new Book("test", "test", EXAMPLE_ISBN_2));
+        mediaResource.createBook(new Book("test", "test", EXAMPLE_ISBN), VALID_TOKEN);
+        mediaResource.createBook(new Book("test", "test", EXAMPLE_ISBN_2), VALID_TOKEN);
         //Check response of update
-        Response updateResponse = mediaResource.updateBook(EXAMPLE_ISBN, new Book("changed", "changed", EXAMPLE_ISBN_2));
+        Response updateResponse = mediaResource.updateBook(EXAMPLE_ISBN, new Book("changed", "changed", EXAMPLE_ISBN_2), VALID_TOKEN);
         Assert.assertEquals(RESPONSE_BAD_REQUEST.toString(), updateResponse.toString());
         Assert.assertEquals(RESPONSE_BAD_REQUEST.getEntity().toString(), updateResponse.getEntity().toString());
         //Check response of get afterwards
@@ -296,9 +296,9 @@ public class MediaResourceTest {
     public void updateBookWithNoChangesGetNotModifiedError() throws Exception {
         mediaResource.clearMediaService();
         //Create Book (checked earlier)
-        mediaResource.createBook(new Book("test", "test", EXAMPLE_ISBN));
+        mediaResource.createBook(new Book("test", "test", EXAMPLE_ISBN), VALID_TOKEN);
         //Check response of update
-        Response updateResponse = mediaResource.updateBook(EXAMPLE_ISBN, new Book("test", "test", EXAMPLE_ISBN));
+        Response updateResponse = mediaResource.updateBook(EXAMPLE_ISBN, new Book("test", "test", EXAMPLE_ISBN), VALID_TOKEN);
         Assert.assertEquals(RESPONSE_NOT_MODIFIED.toString(), updateResponse.toString());
         Assert.assertEquals(RESPONSE_NOT_MODIFIED.getEntity().toString(), updateResponse.getEntity().toString());
     }
@@ -313,7 +313,7 @@ public class MediaResourceTest {
     public void getDiscsEmptyLibrary() throws Exception {
         mediaResource.clearMediaService();
         //Check response of get
-        Response response = mediaResource.getDiscs();
+        Response response = mediaResource.getDiscs(VALID_TOKEN);
         Response emptyResponse = Response.status(200).entity("[]").build();
         Assert.assertEquals(emptyResponse.toString(), response.toString());
         Assert.assertEquals(emptyResponse.getEntity().toString(), response.getEntity().toString());
@@ -322,9 +322,9 @@ public class MediaResourceTest {
     @Test
     public void getDiscsOnlyBookInLibrary() throws Exception {
         mediaResource.clearMediaService();
-        mediaResource.createBook(new Book("Test", "Test", "test"));
+        mediaResource.createBook(new Book("Test", "Test", "test"), VALID_TOKEN);
         //Check response of get afterwards
-        Response response = mediaResource.getDiscs();
+        Response response = mediaResource.getDiscs(VALID_TOKEN);
         Response emptyResponse = Response.status(200).entity("[]").build();
         Assert.assertEquals(emptyResponse.toString(), response.toString());
         Assert.assertEquals(emptyResponse.getEntity().toString(), response.getEntity().toString());
@@ -334,7 +334,7 @@ public class MediaResourceTest {
     public void getDiscNotExisting() throws Exception {
         mediaResource.clearMediaService();
         //Check response of get afterwards
-        Response response = mediaResource.getDiscByBarcode(EXAMPLE_BARCODE);
+        Response response = mediaResource.getDiscByBarcode(EXAMPLE_BARCODE, VALID_TOKEN);
         Assert.assertEquals(RESPONSE_NOT_FOUND.toString(), response.toString());
         Assert.assertEquals(RESPONSE_NOT_FOUND.getEntity().toString(), response.getEntity().toString());
     }
@@ -343,11 +343,11 @@ public class MediaResourceTest {
     public void createDiscsSingleGetAfterwards() throws Exception {
         mediaResource.clearMediaService();
         //Check response of create
-        Response createResponse = mediaResource.createDisc(new Disc(EXAMPLE_BARCODE, "test", 0, "Test Disc"));
+        Response createResponse = mediaResource.createDisc(new Disc(EXAMPLE_BARCODE, "test", 0, "Test Disc"), VALID_TOKEN);
         Assert.assertEquals(RESPONSE_CREATE.toString(), createResponse.toString());
         Assert.assertEquals(RESPONSE_CREATE.getEntity().toString(), createResponse.getEntity().toString());
         //Check response of get afterwards
-        Response response = mediaResource.getDiscs();
+        Response response = mediaResource.getDiscs(VALID_TOKEN);
         Response correctGetResponse = Response.status(200).entity("[{\"title\":\"Test Disc\",\"barcode\":\"" + EXAMPLE_BARCODE + "\",\"director\":\"test\",\"fsk\":0}]").build();
         Assert.assertEquals(correctGetResponse.toString(), response.toString());
         Assert.assertEquals(correctGetResponse.getEntity().toString(), response.getEntity().toString());
@@ -357,11 +357,11 @@ public class MediaResourceTest {
     public void createDiscsSingleGetAfterwardsByBarcode() throws Exception {
         mediaResource.clearMediaService();
         //Check response of create
-        Response createResponse = mediaResource.createDisc(new Disc(EXAMPLE_BARCODE, "test", 0, "Test Disc"));
+        Response createResponse = mediaResource.createDisc(new Disc(EXAMPLE_BARCODE, "test", 0, "Test Disc"), VALID_TOKEN);
         Assert.assertEquals(RESPONSE_CREATE.toString(), createResponse.toString());
         Assert.assertEquals(RESPONSE_CREATE.getEntity().toString(), createResponse.getEntity().toString());
         //Check response of get afterwards
-        Response response = mediaResource.getDiscByBarcode(EXAMPLE_BARCODE);
+        Response response = mediaResource.getDiscByBarcode(EXAMPLE_BARCODE, VALID_TOKEN);
         Response correctGetResponse = Response.status(200).entity("{\"title\":\"Test Disc\",\"barcode\":\"" + EXAMPLE_BARCODE + "\",\"director\":\"test\",\"fsk\":0}").build();
         Assert.assertEquals(correctGetResponse.toString(), response.toString());
         Assert.assertEquals(correctGetResponse.getEntity().toString(), response.getEntity().toString());
@@ -371,15 +371,15 @@ public class MediaResourceTest {
     public void createDiscsSameBarcodeGetAfterwards() throws Exception {
         mediaResource.clearMediaService();
         //Check response of first create
-        Response createResponse = mediaResource.createDisc(new Disc(EXAMPLE_BARCODE, "test", 0, "Test Disc"));
+        Response createResponse = mediaResource.createDisc(new Disc(EXAMPLE_BARCODE, "test", 0, "Test Disc"), VALID_TOKEN);
         Assert.assertEquals(RESPONSE_CREATE.toString(), createResponse.toString());
         Assert.assertEquals(RESPONSE_CREATE.getEntity().toString(), createResponse.getEntity().toString());
         //Check response of second create
-        Response createResponseSecond = mediaResource.createDisc(new Disc(EXAMPLE_BARCODE, "test", 0, "Test Disc"));
+        Response createResponseSecond = mediaResource.createDisc(new Disc(EXAMPLE_BARCODE, "test", 0, "Test Disc"), VALID_TOKEN);
         Assert.assertEquals(RESPONSE_BAD_REQUEST.toString(), createResponseSecond.toString());
         Assert.assertEquals(RESPONSE_BAD_REQUEST.getEntity().toString(), createResponseSecond.getEntity().toString());
         //Check response of get afterwards if the Disc firstly put in is still there after a failed create
-        Response response = mediaResource.getDiscs();
+        Response response = mediaResource.getDiscs(VALID_TOKEN);
         Response correctGetResponse = Response.status(200).entity("[{\"title\":\"Test Disc\",\"barcode\":\"" + EXAMPLE_BARCODE + "\",\"director\":\"test\",\"fsk\":0}]").build();
         Assert.assertEquals(correctGetResponse.toString(), response.toString());
         Assert.assertEquals(correctGetResponse.getEntity().toString(), response.getEntity().toString());
@@ -389,7 +389,7 @@ public class MediaResourceTest {
     public void createDiscWithIncorrectIsbn() throws Exception {
         mediaResource.clearMediaService();
         //Check response of first create
-        Response createResponse = mediaResource.createDisc(new Disc(EXAMPLE_INCORRECT_BARCODE_2, "test", 0, "Test Disc"));
+        Response createResponse = mediaResource.createDisc(new Disc(EXAMPLE_INCORRECT_BARCODE_2, "test", 0, "Test Disc"), VALID_TOKEN);
         Assert.assertEquals(RESPONSE_BAD_REQUEST.toString(), createResponse.toString());
         Assert.assertEquals(RESPONSE_BAD_REQUEST.getEntity().toString(), createResponse.getEntity().toString());
     }
@@ -398,11 +398,11 @@ public class MediaResourceTest {
     public void createDiscsIncorrectBarcodeGetAfterwards() throws Exception {
         mediaResource.clearMediaService();
         //Check response of first create
-        Response createResponse = mediaResource.createDisc(new Disc(EXAMPLE_INCORRECT_BARCODE, "test", 0, "Test Disc"));
+        Response createResponse = mediaResource.createDisc(new Disc(EXAMPLE_INCORRECT_BARCODE, "test", 0, "Test Disc"), VALID_TOKEN);
         Assert.assertEquals(RESPONSE_BAD_REQUEST.toString(), createResponse.toString());
         Assert.assertEquals(RESPONSE_BAD_REQUEST.getEntity().toString(), createResponse.getEntity().toString());
         //Check response of get afterwards
-        Response response = mediaResource.getDiscs();
+        Response response = mediaResource.getDiscs(VALID_TOKEN);
         Response correctGetResponse = Response.status(200).entity("[]").build();
         Assert.assertEquals(correctGetResponse.toString(), response.toString());
         Assert.assertEquals(correctGetResponse.getEntity().toString(), response.getEntity().toString());
@@ -412,13 +412,13 @@ public class MediaResourceTest {
     public void updateDiscsChangeTitleAuthorSetGetAfterwards() throws Exception {
         mediaResource.clearMediaService();
         //Create Disc (checked earlier)
-        mediaResource.createDisc(new Disc(EXAMPLE_BARCODE, "test", 0, "Test Disc"));
+        mediaResource.createDisc(new Disc(EXAMPLE_BARCODE, "test", 0, "Test Disc"), VALID_TOKEN);
         //Check response of update
-        Response updateResponse = mediaResource.updateDisc(EXAMPLE_BARCODE, new Disc(EXAMPLE_BARCODE, "test", 0, "changed"));
+        Response updateResponse = mediaResource.updateDisc(EXAMPLE_BARCODE, new Disc(EXAMPLE_BARCODE, "test", 0, "changed"), VALID_TOKEN);
         Assert.assertEquals(RESPONSE_ACCEPTED.toString(), updateResponse.toString());
         Assert.assertEquals(RESPONSE_ACCEPTED.getEntity().toString(), updateResponse.getEntity().toString());
         //Check response of get afterwards
-        Response response = mediaResource.getDiscs();
+        Response response = mediaResource.getDiscs(VALID_TOKEN);
         Response correctGetResponse = Response.status(200).entity("[{\"title\":\"changed\",\"barcode\":\"" + EXAMPLE_BARCODE + "\",\"director\":\"test\",\"fsk\":0}]").build();
         Assert.assertEquals(correctGetResponse.toString(), response.toString());
         Assert.assertEquals(correctGetResponse.getEntity().toString(), response.getEntity().toString());
@@ -429,13 +429,13 @@ public class MediaResourceTest {
     public void updateDiscsChangeAuthorTitleSetGetAfterwards() throws Exception {
         mediaResource.clearMediaService();
         //Create Disc (checked earlier)
-        mediaResource.createDisc(new Disc(EXAMPLE_BARCODE, "test", 0, "test"));
+        mediaResource.createDisc(new Disc(EXAMPLE_BARCODE, "test", 0, "test"), VALID_TOKEN);
         //Check response of update
-        Response updateResponse = mediaResource.updateDisc(EXAMPLE_BARCODE, new Disc(EXAMPLE_BARCODE, "changed", 0, "test"));
+        Response updateResponse = mediaResource.updateDisc(EXAMPLE_BARCODE, new Disc(EXAMPLE_BARCODE, "changed", 0, "test"), VALID_TOKEN);
         Assert.assertEquals(RESPONSE_ACCEPTED.toString(), updateResponse.toString());
         Assert.assertEquals(RESPONSE_ACCEPTED.getEntity().toString(), updateResponse.getEntity().toString());
         //Check response of get afterwards
-        Response response = mediaResource.getDiscs();
+        Response response = mediaResource.getDiscs(VALID_TOKEN);
         Response correctGetResponse = Response.status(200).entity("[{\"title\":\"test\",\"barcode\":\"" + EXAMPLE_BARCODE + "\",\"director\":\"changed\",\"fsk\":0}]").build();
         Assert.assertEquals(correctGetResponse.toString(), response.toString());
         Assert.assertEquals(correctGetResponse.getEntity().toString(), response.getEntity().toString());
@@ -445,13 +445,13 @@ public class MediaResourceTest {
     public void updateDiscsChangeAuthorAndTitleGetAfterwards() throws Exception {
         mediaResource.clearMediaService();
         //Create Disc (checked earlier)
-        mediaResource.createDisc(new Disc(EXAMPLE_BARCODE, "test", 0, "test"));
+        mediaResource.createDisc(new Disc(EXAMPLE_BARCODE, "test", 0, "test"), VALID_TOKEN);
         //Check response of update
-        Response updateResponse = mediaResource.updateDisc(EXAMPLE_BARCODE, new Disc(EXAMPLE_BARCODE, "changed", 0, "changed"));
+        Response updateResponse = mediaResource.updateDisc(EXAMPLE_BARCODE, new Disc(EXAMPLE_BARCODE, "changed", 0, "changed"), VALID_TOKEN);
         Assert.assertEquals(RESPONSE_ACCEPTED.toString(), updateResponse.toString());
         Assert.assertEquals(RESPONSE_ACCEPTED.getEntity().toString(), updateResponse.getEntity().toString());
         //Check response of get afterwards
-        Response response = mediaResource.getDiscs();
+        Response response = mediaResource.getDiscs(VALID_TOKEN);
         Response correctGetResponse = Response.status(200).entity("[{\"title\":\"changed\",\"barcode\":\"" + EXAMPLE_BARCODE + "\",\"director\":\"changed\",\"fsk\":0}]").build();
         Assert.assertEquals(correctGetResponse.toString(), response.toString());
         Assert.assertEquals(correctGetResponse.getEntity().toString(), response.getEntity().toString());
@@ -461,13 +461,13 @@ public class MediaResourceTest {
     public void updateDiscsAuthorAndTitleNullGetAfterwards() throws Exception {
         mediaResource.clearMediaService();
         //Create Disc (checked earlier)
-        mediaResource.createDisc(new Disc(EXAMPLE_BARCODE, "test", 0, "test"));
+        mediaResource.createDisc(new Disc(EXAMPLE_BARCODE, "test", 0, "test"), VALID_TOKEN);
         //Check response of update
-        Response updateResponse = mediaResource.updateDisc(EXAMPLE_ISBN, new Disc(EXAMPLE_BARCODE, null, 0, null));
+        Response updateResponse = mediaResource.updateDisc(EXAMPLE_ISBN, new Disc(EXAMPLE_BARCODE, null, 0, null), VALID_TOKEN);
         Assert.assertEquals(RESPONSE_BAD_REQUEST.toString(), updateResponse.toString());
         Assert.assertEquals(RESPONSE_BAD_REQUEST.getEntity().toString(), updateResponse.getEntity().toString());
         //Check response of get afterwards
-        Response response = mediaResource.getDiscs();
+        Response response = mediaResource.getDiscs(VALID_TOKEN);
         Response correctGetResponse = Response.status(200).entity("[{\"title\":\"test\",\"barcode\":\"" + EXAMPLE_BARCODE + "\",\"director\":\"test\",\"fsk\":0}]").build();
         Assert.assertEquals(correctGetResponse.toString(), response.toString());
         Assert.assertEquals(correctGetResponse.getEntity().toString(), response.getEntity().toString());
@@ -477,13 +477,13 @@ public class MediaResourceTest {
     public void updateDiscsTitleNullGetAfterwards() throws Exception {
         mediaResource.clearMediaService();
         //Create Disc (checked earlier)
-        mediaResource.createDisc(new Disc(EXAMPLE_BARCODE, "test", 0, "test"));
+        mediaResource.createDisc(new Disc(EXAMPLE_BARCODE, "test", 0, "test"), VALID_TOKEN);
         //Check response of update
-        Response updateResponse = mediaResource.updateDisc(EXAMPLE_BARCODE, new Disc(EXAMPLE_BARCODE, "changed", 0, null));
+        Response updateResponse = mediaResource.updateDisc(EXAMPLE_BARCODE, new Disc(EXAMPLE_BARCODE, "changed", 0, null), VALID_TOKEN);
         Assert.assertEquals(RESPONSE_ACCEPTED.toString(), updateResponse.toString());
         Assert.assertEquals(RESPONSE_ACCEPTED.getEntity().toString(), updateResponse.getEntity().toString());
         //Check response of get afterwards
-        Response response = mediaResource.getDiscs();
+        Response response = mediaResource.getDiscs(VALID_TOKEN);
         Response correctGetResponse = Response.status(200).entity("[{\"title\":\"test\",\"barcode\":\"" + EXAMPLE_BARCODE + "\",\"director\":\"changed\",\"fsk\":0}]").build();
         Assert.assertEquals(correctGetResponse.toString(), response.toString());
         Assert.assertEquals(correctGetResponse.getEntity().toString(), response.getEntity().toString());
@@ -493,13 +493,13 @@ public class MediaResourceTest {
     public void updateDiscsAuthorNullGetAfterwards() throws Exception {
         mediaResource.clearMediaService();
         //Create Disc (checked earlier)
-        mediaResource.createDisc(new Disc(EXAMPLE_BARCODE, "test", 0, "test"));
+        mediaResource.createDisc(new Disc(EXAMPLE_BARCODE, "test", 0, "test"), VALID_TOKEN);
         //Check response of update
-        Response updateResponse = mediaResource.updateDisc(EXAMPLE_BARCODE, new Disc(EXAMPLE_BARCODE, null, 0, "changed"));
+        Response updateResponse = mediaResource.updateDisc(EXAMPLE_BARCODE, new Disc(EXAMPLE_BARCODE, null, 0, "changed"), VALID_TOKEN);
         Assert.assertEquals(RESPONSE_ACCEPTED.toString(), updateResponse.toString());
         Assert.assertEquals(RESPONSE_ACCEPTED.getEntity().toString(), updateResponse.getEntity().toString());
         //Check response of get afterwards
-        Response response = mediaResource.getDiscs();
+        Response response = mediaResource.getDiscs(VALID_TOKEN);
         Response correctGetResponse = Response.status(200).entity("[{\"title\":\"changed\",\"barcode\":\"" + EXAMPLE_BARCODE + "\",\"director\":\"test\",\"fsk\":0}]").build();
         Assert.assertEquals(correctGetResponse.toString(), response.toString());
         Assert.assertEquals(correctGetResponse.getEntity().toString(), response.getEntity().toString());
@@ -509,11 +509,11 @@ public class MediaResourceTest {
     public void updateDiscsNonExistingDisc() throws Exception {
         mediaResource.clearMediaService();
         //Check response of update
-        Response updateResponse = mediaResource.updateDisc(EXAMPLE_BARCODE, new Disc(EXAMPLE_BARCODE, "something", 0, "changed"));
+        Response updateResponse = mediaResource.updateDisc(EXAMPLE_BARCODE, new Disc(EXAMPLE_BARCODE, "something", 0, "changed"), VALID_TOKEN);
         Assert.assertEquals(RESPONSE_NOT_FOUND.toString(), updateResponse.toString());
         Assert.assertEquals(RESPONSE_NOT_FOUND.getEntity().toString(), updateResponse.getEntity().toString());
         //Check response of get afterwards
-        Response response = mediaResource.getDiscs();
+        Response response = mediaResource.getDiscs(VALID_TOKEN);
         Response correctGetResponse = Response.status(200).entity("[]").build();
         Assert.assertEquals(correctGetResponse.toString(), response.toString());
         Assert.assertEquals(correctGetResponse.getEntity().toString(), response.getEntity().toString());
@@ -523,15 +523,15 @@ public class MediaResourceTest {
     public void updateDiscsMultipleMediaExisting() throws Exception {
         mediaResource.clearMediaService();
         //Create Disc (checked earlier)
-        mediaResource.createDisc(new Disc(EXAMPLE_BARCODE, "test", 0, "test"));
-        mediaResource.createDisc(new Disc(EXAMPLE_BARCODE_2, "test", 0, "test"));
-        mediaResource.createDisc(new Disc(EXAMPLE_BARCODE_3, "test", 0, "test"));
+        mediaResource.createDisc(new Disc(EXAMPLE_BARCODE, "test", 0, "test"), VALID_TOKEN);
+        mediaResource.createDisc(new Disc(EXAMPLE_BARCODE_2, "test", 0, "test"), VALID_TOKEN);
+        mediaResource.createDisc(new Disc(EXAMPLE_BARCODE_3, "test", 0, "test"), VALID_TOKEN);
         //Check response of update
-        mediaResource.updateDisc(EXAMPLE_BARCODE_3, new Disc(EXAMPLE_BARCODE_3, "changed", 0, "changed"));
-        mediaResource.updateDisc(EXAMPLE_BARCODE_2, new Disc(EXAMPLE_BARCODE_2, "changed", 0, "changed"));
-        mediaResource.updateDisc(EXAMPLE_BARCODE, new Disc(EXAMPLE_BARCODE, "changed", 0, "changed"));
+        mediaResource.updateDisc(EXAMPLE_BARCODE_3, new Disc(EXAMPLE_BARCODE_3, "changed", 0, "changed"), VALID_TOKEN);
+        mediaResource.updateDisc(EXAMPLE_BARCODE_2, new Disc(EXAMPLE_BARCODE_2, "changed", 0, "changed"), VALID_TOKEN);
+        mediaResource.updateDisc(EXAMPLE_BARCODE, new Disc(EXAMPLE_BARCODE, "changed", 0, "changed"), VALID_TOKEN);
         //Check response of get afterwards
-        Response response = mediaResource.getDiscs();
+        Response response = mediaResource.getDiscs(VALID_TOKEN);
         Response correctGetResponse = Response.status(200).entity("[{\"title\":\"changed\",\"barcode\":\"" + EXAMPLE_BARCODE + "\",\"director\":\"changed\",\"fsk\":0},{\"title\":\"changed\",\"barcode\":\"" + EXAMPLE_BARCODE_2 + "\",\"director\":\"changed\",\"fsk\":0},{\"title\":\"changed\",\"barcode\":\"" + EXAMPLE_BARCODE_3 + "\",\"director\":\"changed\",\"fsk\":0}]").build();
         Assert.assertEquals(correctGetResponse.toString(), response.toString());
         Assert.assertEquals(correctGetResponse.getEntity().toString(), response.getEntity().toString());
@@ -541,14 +541,14 @@ public class MediaResourceTest {
     public void updateDiscsWrongBarcodeGetAfterwards() throws Exception {
         mediaResource.clearMediaService();
         //Create Disc (checked earlier)
-        mediaResource.createDisc(new Disc(EXAMPLE_BARCODE, "test", 0, "test"));
-        mediaResource.createDisc(new Disc(EXAMPLE_BARCODE_2, "test", 0, "test"));
+        mediaResource.createDisc(new Disc(EXAMPLE_BARCODE, "test", 0, "test"), VALID_TOKEN);
+        mediaResource.createDisc(new Disc(EXAMPLE_BARCODE_2, "test", 0, "test"), VALID_TOKEN);
         //Check response of update
-        Response updateResponse = mediaResource.updateDisc(EXAMPLE_BARCODE, new Disc(EXAMPLE_BARCODE_2, "changed", 0, "changed"));
+        Response updateResponse = mediaResource.updateDisc(EXAMPLE_BARCODE, new Disc(EXAMPLE_BARCODE_2, "changed", 0, "changed"), VALID_TOKEN);
         Assert.assertEquals(RESPONSE_BAD_REQUEST.toString(), updateResponse.toString());
         Assert.assertEquals(RESPONSE_BAD_REQUEST.getEntity().toString(), updateResponse.getEntity().toString());
         //Check response of get afterwards
-        Response response = mediaResource.getDiscs();
+        Response response = mediaResource.getDiscs(VALID_TOKEN);
         Response correctGetResponse = Response.status(200).entity("[{\"title\":\"test\",\"barcode\":\"" + EXAMPLE_BARCODE + "\",\"director\":\"test\",\"fsk\":0},{\"title\":\"test\",\"barcode\":\"" + EXAMPLE_BARCODE_2 + "\",\"director\":\"test\",\"fsk\":0}]").build();
         Assert.assertEquals(correctGetResponse.toString(), response.toString());
         Assert.assertEquals(correctGetResponse.getEntity().toString(), response.getEntity().toString());
@@ -558,9 +558,9 @@ public class MediaResourceTest {
     public void updateDiscWithNoChangesGetNotModifiedError() throws Exception {
         mediaResource.clearMediaService();
         //Create Disc (checked earlier)
-        mediaResource.createDisc(new Disc(EXAMPLE_BARCODE, "test", 0, "test"));
+        mediaResource.createDisc(new Disc(EXAMPLE_BARCODE, "test", 0, "test"), VALID_TOKEN);
         //Check response of update
-        Response updateResponse = mediaResource.updateDisc(EXAMPLE_BARCODE, new Disc(EXAMPLE_BARCODE, "test", 0, "test"));
+        Response updateResponse = mediaResource.updateDisc(EXAMPLE_BARCODE, new Disc(EXAMPLE_BARCODE, "test", 0, "test"), VALID_TOKEN);
         Assert.assertEquals(RESPONSE_NOT_MODIFIED.toString(), updateResponse.toString());
         Assert.assertEquals(RESPONSE_NOT_MODIFIED.getEntity().toString(), updateResponse.getEntity().toString());
     }
@@ -569,13 +569,13 @@ public class MediaResourceTest {
     public void updateDiscWithNoFskChange() throws Exception {
         mediaResource.clearMediaService();
         //Create Disc (checked earlier)
-        mediaResource.createDisc(new Disc(EXAMPLE_BARCODE, "test", 0, "test"));
+        mediaResource.createDisc(new Disc(EXAMPLE_BARCODE, "test", 0, "test"), VALID_TOKEN);
         //Check response of update
-        Response updateResponse = mediaResource.updateDisc(EXAMPLE_BARCODE, new Disc(EXAMPLE_BARCODE, "test123", null, "test123"));
+        Response updateResponse = mediaResource.updateDisc(EXAMPLE_BARCODE, new Disc(EXAMPLE_BARCODE, "test123", null, "test123"), VALID_TOKEN);
         Assert.assertEquals(RESPONSE_ACCEPTED.toString(), updateResponse.toString());
         Assert.assertEquals(RESPONSE_ACCEPTED.getEntity().toString(), updateResponse.getEntity().toString());
         //Check response of get afterwards
-        Response response = mediaResource.getDiscs();
+        Response response = mediaResource.getDiscs(VALID_TOKEN);
         Response correctGetResponse = Response.status(200).entity("[{\"title\":\"test123\",\"barcode\":\"" + EXAMPLE_BARCODE + "\",\"director\":\"test123\",\"fsk\":0}]").build();
         Assert.assertEquals(correctGetResponse.toString(), response.toString());
         Assert.assertEquals(correctGetResponse.getEntity().toString(), response.getEntity().toString());
@@ -585,9 +585,9 @@ public class MediaResourceTest {
     public void updateDiscWithAllValuesNull() throws Exception {
         mediaResource.clearMediaService();
         //Create Disc (checked earlier)
-        mediaResource.createDisc(new Disc(EXAMPLE_BARCODE, "test", 0, "test"));
+        mediaResource.createDisc(new Disc(EXAMPLE_BARCODE, "test", 0, "test"), VALID_TOKEN);
         //Check response of update
-        Response updateResponse = mediaResource.updateDisc(EXAMPLE_BARCODE, new Disc(EXAMPLE_BARCODE, null, null, null));
+        Response updateResponse = mediaResource.updateDisc(EXAMPLE_BARCODE, new Disc(EXAMPLE_BARCODE, null, null, null), VALID_TOKEN);
         Assert.assertEquals(RESPONSE_BAD_REQUEST.toString(), updateResponse.toString());
         Assert.assertEquals(RESPONSE_BAD_REQUEST.getEntity().toString(), updateResponse.getEntity().toString());
     }

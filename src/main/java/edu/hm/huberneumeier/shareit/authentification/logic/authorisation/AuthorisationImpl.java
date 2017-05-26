@@ -30,11 +30,11 @@ public class AuthorisationImpl implements AuthServiceInternal {
             if (token.getValidUntil() > System.currentTimeMillis()) {
                 result = new ValidationResult(ValidationState.SUCCESS, "");
             } else {
-                result = new ValidationResult(ValidationState.TOKEN_EXPIRED, "Your token is expired.");
+                result = new ValidationResult(ValidationState.TOKEN_EXPIRED, "Unauthorised - Your token is expired.");
                 UserData.removeUserToken(token);
             }
         } else {
-            result = new ValidationResult(ValidationState.TOKEN_INVALID, "Your token is invalid.");
+            result = new ValidationResult(ValidationState.TOKEN_INVALID, "Unauthorised - Your token is invalid.");
         }
         return result;
     }
@@ -45,7 +45,7 @@ public class AuthorisationImpl implements AuthServiceInternal {
         if (auths.contains(authorisation)) {
             result = new ValidationResult(ValidationState.SUCCESS, "");
         } else {
-            result = new ValidationResult(ValidationState.NO_PERMISSON, "You are not allowed to do this.");
+            result = new ValidationResult(ValidationState.NO_PERMISSON, "Unauthorised - You are not allowed to do this.");
         }
         return result;
     }
