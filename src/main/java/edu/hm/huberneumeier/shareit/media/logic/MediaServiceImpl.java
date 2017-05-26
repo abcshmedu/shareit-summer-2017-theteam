@@ -36,12 +36,12 @@ public class MediaServiceImpl implements MediaService {
     @Override
     public MediaServiceResult addBook(Book book) {
         //TODO get the token from the user, this is just a "mock"
-        Token tokenFromUser = new Token();
-        final MediaServiceResult serviceResult = validateRequest(tokenFromUser, Authorisation.BOOK_CREATE);
-
-        //if result is not ok, there was a error, return and exit method
-        if (!serviceResult.equals(MediaServiceResult.OK))
-            return serviceResult;
+        //Token tokenFromUser = new Token();
+        //final MediaServiceResult serviceResult = validateRequest(tokenFromUser, Authorisation.BOOK_CREATE);
+//
+        ////if result is not ok, there was a error, return and exit method
+        //if (!serviceResult.equals(MediaServiceResult.OK))
+        //    return serviceResult;
 
 
         //clear isbn from unnecessary characters like - or spaces
@@ -85,12 +85,12 @@ public class MediaServiceImpl implements MediaService {
     @Override
     public MediaServiceResult updateBook(String isbn, Book book) {
         //TODO get the token from the user, this is just a "mock"
-        Token tokenFromUser = new Token();
-        final MediaServiceResult serviceResult = validateRequest(tokenFromUser, Authorisation.BOOK_UPDATE);
-
-        //if result is not ok, there was a error, return and exit method
-        if (!serviceResult.equals(MediaServiceResult.OK))
-            return serviceResult;
+        //Token tokenFromUser = new Token();
+        //final MediaServiceResult serviceResult = validateRequest(tokenFromUser, Authorisation.BOOK_UPDATE);
+//
+        ////if result is not ok, there was a error, return and exit method
+        //if (!serviceResult.equals(MediaServiceResult.OK))
+        //    return serviceResult;
 
 
         //isbn cant be changed
@@ -281,13 +281,5 @@ public class MediaServiceImpl implements MediaService {
             id++;
         }
         return id;
-    }
-
-    private MediaServiceResult validateRequest(Token token, Authorisation authorisation) {
-        //TODO not a good solution :-(
-        AuthorizationImpl authService = new AuthorizationImpl();
-        //TODO maybe it is better to replace validationResult by MediaServiceResult or build a over all solution
-        final ValidationResult tmp = authService.validate(token, authorisation);
-        return null;
     }
 }

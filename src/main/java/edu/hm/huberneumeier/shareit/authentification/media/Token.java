@@ -23,7 +23,7 @@ public class Token {
         //token should be valid for 15 minutes
         this.validUntil = System.currentTimeMillis() + 900000;
 
-        createdKeys.put(newKey, this);
+        createdKeys.put(this.key, this);
     }
 
     public String getKey() {
