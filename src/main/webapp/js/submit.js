@@ -28,7 +28,6 @@ var submitAuthenticateUser = function () {
     Mustache.parse(template);
     var output = Mustache.render(template, {data: data});
     $("#content").html(output);
-    alert(Cookies.get('token'));
 })
     .
     fail((error) => {

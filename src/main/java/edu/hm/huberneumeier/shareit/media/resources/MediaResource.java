@@ -76,7 +76,7 @@ public class MediaResource {
         Response.Status response = Response.Status.UNAUTHORIZED;
         if (validationResult.getValidationState().equals(ValidationState.SUCCESS)) {
             response = Response.Status.OK;
-            result = mediaService.getDisc(isbn);
+            result = mediaService.getBook(isbn);
             if (result == null) {
                 result = MediaServiceResult.NOT_FOUND;
                 response = Response.Status.NOT_FOUND;
