@@ -15,7 +15,8 @@ import java.util.List;
 public class AuthorizationImpl implements AuthServiceInternal {
 
     @Override
-    public ValidationResult validate(Token token, Authorisation authorisation) {
+    public ValidationResult validate(String tokenKey, Authorisation authorisation) {
+        Token token = Token.getTokenToKey(tokenKey);
         ValidationResult result = validateToken(token);
         if (result.getValidationState().equals(ValidationState.SUCCESS)) {
             result = validateAuthorisation(UserData.getUser(token), authorisation);
@@ -25,7 +26,7 @@ public class AuthorizationImpl implements AuthServiceInternal {
 
     private ValidationResult validateToken(Token token) {
         ValidationResult result;
-        if (UserData.userExists(token)) {
+        if (token != null && UserData.userExists(token)) {
             if (token.getValidUntil() > System.currentTimeMillis()) {
                 result = new ValidationResult(ValidationState.SUCCESS, "");
             } else {

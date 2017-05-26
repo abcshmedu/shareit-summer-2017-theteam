@@ -11,5 +11,5 @@ import edu.hm.huberneumeier.shareit.authentification.media.Token;
  * @version 2017-05-17
  */
 public interface AuthServiceInternal {
-    public ValidationResult validate(Token token, Authorisation authorisation);
+    public ValidationResult validate(String token, Authorisation authorisation);
 }

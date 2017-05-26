@@ -2,11 +2,15 @@ package edu.hm.huberneumeier.shareit.media.resources;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.hm.huberneumeier.shareit.media.media.Book;
-import edu.hm.huberneumeier.shareit.media.media.Disc;
+import edu.hm.huberneumeier.shareit.authentification.logic.authorisation.Authorisation;
+import edu.hm.huberneumeier.shareit.authentification.logic.authorisation.AuthorizationImpl;
+import edu.hm.huberneumeier.shareit.authentification.logic.authorisation.ValidationResult;
+import edu.hm.huberneumeier.shareit.authentification.logic.authorisation.ValidationState;
 import edu.hm.huberneumeier.shareit.media.logic.MediaService;
 import edu.hm.huberneumeier.shareit.media.logic.MediaServiceImpl;
 import edu.hm.huberneumeier.shareit.media.logic.MediaServiceResult;
+import edu.hm.huberneumeier.shareit.media.media.Book;
+import edu.hm.huberneumeier.shareit.media.media.Disc;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -15,6 +19,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -33,6 +38,7 @@ public class MediaResource {
      * Instance of the Media Service Implementation.
      */
     private static MediaService mediaService = new MediaServiceImpl();
+    private static AuthorizationImpl authService = new AuthorizationImpl();
 
     /**
      * Method to create a fresh media service.
@@ -86,10 +92,15 @@ public class MediaResource {
     @GET
     @Path("books")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getBooks() {
-        String jsonString = jsonMapper(mediaService.getBooks());
-
-        return Response.status(RESPONSE_CODE_OK).entity(jsonString).build();
+    public Response getBooks(@QueryParam("token") String token) {
+        ValidationResult validationResult = authService.validate(token, Authorisation.BOOK_READ);
+        String jsonString = jsonMapper(validationResult);
+        Response.Status response = Response.Status.UNAUTHORIZED;
+        if (validationResult.getValidationState().equals(ValidationState.SUCCESS)) {
+            response = Response.Status.OK;
+            jsonString = jsonMapper(mediaService.getBooks());
+        }
+        return Response.status(response).entity(jsonString).build();
     }
 
     /**

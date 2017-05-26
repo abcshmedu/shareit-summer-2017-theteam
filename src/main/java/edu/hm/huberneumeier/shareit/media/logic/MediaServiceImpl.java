@@ -1,12 +1,13 @@
 package edu.hm.huberneumeier.shareit.media.logic;
 
 import edu.hm.huberneumeier.shareit.authentification.logic.authorisation.Authorisation;
-import edu.hm.huberneumeier.shareit.authentification.media.Token;
+import edu.hm.huberneumeier.shareit.authentification.logic.authorisation.AuthorizationImpl;
 import edu.hm.huberneumeier.shareit.authentification.logic.authorisation.ValidationResult;
+import edu.hm.huberneumeier.shareit.authentification.media.Token;
+import edu.hm.huberneumeier.shareit.media.logic.helpers.Utils;
 import edu.hm.huberneumeier.shareit.media.media.Book;
 import edu.hm.huberneumeier.shareit.media.media.Disc;
 import edu.hm.huberneumeier.shareit.media.media.Medium;
-import edu.hm.huberneumeier.shareit.media.logic.helpers.Utils;
 import uk.co.moreofless.ISBNValidator;
 
 import java.util.ArrayList;
@@ -132,12 +133,12 @@ public class MediaServiceImpl implements MediaService {
     @Override
     public MediaServiceResult addDisc(Disc disc) {
         //TODO get the token from the user, this is just a "mock"
-        Token tokenFromUser = new Token();
-        final MediaServiceResult serviceResult = validateRequest(tokenFromUser, Authorisation.DISC_CREATE);
-
-        //if result is not ok, there was a error, return and exit method
-        if (!serviceResult.equals(MediaServiceResult.OK))
-            return serviceResult;
+        //Token tokenFromUser = new Token();
+        //final MediaServiceResult serviceResult = validateRequest(tokenFromUser, Authorisation.DISC_CREATE);
+//
+        ////if result is not ok, there was a error, return and exit method
+        //if (!serviceResult.equals(MediaServiceResult.OK))
+        //    return serviceResult;
 
 
         //clear barcode
@@ -178,12 +179,12 @@ public class MediaServiceImpl implements MediaService {
     @Override
     public MediaServiceResult updateDisc(String barcode, Disc disc) {
         //TODO get the token from the user, this is just a "mock"
-        Token tokenFromUser = new Token();
-        final MediaServiceResult serviceResult = validateRequest(tokenFromUser, Authorisation.DISC_UPDATE);
-
-        //if result is not ok, there was a error, return and exit method
-        if (!serviceResult.equals(MediaServiceResult.OK))
-            return serviceResult;
+        //Token tokenFromUser = new Token();
+        //final MediaServiceResult serviceResult = validateRequest(tokenFromUser, Authorisation.DISC_UPDATE);
+//
+        ////if result is not ok, there was a error, return and exit method
+        //if (!serviceResult.equals(MediaServiceResult.OK))
+        //    return serviceResult;
 
         if (!barcode.equals(disc.getBarcode())) {
             return MediaServiceResult.BAD_REQUEST;
@@ -284,7 +285,7 @@ public class MediaServiceImpl implements MediaService {
 
     private MediaServiceResult validateRequest(Token token, Authorisation authorisation) {
         //TODO not a good solution :-(
-        AuthServiceImpl authService = new AuthServiceImpl();
+        AuthorizationImpl authService = new AuthorizationImpl();
         //TODO maybe it is better to replace validationResult by MediaServiceResult or build a over all solution
         final ValidationResult tmp = authService.validate(token, authorisation);
         return null;

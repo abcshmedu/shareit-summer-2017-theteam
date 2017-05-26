@@ -41,6 +41,8 @@ public class MediaResourceTest {
     private static final Response RESPONSE_NOT_MODIFIED = Response.status(MediaServiceResult.NOT_MODIFIED.getCode()).entity(jsonMapper(MediaServiceResult.NOT_MODIFIED)).build();
     private static final Response RESPONSE_NOT_FOUND = Response.status(MediaServiceResult.NOT_FOUND.getCode()).entity(jsonMapper(MediaServiceResult.NOT_FOUND)).build();
 
+    private static final String VALID_TOKEN = "";
+
     @Test
     public void checkValidateIsbn() throws Exception {
         Assert.assertFalse(ISBNValidator.validateISBN13(null));
@@ -50,7 +52,7 @@ public class MediaResourceTest {
     public void getBooksEmptyLibrary() throws Exception {
         mediaResource.clearMediaService();
         //Check response of get
-        Response response = mediaResource.getBooks();
+        Response response = mediaResource.getBooks(VALID_TOKEN);
         Response emptyResponse = Response.status(200).entity("[]").build();
         Assert.assertEquals(emptyResponse.toString(), response.toString());
         Assert.assertEquals(emptyResponse.getEntity().toString(), response.getEntity().toString());
@@ -61,7 +63,7 @@ public class MediaResourceTest {
         mediaResource.clearMediaService();
         mediaResource.createDisc(new Disc("Test", "Test", 0, "Test"));
         //Check response of get afterwards
-        Response response = mediaResource.getBooks();
+        Response response = mediaResource.getBooks(VALID_TOKEN);
         Response emptyResponse = Response.status(200).entity("[]").build();
         Assert.assertEquals(emptyResponse.toString(), response.toString());
         Assert.assertEquals(emptyResponse.getEntity().toString(), response.getEntity().toString());
@@ -84,7 +86,7 @@ public class MediaResourceTest {
         Assert.assertEquals(RESPONSE_CREATE.toString(), createResponse.toString());
         Assert.assertEquals(RESPONSE_CREATE.getEntity().toString(), createResponse.getEntity().toString());
         //Check response of get afterwards
-        Response response = mediaResource.getBooks();
+        Response response = mediaResource.getBooks(VALID_TOKEN);
         Response correctGetResponse = Response.status(200).entity("[{\"title\":\"Test book\",\"author\":\"test\",\"isbn\":\"" + EXAMPLE_ISBN + "\"}]").build();
         Assert.assertEquals(correctGetResponse.toString(), response.toString());
         Assert.assertEquals(correctGetResponse.getEntity().toString(), response.getEntity().toString());
@@ -116,7 +118,7 @@ public class MediaResourceTest {
         Assert.assertEquals(RESPONSE_BAD_REQUEST.toString(), createResponseSecond.toString());
         Assert.assertEquals(RESPONSE_BAD_REQUEST.getEntity().toString(), createResponseSecond.getEntity().toString());
         //Check response of get afterwards if the book firstly put in is still there after a failed create
-        Response response = mediaResource.getBooks();
+        Response response = mediaResource.getBooks(VALID_TOKEN);
         Response correctGetResponse = Response.status(200).entity("[{\"title\":\"Test book\",\"author\":\"test\",\"isbn\":\"" + EXAMPLE_ISBN + "\"}]").build();
         Assert.assertEquals(correctGetResponse.toString(), response.toString());
         Assert.assertEquals(correctGetResponse.getEntity().toString(), response.getEntity().toString());
@@ -139,7 +141,7 @@ public class MediaResourceTest {
         Assert.assertEquals(RESPONSE_BAD_REQUEST.toString(), createResponse.toString());
         Assert.assertEquals(RESPONSE_BAD_REQUEST.getEntity().toString(), createResponse.getEntity().toString());
         //Check response of get afterwards
-        Response response = mediaResource.getBooks();
+        Response response = mediaResource.getBooks(VALID_TOKEN);
         Response correctGetResponse = Response.status(200).entity("[]").build();
         Assert.assertEquals(correctGetResponse.toString(), response.toString());
         Assert.assertEquals(correctGetResponse.getEntity().toString(), response.getEntity().toString());
@@ -155,7 +157,7 @@ public class MediaResourceTest {
         Assert.assertEquals(RESPONSE_ACCEPTED.toString(), updateResponse.toString());
         Assert.assertEquals(RESPONSE_ACCEPTED.getEntity().toString(), updateResponse.getEntity().toString());
         //Check response of get afterwards
-        Response response = mediaResource.getBooks();
+        Response response = mediaResource.getBooks(VALID_TOKEN);
         Response correctGetResponse = Response.status(200).entity("[{\"title\":\"changed\",\"author\":\"test\",\"isbn\":\"" + EXAMPLE_ISBN + "\"}]").build();
         Assert.assertEquals(correctGetResponse.toString(), response.toString());
         Assert.assertEquals(correctGetResponse.getEntity().toString(), response.getEntity().toString());
@@ -171,7 +173,7 @@ public class MediaResourceTest {
         Assert.assertEquals(RESPONSE_ACCEPTED.toString(), updateResponse.toString());
         Assert.assertEquals(RESPONSE_ACCEPTED.getEntity().toString(), updateResponse.getEntity().toString());
         //Check response of get afterwards
-        Response response = mediaResource.getBooks();
+        Response response = mediaResource.getBooks(VALID_TOKEN);
         Response correctGetResponse = Response.status(200).entity("[{\"title\":\"test\",\"author\":\"changed\",\"isbn\":\"" + EXAMPLE_ISBN + "\"}]").build();
         Assert.assertEquals(correctGetResponse.toString(), response.toString());
         Assert.assertEquals(correctGetResponse.getEntity().toString(), response.getEntity().toString());
@@ -187,7 +189,7 @@ public class MediaResourceTest {
         Assert.assertEquals(RESPONSE_ACCEPTED.toString(), updateResponse.toString());
         Assert.assertEquals(RESPONSE_ACCEPTED.getEntity().toString(), updateResponse.getEntity().toString());
         //Check response of get afterwards
-        Response response = mediaResource.getBooks();
+        Response response = mediaResource.getBooks(VALID_TOKEN);
         Response correctGetResponse = Response.status(200).entity("[{\"title\":\"changed\",\"author\":\"changed\",\"isbn\":\"" + EXAMPLE_ISBN + "\"}]").build();
         Assert.assertEquals(correctGetResponse.toString(), response.toString());
         Assert.assertEquals(correctGetResponse.getEntity().toString(), response.getEntity().toString());
@@ -203,7 +205,7 @@ public class MediaResourceTest {
         Assert.assertEquals(RESPONSE_BAD_REQUEST.toString(), updateResponse.toString());
         Assert.assertEquals(RESPONSE_BAD_REQUEST.getEntity().toString(), updateResponse.getEntity().toString());
         //Check response of get afterwards
-        Response response = mediaResource.getBooks();
+        Response response = mediaResource.getBooks(VALID_TOKEN);
         Response correctGetResponse = Response.status(200).entity("[{\"title\":\"test\",\"author\":\"test\",\"isbn\":\"" + EXAMPLE_ISBN + "\"}]").build();
         Assert.assertEquals(correctGetResponse.toString(), response.toString());
         Assert.assertEquals(correctGetResponse.getEntity().toString(), response.getEntity().toString());
@@ -219,7 +221,7 @@ public class MediaResourceTest {
         Assert.assertEquals(RESPONSE_ACCEPTED.toString(), updateResponse.toString());
         Assert.assertEquals(RESPONSE_ACCEPTED.getEntity().toString(), updateResponse.getEntity().toString());
         //Check response of get afterwards
-        Response response = mediaResource.getBooks();
+        Response response = mediaResource.getBooks(VALID_TOKEN);
         Response correctGetResponse = Response.status(200).entity("[{\"title\":\"test\",\"author\":\"changed\",\"isbn\":\"" + EXAMPLE_ISBN + "\"}]").build();
         Assert.assertEquals(correctGetResponse.toString(), response.toString());
         Assert.assertEquals(correctGetResponse.getEntity().toString(), response.getEntity().toString());
@@ -235,7 +237,7 @@ public class MediaResourceTest {
         Assert.assertEquals(RESPONSE_ACCEPTED.toString(), updateResponse.toString());
         Assert.assertEquals(RESPONSE_ACCEPTED.getEntity().toString(), updateResponse.getEntity().toString());
         //Check response of get afterwards
-        Response response = mediaResource.getBooks();
+        Response response = mediaResource.getBooks(VALID_TOKEN);
         Response correctGetResponse = Response.status(200).entity("[{\"title\":\"changed\",\"author\":\"test\",\"isbn\":\"" + EXAMPLE_ISBN + "\"}]").build();
         Assert.assertEquals(correctGetResponse.toString(), response.toString());
         Assert.assertEquals(correctGetResponse.getEntity().toString(), response.getEntity().toString());
@@ -249,7 +251,7 @@ public class MediaResourceTest {
         Assert.assertEquals(RESPONSE_NOT_FOUND.toString(), updateResponse.toString());
         Assert.assertEquals(RESPONSE_NOT_FOUND.getEntity().toString(), updateResponse.getEntity().toString());
         //Check response of get afterwards
-        Response response = mediaResource.getBooks();
+        Response response = mediaResource.getBooks(VALID_TOKEN);
         Response correctGetResponse = Response.status(200).entity("[]").build();
         Assert.assertEquals(correctGetResponse.toString(), response.toString());
         Assert.assertEquals(correctGetResponse.getEntity().toString(), response.getEntity().toString());
@@ -267,7 +269,7 @@ public class MediaResourceTest {
         mediaResource.updateBook(EXAMPLE_ISBN_2, new Book("changed", "changed", EXAMPLE_ISBN_2));
         mediaResource.updateBook(EXAMPLE_ISBN, new Book("changed", "changed", EXAMPLE_ISBN));
         //Check response of get afterwards
-        Response response = mediaResource.getBooks();
+        Response response = mediaResource.getBooks(VALID_TOKEN);
         Response correctGetResponse = Response.status(200).entity("[{\"title\":\"changed\",\"author\":\"changed\",\"isbn\":\"" + EXAMPLE_ISBN + "\"},{\"title\":\"changed\",\"author\":\"changed\",\"isbn\":\"" + EXAMPLE_ISBN_2 + "\"},{\"title\":\"changed\",\"author\":\"changed\",\"isbn\":\"" + EXAMPLE_ISBN_3 + "\"}]").build();
         Assert.assertEquals(correctGetResponse.toString(), response.toString());
         Assert.assertEquals(correctGetResponse.getEntity().toString(), response.getEntity().toString());
@@ -284,7 +286,7 @@ public class MediaResourceTest {
         Assert.assertEquals(RESPONSE_BAD_REQUEST.toString(), updateResponse.toString());
         Assert.assertEquals(RESPONSE_BAD_REQUEST.getEntity().toString(), updateResponse.getEntity().toString());
         //Check response of get afterwards
-        Response response = mediaResource.getBooks();
+        Response response = mediaResource.getBooks(VALID_TOKEN);
         Response correctGetResponse = Response.status(200).entity("[{\"title\":\"test\",\"author\":\"test\",\"isbn\":\"" + EXAMPLE_ISBN + "\"},{\"title\":\"test\",\"author\":\"test\",\"isbn\":\"" + EXAMPLE_ISBN_2 + "\"}]").build();
         Assert.assertEquals(correctGetResponse.toString(), response.toString());
         Assert.assertEquals(correctGetResponse.getEntity().toString(), response.getEntity().toString());
