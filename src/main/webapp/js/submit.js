@@ -16,11 +16,18 @@ var submitAuthenticateUser = function () {
         type: 'POST',
         contentType: 'application/json; charset=UTF-8',
         data: json
-    }).done(() => {
+    }).done((data) => {
         $("input[name=username]").val("");
     $("input[name=password]").val("");
     errorText.removeClass("visible");
     errorText.addClass("hidden");
+
+    var template = "<h2>Token</h2><table class='u-full-width'>" +
+        "<tbody>{{#data}}<tr><td><strong>KEY: </strong>{{key}}</td></tr><tr><td><strong>created: </strong>{{created}}</td></tr><tr><td><strong>valid until: </strong>{{validUntil}}</td></tr>{{/data}}</tbody></table>";
+    Mustache.parse(template);
+    var output = Mustache.render(template, {data: data});
+    $("#content").html(output);
+
 }).fail((error) => {
         errorText.addClass("visible");
     //errorText.text(error.responseJSON.detail);

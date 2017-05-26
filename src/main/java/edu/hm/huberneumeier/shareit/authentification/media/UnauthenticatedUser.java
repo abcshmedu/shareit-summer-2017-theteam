@@ -10,6 +10,10 @@ public class UnauthenticatedUser {
     private String username;
     private String password;
 
+    public UnauthenticatedUser(){
+
+    }
+
     public UnauthenticatedUser(String username, String password) {
         this.username = username;
         this.password = password;

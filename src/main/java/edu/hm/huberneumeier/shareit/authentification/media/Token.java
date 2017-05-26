@@ -12,6 +12,7 @@ import java.util.Map;
  * @version 2017-05-17
  */
 public class Token {
+    private static final int LENGTH = 128;
     private String key;
     private long created;
     private long validUntil;
@@ -39,9 +40,9 @@ public class Token {
     }
 
     private String createKey() {
-        String newKey = "";
+        String newKey = RandomStringUtils.randomAlphanumeric(LENGTH);
         while (newKey.isEmpty() && createdKeys.containsKey(newKey))
-            newKey = RandomStringUtils.randomAlphanumeric(516);
+            newKey = RandomStringUtils.randomAlphanumeric(LENGTH);
         return newKey;
     }
 
