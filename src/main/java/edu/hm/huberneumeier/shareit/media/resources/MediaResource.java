@@ -22,6 +22,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 /**
  * Media Service is used to communicate directly with the frontend.
@@ -57,7 +59,13 @@ public class MediaResource {
     @Path("books")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createBook(Book book, @QueryParam("token") String token) {
-        return getReturnResponse(authService.validate(token, Authorisation.BOOK_CREATE), mediaService.addBook(book));
+        return getReturnResponse(
+                authService.validate(token, Authorisation.BOOK_CREATE),
+                () -> {
+                    MediaServiceResult result = mediaService.addBook(book);
+                    return Response.status(result.getStatus()).entity(jsonMapper(result)).build();
+                }
+        );
     }
 
     /**
@@ -71,19 +79,18 @@ public class MediaResource {
     @Path("books/{isbn}")
     @Produces({MediaType.APPLICATION_JSON})
     public Response getBookByISBN(@PathParam("isbn") String isbn, @QueryParam("token") String token) {
-        ValidationResult validationResult = authService.validate(token, Authorisation.BOOK_READ);
-        Object result = validationResult;
-        Response.Status response = Response.Status.UNAUTHORIZED;
-        if (validationResult.getValidationState().equals(ValidationState.SUCCESS)) {
-            response = Response.Status.OK;
-            result = mediaService.getBook(isbn);
-            if (result == null) {
-                result = MediaServiceResult.NOT_FOUND;
-                response = Response.Status.NOT_FOUND;
-            }
-        }
-
-        return Response.status(response).entity(jsonMapper(result)).build();
+        return getReturnResponse(
+                authService.validate(token, Authorisation.BOOK_READ),
+                () -> {
+                    Object result = mediaService.getBook(isbn);
+                    Response.Status response = Response.Status.OK;
+                    if(result == null){
+                        result = MediaServiceResult.NOT_FOUND;
+                        response = Response.Status.NOT_FOUND;
+                    }
+                    return Response.status(response).entity(jsonMapper(result)).build();
+                }
+        );
     }
 
     /**
@@ -96,7 +103,10 @@ public class MediaResource {
     @Path("books")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getBooks(@QueryParam("token") String token) {
-        return getReturnResponse(authService.validate(token, Authorisation.BOOK_READ), mediaService.getBooks());
+        return getReturnResponse(
+                authService.validate(token, Authorisation.BOOK_READ),
+                () -> Response.status(RESPONSE_CODE_OK).entity(jsonMapper(mediaService.getBooks())).build()
+        );
     }
 
     /**
@@ -111,7 +121,13 @@ public class MediaResource {
     @Path("books/{isbn}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateBook(@PathParam("isbn") String isbn, Book book, @QueryParam("token") String token) {
-        return getReturnResponse(authService.validate(token, Authorisation.BOOK_UPDATE), mediaService.updateBook(isbn, book));
+        return getReturnResponse(
+                authService.validate(token, Authorisation.BOOK_UPDATE),
+                () -> {
+                    MediaServiceResult result = mediaService.updateBook(isbn, book);
+                    return Response.status(result.getStatus()).entity(jsonMapper(result)).build();
+                }
+        );
     }
 
     /**
@@ -125,7 +141,13 @@ public class MediaResource {
     @Path("discs")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createDisc(Disc disc, @QueryParam("token") String token) {
-        return getReturnResponse(authService.validate(token, Authorisation.DISC_CREATE), mediaService.addDisc(disc));
+        return getReturnResponse(
+                authService.validate(token, Authorisation.BOOK_CREATE),
+                () -> {
+                    MediaServiceResult result = mediaService.addDisc(disc);
+                    return Response.status(result.getStatus()).entity(jsonMapper(result)).build();
+                }
+        );
     }
 
     /**
@@ -139,19 +161,18 @@ public class MediaResource {
     @Path("discs/{barcode}")
     @Produces({MediaType.APPLICATION_JSON})
     public Response getDiscByBarcode(@PathParam("barcode") String barcode, @QueryParam("token") String token) {
-        ValidationResult validationResult = authService.validate(token, Authorisation.DISC_READ);
-        Object result = validationResult;
-        Response.Status response = Response.Status.UNAUTHORIZED;
-        if (validationResult.getValidationState().equals(ValidationState.SUCCESS)) {
-            response = Response.Status.OK;
-            result = mediaService.getDisc(barcode);
-            if (result == null) {
-                result = MediaServiceResult.NOT_FOUND;
-                response = Response.Status.NOT_FOUND;
-            }
-        }
-
-        return Response.status(response).entity(jsonMapper(result)).build();
+        return getReturnResponse(
+                authService.validate(token, Authorisation.DISC_READ),
+                () -> {
+                    Object result = mediaService.getDisc(barcode);
+                    Response.Status response = Response.Status.OK;
+                    if(result == null){
+                        result = MediaServiceResult.NOT_FOUND;
+                        response = Response.Status.NOT_FOUND;
+                    }
+                    return Response.status(response).entity(jsonMapper(result)).build();
+                }
+        );
     }
 
     /**
@@ -164,7 +185,10 @@ public class MediaResource {
     @Path("discs")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getDiscs(@QueryParam("token") String token) {
-        return getReturnResponse(authService.validate(token, Authorisation.DISC_READ), mediaService.getDiscs());
+        return getReturnResponse(
+                authService.validate(token, Authorisation.DISC_READ),
+                () -> Response.status(RESPONSE_CODE_OK).entity(jsonMapper(mediaService.getDiscs())).build()
+        );
     }
 
     /**
@@ -179,7 +203,13 @@ public class MediaResource {
     @Path("discs/{barcode}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateDisc(@PathParam("barcode") String barcode, Disc disc, @QueryParam("token") String token) {
-        return getReturnResponse(authService.validate(token, Authorisation.DISC_UPDATE), mediaService.updateDisc(barcode, disc));
+        return getReturnResponse(
+                authService.validate(token, Authorisation.DISC_UPDATE),
+                () -> {
+                    MediaServiceResult result = mediaService.updateDisc(barcode, disc);
+                    return Response.status(result.getStatus()).entity(jsonMapper(result)).build();
+                }
+        );
     }
 
     /**
@@ -202,7 +232,7 @@ public class MediaResource {
     /**
      * Produce the response which is return by the methods above.
      *
-     * @param validationResult the result of the validation of token and authorisation.
+     * @param validationResult   the result of the validation of token and authorisation.
      * @param mediaServiceReturn the return object of the request on media service.
      * @return
      */
@@ -214,6 +244,20 @@ public class MediaResource {
             result = mediaServiceReturn;
         }
         return Response.status(response).entity(jsonMapper(result)).build();
+    }
+
+    /**
+     * Produce the response which is return by the methods above.
+     *
+     * @param validationResult   the result of the validation of token and authorisation.
+     * @param mediaServiceReturn the return object of the request on media service.
+     * @return
+     */
+    private Response getReturnResponse(ValidationResult validationResult, Supplier<Response> responsePredicate) {
+        if (validationResult.getValidationState() == ValidationState.SUCCESS) {
+            return responsePredicate.get();
+        }
+        return Response.status(Response.Status.UNAUTHORIZED).entity(jsonMapper(validationResult)).build();
     }
 
 }
