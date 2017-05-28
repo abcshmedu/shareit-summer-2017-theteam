@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
  * @author andreas
  * @version 26.05.2017
  */
-public class AuthenticationResourceResourceTest {
+public class AuthenticationTests {
     private final AuthenticationResource authenticationResourceResource = new AuthenticationResource();
 
     @Test
@@ -56,4 +56,6 @@ public class AuthenticationResourceResourceTest {
         Assert.assertEquals(expected.getStatus(), response.getStatus());
         Assert.assertEquals("{\"authenticationState\":\"WRONG_INPUT\",\"message\":\"Unauthenticated - Your input was not correct.\",\"token\":null}", response.getEntity().toString());
     }
+
+
 }

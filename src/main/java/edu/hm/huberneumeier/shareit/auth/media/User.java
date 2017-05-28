@@ -18,9 +18,7 @@ public class User {
     private AuthorisationGroup authorisationGroup;
 
     public User(String username, String password) {
-        this.username = username;
-        this.password = password;
-        authorisationGroup = AuthorisationGroup.USERS;
+        this(username, password,AuthorisationGroup.USERS);
     }
 
     public User(String username, String password, AuthorisationGroup authorisationGroup) {
