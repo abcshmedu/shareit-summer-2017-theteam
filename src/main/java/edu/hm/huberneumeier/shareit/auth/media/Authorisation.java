@@ -4,10 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Description...
+ * Containing all authorizations available. For each media operation one.
  *
  * @author Tobias Huber
- * @version 2017-05-17
+ * @version 28.05.2017
  */
 public enum Authorisation {
     /**

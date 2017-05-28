@@ -1,15 +1,14 @@
 package edu.hm.huberneumeier.shareit.auth.media;
 
-import edu.hm.huberneumeier.shareit.auth.media.Authorisation;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Description...
+ * Combine multiple Authorisations to AuthorisationGroups.
  *
+ * @author Andreas Neumeier
  * @author Tobias Huber
- * @version 2017-05-17
+ * @version 28.05.2017
  */
 public enum AuthorisationGroup {
 

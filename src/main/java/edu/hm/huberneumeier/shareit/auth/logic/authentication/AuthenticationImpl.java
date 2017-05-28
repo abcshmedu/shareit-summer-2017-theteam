@@ -5,10 +5,11 @@ import edu.hm.huberneumeier.shareit.auth.media.Token;
 import edu.hm.huberneumeier.shareit.auth.media.User;
 
 /**
- * Description.
+ * Logic of the external auth api.
  *
- * @author andreas
- * @version 25.05.2017
+ * @author Andreas Neumeier
+ * @author Tobias Huber
+ * @version 28.05.2017
  */
 public class AuthenticationImpl implements AuthServiceExternal {
 

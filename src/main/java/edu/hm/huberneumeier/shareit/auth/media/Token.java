@@ -6,10 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Description...
+ * Represents a token that could be used for authorisation.
  *
+ * @author Andreas Neumeier
  * @author Tobias Huber
- * @version 2017-05-17
+ * @version 28.05.2017
  */
 public class Token {
     private static final int LENGTH = 128;

@@ -1,11 +1,9 @@
 package edu.hm.huberneumeier.shareit.auth.media.jsonMappings;
 
-import edu.hm.huberneumeier.shareit.auth.media.Authorisation;
-
 /**
- * Description.
+ * Used for json requests to the authorisation service.
  *
- * @author andreas
+ * @author Andreas Neumeier
  * @version 28.05.2017
  */
 public class AuthorisationIDRequest {

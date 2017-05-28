@@ -8,10 +8,11 @@ import edu.hm.huberneumeier.shareit.auth.media.User;
 import java.util.List;
 
 /**
- * Description.
+ * Implementation of the internal authorisation api.
  *
- * @author andreas
- * @version 25.05.2017
+ * @author Andreas Neumeier
+ * @author Tobias Huber
+ * @version 28.05.2017
  */
 public class AuthorisationImpl implements AuthServiceInternal {
 

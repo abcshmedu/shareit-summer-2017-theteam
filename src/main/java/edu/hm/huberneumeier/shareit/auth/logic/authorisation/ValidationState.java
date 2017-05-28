@@ -1,10 +1,10 @@
 package edu.hm.huberneumeier.shareit.auth.logic.authorisation;
 
 /**
- * Description...
+ * States which could be holden by ValidationResults.
  *
  * @author Tobias Huber
- * @version 2017-05-17
+ * @version 28.05.2017
  */
 public enum ValidationState {
     SUCCESS(200, "SUCCESS"),

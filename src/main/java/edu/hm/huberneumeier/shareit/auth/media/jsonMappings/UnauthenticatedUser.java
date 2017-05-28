@@ -1,10 +1,10 @@
 package edu.hm.huberneumeier.shareit.auth.media.jsonMappings;
 
 /**
- * Description...
+ * Used to map json authentication requests from the authentication api.
  *
  * @author Tobias Huber
- * @version 2017-05-26
+ * @version 28.05.2017
  */
 public class UnauthenticatedUser {
     private String username;

@@ -3,10 +3,11 @@ package edu.hm.huberneumeier.shareit.auth.logic.authentication;
 import edu.hm.huberneumeier.shareit.auth.media.Token;
 
 /**
- * Description.
+ * Results of Authentications.
  *
- * @author andreas
- * @version 25.05.2017
+ * @author Andreas Neumeier
+ * @author Tobias Huber
+ * @version 28.05.2017
  */
 public class AuthenticationResult {
     private AuthenticationState authenticationState;

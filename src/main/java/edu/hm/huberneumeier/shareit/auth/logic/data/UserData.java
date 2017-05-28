@@ -7,10 +7,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Description.
+ * Mapping between users and there names & tokens.
  *
- * @author andreas
- * @version 25.05.2017
+ * @author Andreas Neumeier
+ * @author Tobias Huber
+ * @version 28.05.2017
  */
 public class UserData {
     private static Map<String, User> userList = User.getUserList();

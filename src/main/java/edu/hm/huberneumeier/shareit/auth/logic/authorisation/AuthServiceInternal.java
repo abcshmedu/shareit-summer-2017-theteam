@@ -3,10 +3,10 @@ package edu.hm.huberneumeier.shareit.auth.logic.authorisation;
 import edu.hm.huberneumeier.shareit.auth.media.Authorisation;
 
 /**
- * Description...
+ * Interface for the internal authorisation service.
  *
  * @author Tobias Huber
- * @version 2017-05-17
+ * @version 28.05.2017
  */
 public interface AuthServiceInternal {
     public ValidationResult validate(String token, Authorisation authorisation);

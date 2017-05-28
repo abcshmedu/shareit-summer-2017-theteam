@@ -274,7 +274,14 @@ public class MediaResource {
         }
     }
 
-    // HTTP POST request
+    /**
+     * Request the authorisation service if the user is allowed to perform the requested action.
+     *
+     * @param token The users token.
+     * @param json  The requested operation wrapped as small json object.
+     * @return  The validation result.
+     * @throws Exception
+     */
     private ValidationResult sendValidationPost(String token, String json) throws Exception {
 
         URL obj = new URL(AUTH_SERVER_URL+"/?token="+token);

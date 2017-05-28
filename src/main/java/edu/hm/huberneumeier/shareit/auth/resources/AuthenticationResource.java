@@ -12,10 +12,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
- * Description.
+ * API Where users can authenticate.
  *
- * @author andreas
- * @version 25.05.2017
+ * @author Andreas Neumeier
+ * @author Tobias Huber
+ * @version 28.05.2017
  */
 @Path("/")
 public class AuthenticationResource {

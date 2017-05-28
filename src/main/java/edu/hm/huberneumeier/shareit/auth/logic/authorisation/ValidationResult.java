@@ -1,10 +1,10 @@
 package edu.hm.huberneumeier.shareit.auth.logic.authorisation;
 
 /**
- * Description...
+ * Results given back from validations.
  *
  * @author Tobias Huber
- * @version 2017-05-17
+ * @version 28.05.2017
  */
 public class ValidationResult {
     private ValidationState validationState;

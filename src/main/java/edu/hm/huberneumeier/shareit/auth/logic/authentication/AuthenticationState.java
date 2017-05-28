@@ -1,10 +1,11 @@
 package edu.hm.huberneumeier.shareit.auth.logic.authentication;
 
 /**
- * Description...
+ * States which can be hold by an AuthenticationResult.
  *
+ * @author Andreas Neumeier
  * @author Tobias Huber
- * @version 2017-05-26
+ * @version 25.05.2017
  */
 public enum AuthenticationState {
     SUCCESS(200, "SUCCESS"),

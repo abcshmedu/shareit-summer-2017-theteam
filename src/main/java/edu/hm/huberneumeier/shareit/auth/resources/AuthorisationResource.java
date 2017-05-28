@@ -16,10 +16,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
- * Description.
+ * API for microservices to request if the user is allowed to perform a specific operation.
  *
- * @author andreas
- * @version 25.05.2017
+ * @author Andreas Neumeier
+ * @version 28.05.2017
  */
 @Path("validate")
 public class AuthorisationResource {

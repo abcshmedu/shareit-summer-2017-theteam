@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Description...
+ * Represents a user object.
  *
  * @author Tobias Huber
- * @version 2017-05-17
+ * @version 28.05.2017
  */
 public class User {
     private String username;
