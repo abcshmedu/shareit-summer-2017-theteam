@@ -2,16 +2,19 @@ package edu.hm.huberneumeier.shareit.media.resources;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.hm.huberneumeier.shareit.auth.logic.authorisation.Authorisation;
+import edu.hm.huberneumeier.shareit.auth.media.Authorisation;
 import edu.hm.huberneumeier.shareit.auth.logic.authorisation.AuthorisationImpl;
 import edu.hm.huberneumeier.shareit.auth.logic.authorisation.ValidationResult;
 import edu.hm.huberneumeier.shareit.auth.logic.authorisation.ValidationState;
+import edu.hm.huberneumeier.shareit.auth.media.jsonMappings.AuthorisationIDRequest;
+import edu.hm.huberneumeier.shareit.auth.resources.AuthorisationResource;
 import edu.hm.huberneumeier.shareit.media.logic.MediaService;
 import edu.hm.huberneumeier.shareit.media.logic.MediaServiceImpl;
 import edu.hm.huberneumeier.shareit.media.logic.MediaServiceResult;
 import edu.hm.huberneumeier.shareit.media.media.Book;
 import edu.hm.huberneumeier.shareit.media.media.Disc;
 
+import javax.print.attribute.standard.Media;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -22,8 +25,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * Media Service is used to communicate directly with the frontend.
@@ -34,6 +41,8 @@ import java.util.function.Supplier;
  */
 @Path("/")
 public class MediaResource {
+    private static final String AUTH_SERVER_URL = "http://localhost:8082/shareit/auth/validate";
+    private static Boolean isUnitTesting = false;
     private static final int RESPONSE_CODE_OK = 200;
     /**
      * Instance of the Media Service Implementation.
@@ -84,7 +93,7 @@ public class MediaResource {
                 () -> {
                     Object result = mediaService.getBook(isbn);
                     Response.Status response = Response.Status.OK;
-                    if(result == null){
+                    if (result == null) {
                         result = MediaServiceResult.NOT_FOUND;
                         response = Response.Status.NOT_FOUND;
                     }
@@ -104,7 +113,8 @@ public class MediaResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getBooks(@QueryParam("token") String token) {
         return getReturnResponse(
-                authService.validate(token, Authorisation.BOOK_READ),
+                Authorisation.BOOK_READ,
+                token,
                 () -> Response.status(RESPONSE_CODE_OK).entity(jsonMapper(mediaService.getBooks())).build()
         );
     }
@@ -166,7 +176,7 @@ public class MediaResource {
                 () -> {
                     Object result = mediaService.getDisc(barcode);
                     Response.Status response = Response.Status.OK;
-                    if(result == null){
+                    if (result == null) {
                         result = MediaServiceResult.NOT_FOUND;
                         response = Response.Status.NOT_FOUND;
                     }
@@ -232,26 +242,9 @@ public class MediaResource {
     /**
      * Produce the response which is return by the methods above.
      *
-     * @param validationResult   the result of the validation of token and authorisation.
-     * @param mediaServiceReturn the return object of the request on media service.
-     * @return
-     */
-    private Response getReturnResponse(ValidationResult validationResult, Object mediaServiceReturn) {
-        Object result = validationResult;
-        Response.Status response = Response.Status.UNAUTHORIZED;
-        if (validationResult.getValidationState().equals(ValidationState.SUCCESS)) {
-            response = Response.Status.OK;
-            result = mediaServiceReturn;
-        }
-        return Response.status(response).entity(jsonMapper(result)).build();
-    }
-
-    /**
-     * Produce the response which is return by the methods above.
-     *
-     * @param validationResult   the result of the validation of token and authorisation.
-     * @param mediaServiceReturn the return object of the request on media service.
-     * @return
+     * @param validationResult  the result of the validation of token and authorisation.
+     * @param responsePredicate what to do when the validation is positive.
+     * @return The result of the request.
      */
     private Response getReturnResponse(ValidationResult validationResult, Supplier<Response> responsePredicate) {
         if (validationResult.getValidationState() == ValidationState.SUCCESS) {
@@ -260,4 +253,64 @@ public class MediaResource {
         return Response.status(Response.Status.UNAUTHORIZED).entity(jsonMapper(validationResult)).build();
     }
 
+    private Response getReturnResponse(Authorisation authorisation, String token, Supplier<Response> responsePredicate) {
+        try {
+            ValidationResult validationResult = null;
+            if(!isUnitTesting)
+                validationResult = sendValidationPost(token, jsonMapper(new AuthorisationIDRequest(authorisation.getId())));
+            else{
+                Response response = new AuthorisationResource().valideateRequest(token, new AuthorisationIDRequest(authorisation.getId()));
+                ObjectMapper objectMapper = new ObjectMapper();
+                validationResult = objectMapper.readValue(response.getEntity().toString(), ValidationResult.class);
+            }
+
+            if (validationResult.getValidationState() == ValidationState.SUCCESS) {
+                return responsePredicate.get();
+            }
+            return Response.status(Response.Status.UNAUTHORIZED).entity(jsonMapper(validationResult)).build();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(Response.Status.BAD_GATEWAY).entity("Validation service not reachable!").build();
+        }
+    }
+
+    // HTTP POST request
+    private ValidationResult sendValidationPost(String token, String json) throws Exception {
+
+        URL obj = new URL(AUTH_SERVER_URL+"/?token="+token);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+        con.setRequestMethod("POST");
+        con.setRequestProperty( "Content-Type", MediaType.APPLICATION_JSON);
+        con.setRequestProperty( "charset", "utf-8");
+
+        // Send post request
+        con.setDoOutput(true);
+        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+        wr.write(json.getBytes("UTF-8"));
+        wr.flush();
+        wr.close();
+
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+        con.disconnect();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        ValidationResult validationResult = objectMapper.readValue(response.toString(), ValidationResult.class);
+
+        System.out.println(response.toString());
+        return validationResult;
+    }
+
+    public static void setIsUnitTesting(Boolean isUnitTesting) {
+        MediaResource.isUnitTesting = isUnitTesting;
+    }
 }

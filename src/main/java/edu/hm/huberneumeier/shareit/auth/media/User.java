@@ -1,7 +1,5 @@
 package edu.hm.huberneumeier.shareit.auth.media;
 
-import edu.hm.huberneumeier.shareit.auth.logic.authorisation.AuthorisationGroup;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;

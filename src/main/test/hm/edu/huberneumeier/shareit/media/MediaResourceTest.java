@@ -4,8 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import edu.hm.huberneumeier.shareit.auth.media.UnauthenticatedUser;
-import edu.hm.huberneumeier.shareit.auth.resources.Authentication;
+import edu.hm.huberneumeier.shareit.auth.media.jsonMappings.UnauthenticatedUser;
+import edu.hm.huberneumeier.shareit.auth.resources.AuthenticationResource;
+import edu.hm.huberneumeier.shareit.media.logic.MediaService;
 import edu.hm.huberneumeier.shareit.media.media.Book;
 import edu.hm.huberneumeier.shareit.media.media.Copy;
 import edu.hm.huberneumeier.shareit.media.media.Disc;
@@ -18,6 +19,7 @@ import org.junit.Before;
 import org.junit.Test;
 import uk.co.moreofless.ISBNValidator;
 
+import javax.print.attribute.standard.Media;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 
@@ -51,8 +53,9 @@ public class MediaResourceTest {
 
     @Before
     public void setupToken() throws IOException {
+        MediaResource.setIsUnitTesting(true);
         UnauthenticatedUser correctUser = new UnauthenticatedUser("admin", "123456");
-        String json = (String) new Authentication().authenticateUser(correctUser).getEntity();
+        String json = (String) new AuthenticationResource().authenticateUser(correctUser).getEntity();
         ObjectNode object = new ObjectMapper().readValue(json, ObjectNode.class);
         JsonNode node = object.get("key");
         validToken = node.textValue();

@@ -1,5 +1,7 @@
 package edu.hm.huberneumeier.shareit.auth.logic.authorisation;
 
+import edu.hm.huberneumeier.shareit.auth.media.Authorisation;
+
 /**
  * Description...
  *

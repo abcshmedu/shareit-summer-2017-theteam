@@ -1,6 +1,7 @@
 package edu.hm.huberneumeier.shareit.auth.logic.authorisation;
 
 import edu.hm.huberneumeier.shareit.auth.logic.data.UserData;
+import edu.hm.huberneumeier.shareit.auth.media.Authorisation;
 import edu.hm.huberneumeier.shareit.auth.media.Token;
 import edu.hm.huberneumeier.shareit.auth.media.User;
 

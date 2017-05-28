@@ -10,6 +10,8 @@ public class ValidationResult {
     private ValidationState validationState;
     private String message;
 
+    public ValidationResult(){}
+
     public ValidationResult(ValidationState validationState, String message) {
         this.message = message;
         this.validationState = validationState;

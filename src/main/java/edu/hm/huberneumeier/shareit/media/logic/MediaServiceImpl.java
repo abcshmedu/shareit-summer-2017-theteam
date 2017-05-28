@@ -33,7 +33,7 @@ public class MediaServiceImpl implements MediaService {
     public MediaServiceResult addBook(Book book) {
         //TODO get the token from the user, this is just a "mock"
         //Token tokenFromUser = new Token();
-        //final MediaServiceResult serviceResult = validateRequest(tokenFromUser, Authorisation.BOOK_CREATE);
+        //final MediaServiceResult serviceResult = validateRequest(tokenFromUser, AuthorisationResource.BOOK_CREATE);
 //
         ////if result is not ok, there was a error, return and exit method
         //if (!serviceResult.equals(MediaServiceResult.OK))
@@ -82,7 +82,7 @@ public class MediaServiceImpl implements MediaService {
     public MediaServiceResult updateBook(String isbn, Book book) {
         //TODO get the token from the user, this is just a "mock"
         //Token tokenFromUser = new Token();
-        //final MediaServiceResult serviceResult = validateRequest(tokenFromUser, Authorisation.BOOK_UPDATE);
+        //final MediaServiceResult serviceResult = validateRequest(tokenFromUser, AuthorisationResource.BOOK_UPDATE);
 //
         ////if result is not ok, there was a error, return and exit method
         //if (!serviceResult.equals(MediaServiceResult.OK))
@@ -130,7 +130,7 @@ public class MediaServiceImpl implements MediaService {
     public MediaServiceResult addDisc(Disc disc) {
         //TODO get the token from the user, this is just a "mock"
         //Token tokenFromUser = new Token();
-        //final MediaServiceResult serviceResult = validateRequest(tokenFromUser, Authorisation.DISC_CREATE);
+        //final MediaServiceResult serviceResult = validateRequest(tokenFromUser, AuthorisationResource.DISC_CREATE);
 //
         ////if result is not ok, there was a error, return and exit method
         //if (!serviceResult.equals(MediaServiceResult.OK))
@@ -176,7 +176,7 @@ public class MediaServiceImpl implements MediaService {
     public MediaServiceResult updateDisc(String barcode, Disc disc) {
         //TODO get the token from the user, this is just a "mock"
         //Token tokenFromUser = new Token();
-        //final MediaServiceResult serviceResult = validateRequest(tokenFromUser, Authorisation.DISC_UPDATE);
+        //final MediaServiceResult serviceResult = validateRequest(tokenFromUser, AuthorisationResource.DISC_UPDATE);
 //
         ////if result is not ok, there was a error, return and exit method
         //if (!serviceResult.equals(MediaServiceResult.OK))

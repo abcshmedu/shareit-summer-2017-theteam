@@ -1,4 +1,6 @@
-package edu.hm.huberneumeier.shareit.auth.logic.authorisation;
+package edu.hm.huberneumeier.shareit.auth.media;
+
+import edu.hm.huberneumeier.shareit.auth.media.Authorisation;
 
 import java.util.ArrayList;
 import java.util.List;

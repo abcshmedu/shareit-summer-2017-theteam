@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.hm.huberneumeier.shareit.auth.logic.authentication.AuthenticationImpl;
 import edu.hm.huberneumeier.shareit.auth.logic.authentication.AuthenticationResult;
 import edu.hm.huberneumeier.shareit.auth.logic.authentication.AuthenticationState;
-import edu.hm.huberneumeier.shareit.auth.media.UnauthenticatedUser;
+import edu.hm.huberneumeier.shareit.auth.media.jsonMappings.UnauthenticatedUser;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -18,9 +18,9 @@ import javax.ws.rs.core.Response;
  * @version 25.05.2017
  */
 @Path("/")
-public class Authentication {
+public class AuthenticationResource {
     /**
-     * Instance of Authentication Implementation.
+     * Instance of AuthenticationResource Implementation.
      */
     private static final AuthenticationImpl AUTHENTICATION = new AuthenticationImpl();
 

@@ -1,4 +1,7 @@
-package edu.hm.huberneumeier.shareit.auth.logic.authorisation;
+package edu.hm.huberneumeier.shareit.auth.media;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Description...
@@ -22,6 +25,13 @@ public enum Authorisation {
     private final int id;
     private final String name;
     private final String description;
+    private static Map<Integer, Authorisation> map = new HashMap<Integer, Authorisation>();
+
+    static {
+        for (Authorisation elem : Authorisation.values()) {
+            map.put(elem.getId(), elem);
+        }
+    }
 
     Authorisation(int id, String name, String description) {
         this.id = id;
@@ -39,5 +49,9 @@ public enum Authorisation {
 
     public String getDescription() {
         return description;
+    }
+
+    public static Authorisation valueOf(int id) {
+        return map.get(id);
     }
 }

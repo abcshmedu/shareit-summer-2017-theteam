@@ -1,4 +1,4 @@
-package edu.hm.huberneumeier.shareit.auth.media;
+package edu.hm.huberneumeier.shareit.auth.media.jsonMappings;
 
 /**
  * Description...
